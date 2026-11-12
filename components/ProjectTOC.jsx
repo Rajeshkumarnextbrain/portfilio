@@ -43,18 +43,18 @@ export default function ProjectTOC({ sections }) {
   return (
     <>
       {/* Mobile Sticky Section Bar */}
-      <div className="xl:hidden sticky top-16 z-20 w-full bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/30 py-2.5 px-4 mb-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono uppercase text-outline">Section:</span>
-            <span className="text-xs font-mono font-semibold text-primary truncate max-w-[180px] sm:max-w-xs">
+      <div className="xl:hidden sticky top-16 z-20 w-full bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/30 py-2.5 px-3 sm:px-4 mb-6">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-xs font-mono uppercase text-outline shrink-0">Section:</span>
+            <span className="text-xs font-mono font-semibold text-primary truncate max-w-[140px] xs:max-w-[180px] sm:max-w-xs">
               {sections.find((s) => s.id === activeId)?.label || 'Overview'}
             </span>
           </div>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-container border border-outline-variant/50 text-xs font-mono text-on-surface hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+            className="shrink-0 inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg bg-surface-container border border-outline-variant/50 text-xs font-mono text-on-surface hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle sections table of contents"
           >

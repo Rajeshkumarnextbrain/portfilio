@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "480px",
+      },
       colors: {
         "surface-container-lowest": "#0a0e13",
         "secondary": "#c1c7d3",

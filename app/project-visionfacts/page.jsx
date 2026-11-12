@@ -119,17 +119,17 @@ export default function VisionfactsPage() {
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               <a
                 href="/contact"
-                className="px-4 py-2 rounded-lg bg-primary text-on-primary font-mono text-xs font-semibold hover:bg-primary/90 transition-colors inline-flex items-center gap-1.5 active:scale-95 motion-reduce:active:scale-100"
+                className="px-4 py-2 rounded-lg bg-primary text-on-primary font-mono text-xs font-semibold hover:bg-primary/90 transition-colors inline-flex items-center justify-center gap-1.5 active:scale-95 motion-reduce:active:scale-100"
               >
                 <span>Discuss this project</span>
                 <span className="material-symbols-outlined text-[16px]" aria-hidden="true">arrow_forward</span>
               </a>
               <a
                 href="#architecture"
-                className="px-4 py-2 rounded-lg bg-surface-container border border-outline-variant/50 text-xs font-mono text-on-surface hover:text-primary transition-colors"
+                className="px-4 py-2 rounded-lg bg-surface-container border border-outline-variant/50 text-xs font-mono text-on-surface hover:text-primary transition-colors inline-flex items-center justify-center"
               >
                 <span>Architecture Flow &darr;</span>
               </a>
@@ -1270,7 +1270,7 @@ export default function VisionfactsPage() {
               <div className="flex flex-col sm:flex-row items-stretch gap-4">
                 <Link
                   href="/#projects"
-                  className="px-5 py-4 rounded-xl bg-surface-container border border-outline-variant/40 hover:border-primary/60 text-xs font-mono text-on-surface hover:text-primary transition-all inline-flex items-center gap-2 group self-start sm:self-center"
+                  className="w-full sm:w-auto px-5 py-4 rounded-xl bg-surface-container border border-outline-variant/40 hover:border-primary/60 text-xs font-mono text-on-surface hover:text-primary transition-all inline-flex items-center justify-center sm:justify-start gap-2 group self-stretch sm:self-center"
                 >
                   <span className="material-symbols-outlined text-[16px] group-hover:-translate-x-1 motion-reduce:group-hover:translate-x-0 transition-transform" aria-hidden="true">
                     arrow_back

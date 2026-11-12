@@ -48,53 +48,53 @@ export default function ExperiencePage() {
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-2 sm:pt-4">
-              <div className="bg-surface-container-low/90 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
+              <div className="bg-surface-container-low/90 backdrop-blur-md p-3.5 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
                 <div className="flex items-center justify-between text-secondary">
                   <span className="font-mono-label text-[11px] sm:text-caption uppercase">Industry Span</span>
                   <span className="material-symbols-outlined text-primary text-[18px] sm:text-[20px]" aria-hidden="true">calendar_month</span>
                 </div>
                 <div className="mt-3">
-                  <div className="font-mono-metric text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
-                    4+ <span className="text-primary text-base sm:text-[1.25rem]">Years</span>
+                  <div className="font-mono-metric text-lg xs:text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
+                    4+ <span className="text-primary text-sm xs:text-base sm:text-[1.25rem]">Years</span>
                   </div>
                   <p className="font-caption text-xs sm:text-caption text-secondary mt-1">Production AI &amp; Systems Delivery</p>
                 </div>
               </div>
 
-              <div className="bg-surface-container-low/90 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
+              <div className="bg-surface-container-low/90 backdrop-blur-md p-3.5 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
                 <div className="flex items-center justify-between text-secondary">
                   <span className="font-mono-label text-[11px] sm:text-caption uppercase">Concurrent Pipes</span>
                   <span className="material-symbols-outlined text-primary text-[18px] sm:text-[20px]" aria-hidden="true">videocam</span>
                 </div>
                 <div className="mt-3">
-                  <div className="font-mono-metric text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
-                    150+ <span className="text-primary text-base sm:text-[1.25rem]">Streams</span>
+                  <div className="font-mono-metric text-lg xs:text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
+                    150+ <span className="text-primary text-sm xs:text-base sm:text-[1.25rem]">Streams</span>
                   </div>
                   <p className="font-caption text-xs sm:text-caption text-secondary mt-1">GStreamer/DeepStream Low-Latency</p>
                 </div>
               </div>
 
-              <div className="bg-surface-container-low/90 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
+              <div className="bg-surface-container-low/90 backdrop-blur-md p-3.5 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
                 <div className="flex items-center justify-between text-secondary">
                   <span className="font-mono-label text-[11px] sm:text-caption uppercase">Compute Efficiency</span>
                   <span className="material-symbols-outlined text-primary text-[18px] sm:text-[20px]" aria-hidden="true">savings</span>
                 </div>
                 <div className="mt-3">
-                  <div className="font-mono-metric text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
-                    62% <span className="text-primary text-base sm:text-[1.25rem]">Drop</span>
+                  <div className="font-mono-metric text-lg xs:text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
+                    62% <span className="text-primary text-sm xs:text-base sm:text-[1.25rem]">Drop</span>
                   </div>
                   <p className="font-caption text-xs sm:text-caption text-secondary mt-1">Cloud GPU TCO Cut via AWQ &amp; TRT</p>
                 </div>
               </div>
 
-              <div className="bg-surface-container-low/90 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
+              <div className="bg-surface-container-low/90 backdrop-blur-md p-3.5 sm:p-5 rounded-xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-colors shadow-sm">
                 <div className="flex items-center justify-between text-secondary">
                   <span className="font-mono-label text-[11px] sm:text-caption uppercase">Team Leadership</span>
                   <span className="material-symbols-outlined text-primary text-[18px] sm:text-[20px]" aria-hidden="true">groups</span>
                 </div>
                 <div className="mt-3">
-                  <div className="font-mono-metric text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
-                    3–5 <span className="text-primary text-base sm:text-[1.25rem]">Engineers</span>
+                  <div className="font-mono-metric text-lg xs:text-xl sm:text-mono-metric text-on-surface font-semibold tracking-tight">
+                    3–5 <span className="text-primary text-sm xs:text-base sm:text-[1.25rem]">Engineers</span>
                   </div>
                   <p className="font-caption text-xs sm:text-caption text-secondary mt-1">Mentored across CV &amp; GenAI Sprints</p>
                 </div>

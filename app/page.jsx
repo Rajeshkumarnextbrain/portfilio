@@ -38,7 +38,7 @@ export default function HomePage() {
                   <span className="font-mono-label text-secondary tracking-wide">AI Engineer · Bangalore, India</span>
                 </div>
 
-                <h1 className="font-display text-[2rem] sm:text-[2.75rem] lg:text-[3.5rem] text-on-surface tracking-tight leading-[1.12] sm:leading-[1.08] break-words">
+                <h1 className="font-display text-[1.75rem] xs:text-[2rem] sm:text-[2.75rem] lg:text-[3.5rem] text-on-surface tracking-tight leading-[1.12] sm:leading-[1.08] break-words">
                   I build production AI systems that <span className="text-primary underline decoration-primary/40 underline-offset-8">see, reason and scale.</span>
                 </h1>
 
@@ -107,7 +107,7 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.06)_1px,transparent_0)] [background-size:20px_20px] sm:[background-size:24px_24px]"></div>
 
                     {/* Left Detection Box (Forklift) */}
-                    <div className="absolute top-3 left-3 sm:top-6 sm:left-6 w-28 sm:w-36 h-36 sm:h-40 border sm:border-2 border-primary/90 rounded-sm bg-primary/5 flex flex-col justify-between p-1.5 sm:p-2 group transition-all duration-300">
+                    <div className="absolute top-3 left-3 sm:top-6 sm:left-6 w-24 xs:w-28 sm:w-36 h-36 sm:h-40 border sm:border-2 border-primary/90 rounded-sm bg-primary/5 flex flex-col justify-between p-1.5 sm:p-2 group transition-all duration-300">
                       <div className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded bg-primary text-surface-container-lowest font-mono-code text-[9px] sm:text-[11px] font-bold tracking-tight w-fit">
                         <span>FORKLIFT [99%]</span>
                       </div>
@@ -118,7 +118,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Right Detection Box (PPE Safety) */}
-                    <div className="absolute top-3 right-3 sm:top-8 sm:right-6 w-28 sm:w-36 h-36 sm:h-44 border sm:border-2 border-[#38bdf8] rounded-sm bg-[#38bdf8]/5 flex flex-col justify-between p-1.5 sm:p-2">
+                    <div className="absolute top-3 right-3 sm:top-8 sm:right-6 w-24 xs:w-28 sm:w-36 h-36 sm:h-44 border sm:border-2 border-[#38bdf8] rounded-sm bg-[#38bdf8]/5 flex flex-col justify-between p-1.5 sm:p-2">
                       <div className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded bg-[#38bdf8] text-surface-container-lowest font-mono-code text-[9px] sm:text-[11px] font-bold tracking-tight w-fit">
                         <span>PPE_PASS</span>
                       </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Bottom Status Overlay */}
-                    <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 px-2.5 sm:px-3 py-1 rounded-md bg-surface-container-lowest/95 border border-outline-variant/60 font-mono-code text-[10px] sm:text-[11px] text-secondary flex items-center justify-center flex-wrap gap-2 sm:gap-3 backdrop-blur shadow-lg max-w-[94%] whitespace-nowrap">
+                    <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 px-2.5 sm:px-3 py-1 rounded-md bg-surface-container-lowest/95 border border-outline-variant/60 font-mono-code text-[10px] sm:text-[11px] text-secondary flex items-center justify-center flex-wrap gap-2 sm:gap-3 backdrop-blur shadow-lg max-w-[94%]">
                       <span className="text-primary flex items-center gap-1 font-semibold">
                         <span aria-hidden="true" className="material-symbols-outlined text-[13px] sm:text-[15px]">center_focus_strong</span>
                         VLM_ACTIVE
