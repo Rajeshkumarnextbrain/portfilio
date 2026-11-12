@@ -6,19 +6,69 @@
 @tailwind utilities;
 
 @layer base {
-  html, body {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
     margin: 0;
     padding: 0;
+    min-height: 100%;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
   }
-  body {
-    overscroll-behavior: none;
-  }
+
   main > :first-child {
     margin-top: 0 !important;
   }
   main > :last-child {
     margin-bottom: 0 !important;
   }
+}
+
+/* Shimmer Skeleton Animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #1e2228;
+}
+
+.skeleton::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(148, 218, 50, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 75%,
+    transparent 100%
+  );
+  animation: shimmer 1.8s ease-in-out infinite;
+  content: '';
+}
+
+/* Hide scrollbar while preserving full scrollability */
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 ::-webkit-scrollbar {
