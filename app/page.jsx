@@ -247,15 +247,15 @@ export default function HomePage() {
             {/* 6 Ruled Metric Rows */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {AT_A_GLANCE_METRICS.map((item) => (
-                <div key={item.label} className="p-5 bg-surface border border-line flex flex-col gap-1.5">
+                <div key={item.title} className="p-5 bg-surface border border-line flex flex-col gap-1.5">
                   <span className="font-metric-numeral text-3xl sm:text-4xl font-bold text-primary">
                     {item.value}
                   </span>
                   <span className="font-label-sm text-xs uppercase font-bold text-secondary tracking-wider">
-                    {item.label}
+                    {item.title}
                   </span>
                   <p className="font-body-md text-sm text-ink-muted mt-1 leading-relaxed">
-                    {item.detail}
+                    {item.caption}
                   </p>
                 </div>
               ))}
