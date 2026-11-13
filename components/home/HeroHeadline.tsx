@@ -30,18 +30,18 @@ export function HeroHeadline() {
       {/* Transform-only reveal on initial mount, text stays 100% visible */}
       <m.span
         data-motion="hero-headline"
-        className="inline"
+        className="block"
         initial={motionOK ? { y: 20 } : { y: 0 }}
         animate={{ y: 0 }}
         transition={{ duration: TIMING.reveal, ease: EASING.out }}
       >
-        I build production AI systems that{' '}
+        I build production AI systems that
       </m.span>
 
-      {/* Rotating Verb Slot: see -> reason -> scale */}
-      <span className="block sm:inline-block relative overflow-hidden align-middle h-[1.18em] text-secondary mt-1 sm:mt-0 sm:ml-2">
+      {/* Rotating Verb Slot: see -> reason -> scale (strictly left-aligned, no jumping) */}
+      <span className="block relative h-[1.18em] overflow-hidden text-secondary mt-1.5 sm:mt-2">
         <span
-          className={`flex flex-col ${
+          className={`flex flex-col items-start ${
             motionOK ? 'transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]' : ''
           }`}
           style={{
@@ -49,8 +49,8 @@ export function HeroHeadline() {
           }}
         >
           {ROTATING_WORDS.map((word) => (
-            <span key={word} className="h-[1.18em] flex items-center justify-start sm:justify-center">
-              <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary border-b-2 border-secondary leading-none rounded-sm">
+            <span key={word} className="h-[1.18em] flex items-center justify-start text-left">
+              <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary border-b-2 border-secondary leading-none rounded-sm inline-flex items-center">
                 {word}
               </span>
             </span>
