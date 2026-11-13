@@ -8,11 +8,12 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
   body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x: clip;
     min-height: 100vh;
     -webkit-overflow-scrolling: touch;
   }
@@ -22,6 +23,31 @@
   main > :last-child {
     margin-bottom: 0 !important;
   }
+}
+
+/* Reduced motion & no-JS overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-motion] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+[data-motion] {
+  will-change: transform, opacity;
+}
+
+noscript [data-motion] {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
 }
 
 ::-webkit-scrollbar {
