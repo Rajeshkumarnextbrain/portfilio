@@ -2,14 +2,17 @@
 
 import React from 'react';
 import { m } from 'framer-motion';
-import { EASING, TIMING, VIEWPORT_CONFIG } from '@/lib/motion';
+import { EASING, TIMING } from '@/lib/motion';
 import { useMotionOK } from '@/lib/useMotionOK';
 
 export function HeroHeadline() {
   const motionOK = useMotionOK();
 
   return (
-    <h1 className="font-mega-display text-[44px] xs:text-[60px] sm:text-[76px] md:text-[88px] lg:text-[104px] leading-[0.92] text-primary tracking-tighter uppercase select-none">
+    <h1
+      className="font-headline-lg font-semibold tracking-[-0.04em] leading-[1.0] text-[#1c1c18] select-none"
+      style={{ fontSize: 'clamp(2.75rem, 6vw, 5.25rem)' }}
+    >
       {/* Line 1 */}
       <span className="block overflow-hidden">
         {motionOK ? (
@@ -48,8 +51,8 @@ export function HeroHeadline() {
         )}
       </span>
 
-      {/* Line 3 with left-to-right sweep highlight */}
-      <span className="block overflow-hidden">
+      {/* Line 3 with inline sweep highlight */}
+      <span className="block overflow-hidden pt-1">
         {motionOK ? (
           <m.span
             data-motion="hero-line"
@@ -63,10 +66,15 @@ export function HeroHeadline() {
             className="block"
           >
             <m.span
-              className="relative inline-block px-2 sm:px-3 py-0.5 text-secondary -rotate-1 rounded-sm bg-no-repeat"
               style={{
+                display: 'inline',
+                WebkitBoxDecorationBreak: 'clone',
+                boxDecorationBreak: 'clone',
+                padding: '0 0.12em',
                 backgroundImage: 'linear-gradient(to right, #FFE6DA, #FFE6DA)',
-                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+                borderBottom: '2px solid #AE3200',
+                color: '#AE3200',
               }}
               initial={{ backgroundSize: '0% 100%' }}
               animate={{ backgroundSize: '100% 100%' }}
@@ -76,13 +84,23 @@ export function HeroHeadline() {
                 ease: EASING.out,
               }}
             >
-              see, reason &amp; scale.
+              see, reason and scale.
             </m.span>
           </m.span>
         ) : (
           <span className="block">
-            <span className="relative inline-block bg-signal-orange-tint px-2 sm:px-3 py-0.5 text-secondary -rotate-1 rounded-sm">
-              see, reason &amp; scale.
+            <span
+              style={{
+                display: 'inline',
+                WebkitBoxDecorationBreak: 'clone',
+                boxDecorationBreak: 'clone',
+                padding: '0 0.12em',
+                background: '#FFE6DA',
+                borderBottom: '2px solid #AE3200',
+                color: '#AE3200',
+              }}
+            >
+              see, reason and scale.
             </span>
           </span>
         )}

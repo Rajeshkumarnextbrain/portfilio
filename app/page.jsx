@@ -31,13 +31,13 @@ export default function HomePage() {
         {/* =========================================================================
             CHAPTER 00: HERO (Paper / Warm Tactile Surface)
             ========================================================================= */}
-        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20 border-b border-line overflow-hidden">
+        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 border-b border-line overflow-hidden min-h-[calc(100svh-64px)] flex flex-col justify-center">
           {/* Viewfinder Background Guidelines (Desktop Only) */}
           <div className="hidden md:block absolute inset-0 pointer-events-none opacity-30">
             <div className="max-w-7xl mx-auto h-full relative border-x border-dashed border-line"></div>
           </div>
 
-          <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-8">
+          <div className="max-w-7xl mx-auto relative z-10 w-full flex flex-col gap-6 sm:gap-8 my-auto">
             {/* Top Availability Pill */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-paper-raised border border-line rounded-full shadow-sm text-xs font-label-timecode font-semibold tracking-wider text-primary uppercase">
@@ -53,79 +53,77 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Mega Hero Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* Mega Hero Grid Layout - Vertically Centered */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Left Column: Typography & Intent */}
-              <div className="lg:col-span-7 flex flex-col gap-6">
-                <div className="flex items-center gap-2 text-ink-muted font-label-sm text-xs uppercase tracking-widest">
-                  <span>LEAD AI SYSTEMS ARCHITECT</span>
-                  <span className="text-secondary font-bold">/</span>
-                  <span>{IDENTITY.location}</span>
+              <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-5">
+                {/* Eyebrow: Headline Role */}
+                <div className="font-body-md text-[13px] sm:text-[14px] text-ink-muted font-medium">
+                  {IDENTITY.headlineRole}
                 </div>
 
                 {/* Animated Line-by-Line Hero Headline */}
                 <HeroHeadline />
 
                 {/* Plain-English Explainer Layer */}
-                <div className="p-4 sm:p-5 bg-paper-sunken border-l-4 border-secondary border border-line rounded-DEFAULT">
-                  <p className="font-body-md text-base sm:text-lg text-primary font-medium leading-relaxed">
+                <div className="p-3.5 sm:p-4 bg-paper-sunken border-l-4 border-secondary border border-line rounded-DEFAULT">
+                  <p className="font-body-md text-sm sm:text-base text-primary font-medium leading-snug">
                     In simple terms, I build software that:
                   </p>
-                  <ul className="mt-2 space-y-1.5 font-body-md text-sm sm:text-base text-ink-muted list-disc list-inside">
+                  <ul className="mt-1.5 space-y-1 font-body-md text-xs sm:text-[13.5px] text-ink-muted list-disc list-inside">
                     <li><strong className="text-primary font-semibold">Watches security cameras</strong> and spots safety problems automatically.</li>
                     <li><strong className="text-primary font-semibold">Lets managers ask questions</strong> about company data and get reports in plain English.</li>
                     <li><strong className="text-primary font-semibold">Helps students learn</strong> from their verified curriculum textbooks.</li>
                   </ul>
                 </div>
 
-                {/* Proof Row (4 Verified Numbers Counting Up) */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-line">
-                  {PROOF_METRICS.map((metric) => (
-                    <div key={metric.label} className="flex flex-col">
-                      <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-primary">
-                        <CountUp value={metric.value} />
-                      </span>
-                      <span className="font-label-sm text-[12px] text-ink-muted uppercase tracking-wider mt-0.5">
-                        {metric.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
                   <a
                     href={CONTACT_INFO.resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary hover:bg-neutral-800 text-on-primary font-label-timecode text-xs uppercase font-semibold tracking-wider rounded-full transition-all duration-150 shadow-sm text-center active:scale-[0.97] group"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-primary hover:bg-neutral-800 text-on-primary font-body-md text-[15px] sm:text-base font-semibold rounded-full transition-all duration-150 shadow-sm text-center active:scale-[0.97] group"
                   >
                     <span>Download resume (PDF)</span>
-                    <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-y-[2px]">
+                    <span className="material-symbols-outlined text-[18px] transition-transform duration-150 group-hover:translate-y-[2px]">
                       download
                     </span>
                   </a>
                   <a
                     href="#projects"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-paper-raised hover:bg-paper-sunken text-primary border border-line font-label-timecode text-xs uppercase font-semibold tracking-wider rounded-full transition-colors duration-150 text-center active:scale-[0.97]"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-paper-raised hover:bg-paper-sunken text-primary border border-line font-body-md text-[15px] sm:text-base font-semibold rounded-full transition-colors duration-150 text-center active:scale-[0.97]"
                   >
                     <span>View projects</span>
-                    <span className="font-mono text-ink-muted">(03)</span>
                   </a>
                   <a
                     href={`mailto:${CONTACT_INFO.email}`}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-xs uppercase font-semibold tracking-wider rounded-full transition-colors duration-150 text-center font-bold active:scale-[0.97] group"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-body-md text-[15px] sm:text-base font-semibold rounded-full transition-colors duration-150 text-center active:scale-[0.97] group"
                   >
                     <span>Email me</span>
-                    <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-x-[2px]">
+                    <span className="material-symbols-outlined text-[18px] transition-transform duration-150 group-hover:translate-x-[2px]">
                       mail
                     </span>
                   </a>
                 </div>
+
+                {/* Proof Row (4 Verified Numbers Counting Up) */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 pb-1 border-t border-line">
+                  {PROOF_METRICS.map((metric) => (
+                    <div key={metric.label} className="flex flex-col">
+                      <span className="font-metric-numeral text-xl sm:text-2xl font-bold text-primary">
+                        <CountUp value={metric.value} />
+                      </span>
+                      <span className="font-label-sm text-[11px] sm:text-[12px] text-ink-muted uppercase tracking-wider mt-0.5">
+                        {metric.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Right Column: Precision Viewfinder Screen Simulation */}
-              <div className="lg:col-span-5 relative">
+              <div className="lg:col-span-5 relative flex items-center justify-center">
                 <HeroIllustration />
               </div>
             </div>
@@ -137,23 +135,18 @@ export default function HomePage() {
             ========================================================================= */}
         <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto flex flex-col gap-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-3">
-                  <span className="font-label-timecode text-xs text-secondary font-bold uppercase tracking-widest block">
-                    01 / AT A GLANCE
-                  </span>
-                  <div className="w-24">
-                    <DrawLine className="h-[1px] w-full bg-secondary" />
-                  </div>
+            <div className="flex flex-col gap-1 border-b border-line pb-4">
+              <div className="flex items-center gap-3">
+                <span className="font-label-timecode text-xs text-secondary font-bold uppercase tracking-widest block">
+                  01 / AT A GLANCE
+                </span>
+                <div className="w-24">
+                  <DrawLine className="h-[1px] w-full bg-secondary" />
                 </div>
-                <h2 className="font-headline-lg text-2xl sm:text-4xl font-bold text-primary tracking-tight">
-                  Proven production outcomes.
-                </h2>
               </div>
-              <p className="font-body-md text-sm sm:text-base text-ink-muted max-w-md">
-                Verified production numbers delivered across enterprise edge and multimodal AI systems.
-              </p>
+              <h2 className="font-headline-lg text-2xl sm:text-4xl font-bold text-primary tracking-tight">
+                What you need to know in 30 seconds.
+              </h2>
             </div>
 
             <AtAGlanceSection metrics={AT_A_GLANCE_METRICS} identity={IDENTITY} />
