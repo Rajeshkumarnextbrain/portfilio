@@ -697,7 +697,7 @@ export default function HomePage() {
 {/* Ruled Interactive Project Rows (Invert on hover) */}
 <div className="flex flex-col border-t border-b border-line divide-y divide-line">
 {/* Row 01: Visionfacts.AI */}
-<div className="group relative py-space-xl px-space-md transition-colors duration-200 hover:bg-primary hover:text-on-primary">
+<Link href="/project-visionfacts" className="block cursor-pointer group relative py-space-xl px-space-md transition-colors duration-200 hover:bg-primary hover:text-on-primary">
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-center">
 <div className="lg:col-span-1 font-mono text-ink-muted group-hover:text-secondary-fixed text-lg font-bold">
               01
@@ -725,9 +725,9 @@ export default function HomePage() {
 </span>
 </div>
 </div>
-</div>
+</Link>
 {/* Row 02: Visionfacts Analytics Agent */}
-<div className="group relative py-space-xl px-space-md transition-colors duration-200 hover:bg-primary hover:text-on-primary">
+<Link href="/project-analytics-agent" className="block cursor-pointer group relative py-space-xl px-space-md transition-colors duration-200 hover:bg-primary hover:text-on-primary">
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-center">
 <div className="lg:col-span-1 font-mono text-ink-muted group-hover:text-secondary-fixed text-lg font-bold">
               02
@@ -755,9 +755,9 @@ export default function HomePage() {
 </span>
 </div>
 </div>
-</div>
+</Link>
 {/* Row 03: Edubotix */}
-<div className="group relative py-space-xl px-space-md transition-colors duration-200 hover:bg-primary hover:text-on-primary">
+<Link href="/project-edubotix" className="block cursor-pointer group relative py-space-xl px-space-md transition-colors duration-200 hover:bg-primary hover:text-on-primary">
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-center">
 <div className="lg:col-span-1 font-mono text-ink-muted group-hover:text-secondary-fixed text-lg font-bold">
               03
@@ -785,7 +785,7 @@ export default function HomePage() {
 </span>
 </div>
 </div>
-</div>
+</Link>
 </div>
 </div>
 </section>
