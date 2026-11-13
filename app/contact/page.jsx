@@ -28,12 +28,12 @@ export default function ContactPage() {
 <section className="w-full bg-surface py-space-chapter px-space-md lg:px-space-xl flex justify-center">
 <div className="w-full max-w-[1200px] flex flex-col lg:flex-row items-start justify-between gap-space-2xl">
 {/* Left Column: Copy & CTAs */}
-<div className="flex-1 flex flex-col items-start">
+<div className="flex-1 flex flex-col items-start w-full">
 <div className="flex items-center gap-3 mb-space-md">
 <span className="w-2 h-2 bg-secondary"></span>
 <span className="font-label-timecode text-label-timecode uppercase tracking-widest text-ink-muted">CONTACT // DISPATCH · STAGE 05/05</span>
 </div>
-<h1 className="font-headline-lg lg:font-mega-display text-headline-lg lg:text-mega-display tracking-tighter text-on-surface uppercase mb-space-lg leading-[0.95]">
+<h1 className="font-headline-lg lg:font-mega-display text-[34px] xs:text-[46px] sm:text-[68px] md:text-[96px] lg:text-[110px] xl:text-[124px] tracking-tighter text-on-surface uppercase mb-space-lg leading-[0.95]">
 <span>Send the</span><br/>
 <mark className="bg-signal-orange-tint text-secondary px-2 py-0.5 rounded inline-block">signal.</mark><br/>
 <span>I reply in 24h<span className="animate-pulse text-secondary">_</span></span>
@@ -41,16 +41,16 @@ export default function ContactPage() {
 <p className="font-body-lg text-body-lg text-ink-muted max-w-2xl mb-space-xl">
           Actively interviewing with visionary engineering teams building production AI systems. Open to Senior, Lead, or Staff AI Engineer opportunities, available for technical architecture interviews, systems whiteboard deep-dives, team leadership discussions, and remote or hybrid positions.
         </p>
-<div className="flex items-center flex-wrap gap-space-md">
-<a className="inline-flex items-center gap-2 px-space-xl py-3.5 bg-secondary hover:bg-signal-orange-hover text-on-secondary rounded-full font-label-timecode text-label-timecode tracking-wider uppercase transition-colors" href="mailto:rajesh.ai.engineer@outlook.com">
+<div className="flex flex-col sm:flex-row items-stretch sm:items-center flex-wrap gap-space-md w-full sm:w-auto">
+<a className="inline-flex items-center justify-center gap-2 px-space-xl py-3.5 bg-secondary hover:bg-signal-orange-hover text-on-secondary rounded-full font-label-timecode text-label-timecode tracking-wider uppercase transition-colors" href="mailto:rajesh.ai.engineer@outlook.com">
 <span className="material-symbols-outlined text-[18px]">mail</span>
 <span>Email Rajesh</span>
 </a>
-<button className="inline-flex items-center gap-1.5 px-space-md py-3.5 bg-paper-sunken hover:bg-surface-container-high text-on-surface rounded-full font-label-timecode text-label-timecode uppercase tracking-wider transition-colors" onClick={handleCopyEmail}>
+<button className="inline-flex items-center justify-center gap-1.5 px-space-md py-3.5 bg-paper-sunken hover:bg-surface-container-high text-on-surface rounded-full font-label-timecode text-label-timecode uppercase tracking-wider transition-colors" onClick={handleCopyEmail}>
 <span className="material-symbols-outlined text-[16px]">content_copy</span>
 <span>{copied ? 'Copied!' : 'Copy Address'}</span>
 </button>
-<a className="inline-flex items-center gap-1.5 px-space-lg py-3.5 bg-paper-raised hover:bg-primary hover:text-on-primary text-on-surface rounded-full font-label-timecode text-label-timecode tracking-wider uppercase transition-all" href="https://linkedin.com/in/rajesh-kumar-ai" rel="noopener noreferrer" target="_blank">
+<a className="inline-flex items-center justify-center gap-1.5 px-space-lg py-3.5 bg-paper-raised hover:bg-primary hover:text-on-primary text-on-surface rounded-full font-label-timecode text-label-timecode tracking-wider uppercase transition-all" href="https://linkedin.com/in/rajesh-kumar-ai" rel="noopener noreferrer" target="_blank">
 <span>View LinkedIn</span>
 <span className="material-symbols-outlined text-[16px]">north_east</span>
 </a>
@@ -58,7 +58,7 @@ export default function ContactPage() {
 </div>
 {/* Right Column: Transmitting Optical Radar */}
 <div className="w-full lg:w-[360px] flex justify-center shrink-0">
-<div className="relative w-[340px] h-[340px] sm:w-[360px] sm:h-[360px] bg-paper-raised p-6 flex flex-col justify-between">
+<div className="relative w-full max-w-[340px] aspect-square sm:max-w-[360px] sm:h-[360px] bg-paper-raised p-6 flex flex-col justify-between">
 {/* Viewfinder Brackets ⌜ ⌝ ⌞ ⌟ */}
 <div className="absolute -top-2 -left-2 w-5 h-5 border-t-2 border-l-2 border-primary pointer-events-none"></div>
 <div className="absolute -top-2 -right-2 w-5 h-5 border-t-2 border-r-2 border-primary pointer-events-none"></div>
@@ -184,14 +184,14 @@ export default function ContactPage() {
 {/* Ruled Rows Container */}
 <div className="w-full border-t border-b border-line flex flex-col">
 {/* ROW 01: Email */}
-<div className="group relative py-space-lg border-b border-line transition-all duration-200 px-space-md -mx-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md">
-<div className="flex items-center gap-space-lg min-w-0">
+<div className="group relative py-space-lg border-b border-line transition-all duration-200 px-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div className="flex items-center gap-space-md sm:gap-space-lg min-w-0">
 <span className="font-label-timecode text-label-timecode text-ink-faint group-hover:text-line tracking-widest w-8 shrink-0">01</span>
-<div className="flex flex-col">
+<div className="flex flex-col min-w-0">
 <span className="font-headline-md text-headline-md group-hover:text-on-primary text-on-surface leading-tight">Email</span>
-<div className="flex items-center gap-3 mt-1">
-<span className="font-label-timecode text-body-sm text-secondary group-hover:text-secondary-fixed">rajesh.ai.engineer@outlook.com</span>
-<button className="px-2 py-0.5 rounded text-[11px] font-label-sm uppercase bg-paper-sunken text-on-surface group-hover:bg-on-primary group-hover:text-primary transition-colors" onClick={handleCopyEmail}>Copy</button>
+<div className="flex items-center gap-2 sm:gap-3 mt-1 flex-wrap">
+<span className="font-label-timecode text-body-sm text-secondary group-hover:text-secondary-fixed break-all">rajesh.ai.engineer@outlook.com</span>
+<button className="px-2 py-0.5 rounded text-[11px] font-label-sm uppercase bg-paper-sunken text-on-surface group-hover:bg-on-primary group-hover:text-primary transition-colors shrink-0" onClick={handleCopyEmail}>Copy</button>
 </div>
 </div>
 </div>
@@ -203,12 +203,12 @@ export default function ContactPage() {
 </div>
 </div>
 {/* ROW 02: LinkedIn */}
-<a className="group relative py-space-lg border-b border-line transition-all duration-200 px-space-md -mx-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md" href="https://linkedin.com/in/rajesh-kumar-ai" rel="noopener noreferrer" target="_blank">
-<div className="flex items-center gap-space-lg min-w-0">
+<a className="group relative py-space-lg border-b border-line transition-all duration-200 px-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md" href="https://linkedin.com/in/rajesh-kumar-ai" rel="noopener noreferrer" target="_blank">
+<div className="flex items-center gap-space-md sm:gap-space-lg min-w-0">
 <span className="font-label-timecode text-label-timecode text-ink-faint group-hover:text-line tracking-widest w-8 shrink-0">02</span>
-<div className="flex flex-col">
+<div className="flex flex-col min-w-0">
 <span className="font-headline-md text-headline-md group-hover:text-on-primary text-on-surface leading-tight">LinkedIn</span>
-<span className="font-label-timecode text-body-sm text-ink-muted group-hover:text-inverse-primary mt-1">linkedin.com/in/rajesh-kumar-ai</span>
+<span className="font-label-timecode text-body-sm text-ink-muted group-hover:text-inverse-primary mt-1 break-all">linkedin.com/in/rajesh-kumar-ai</span>
 </div>
 </div>
 <div className="flex items-center justify-between md:justify-end gap-space-xl">
@@ -219,12 +219,12 @@ export default function ContactPage() {
 </div>
 </a>
 {/* ROW 03: GitHub */}
-<a className="group relative py-space-lg border-b border-line transition-all duration-200 px-space-md -mx-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md" href="https://github.com/rajesh-kumar-s" rel="noopener noreferrer" target="_blank">
-<div className="flex items-center gap-space-lg min-w-0">
+<a className="group relative py-space-lg border-b border-line transition-all duration-200 px-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md" href="https://github.com/rajesh-kumar-s" rel="noopener noreferrer" target="_blank">
+<div className="flex items-center gap-space-md sm:gap-space-lg min-w-0">
 <span className="font-label-timecode text-label-timecode text-ink-faint group-hover:text-line tracking-widest w-8 shrink-0">03</span>
-<div className="flex flex-col">
+<div className="flex flex-col min-w-0">
 <span className="font-headline-md text-headline-md group-hover:text-on-primary text-on-surface leading-tight">GitHub</span>
-<span className="font-label-timecode text-body-sm text-ink-muted group-hover:text-inverse-primary mt-1">github.com/rajesh-kumar-s</span>
+<span className="font-label-timecode text-body-sm text-ink-muted group-hover:text-inverse-primary mt-1 break-all">github.com/rajesh-kumar-s</span>
 </div>
 </div>
 <div className="flex items-center justify-between md:justify-end gap-space-xl">
@@ -235,10 +235,10 @@ export default function ContactPage() {
 </div>
 </a>
 {/* ROW 04: Resume */}
-<div className="group relative py-space-lg transition-all duration-200 px-space-md -mx-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md" onclick="alert('Resume request logged. Please dispatch an email for complete PDF dossiers with full metrics.');">
-<div className="flex items-center gap-space-lg min-w-0">
+<div className="group relative py-space-lg transition-all duration-200 px-space-md hover:bg-primary hover:text-on-primary cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-space-md" onClick={() => alert('Resume request logged. Please dispatch an email for complete PDF dossiers with full metrics.')}>
+<div className="flex items-center gap-space-md sm:gap-space-lg min-w-0">
 <span className="font-label-timecode text-label-timecode text-ink-faint group-hover:text-line tracking-widest w-8 shrink-0">04</span>
-<div className="flex flex-col">
+<div className="flex flex-col min-w-0">
 <span className="font-headline-md text-headline-md group-hover:text-on-primary text-on-surface leading-tight">Resume Dossier</span>
 <div className="flex items-center gap-2 mt-1">
 <span className="font-label-timecode text-body-sm text-ink-muted group-hover:text-inverse-primary">Request full resume (PDF)</span>

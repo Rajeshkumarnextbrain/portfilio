@@ -17,16 +17,16 @@ export default function VisionFactsFlagshipPage() {
         </span>
 </div>
 {/* Mega headline */}
-<div className="flex flex-col -space-y-2 lg:-space-y-4">
-<h1 className="font-headline-lg lg:font-mega-display text-headline-lg lg:text-mega-display font-bold text-on-surface uppercase tracking-tight">
+<div className="flex flex-col -space-y-1 sm:-space-y-2 lg:-space-y-4">
+<h1 className="font-headline-lg lg:font-mega-display text-[34px] xs:text-[46px] sm:text-[68px] md:text-[96px] lg:text-[110px] xl:text-[124px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
           Teaching
         </h1>
 <div className="inline-flex items-baseline gap-space-sm flex-wrap">
-<span className="font-headline-lg lg:font-mega-display text-headline-lg lg:text-mega-display font-bold text-on-surface uppercase tracking-tight bg-signal-orange-tint px-2 py-0">
+<span className="font-headline-lg lg:font-mega-display text-[34px] xs:text-[46px] sm:text-[68px] md:text-[96px] lg:text-[110px] xl:text-[124px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight bg-signal-orange-tint px-2 py-0">
             130+ cameras
           </span>
 </div>
-<h1 className="font-headline-lg lg:font-mega-display text-headline-lg lg:text-mega-display font-bold text-on-surface uppercase tracking-tight">
+<h1 className="font-headline-lg lg:font-mega-display text-[34px] xs:text-[46px] sm:text-[68px] md:text-[96px] lg:text-[110px] xl:text-[124px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
           to watch.
         </h1>
 </div>
@@ -614,8 +614,8 @@ export default function VisionFactsFlagshipPage() {
 {/* 4 with Visual */}
 <div className="py-space-lg border-b border-line flex flex-col gap-space-sm">
 <h3 className="font-headline-md text-body-lg font-semibold text-on-surface">4. Multi-GPU Allocation &amp; 1,500 MB Safety Buffer</h3>
-<div className="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center">
-<div className="md:col-span-4 text-on-surface-variant font-body-sm text-body-sm">
+<div className="grid grid-cols-1 md:grid-cols-12 gap-space-md">
+<div className="md:col-span-5 text-on-surface-variant font-body-sm text-body-sm">
 <span className="font-label-sm text-label-sm uppercase text-ink-faint block">Problem</span>
               dynamic workloads, LLM tasks and camera reconnects risked out-of-memory crashes on multi-GPU servers.
             </div>
@@ -623,7 +623,7 @@ export default function VisionFactsFlagshipPage() {
 <span className="font-label-sm text-label-sm uppercase text-secondary block">Solution</span>
               a dynamic VRAM allocation algorithm: budgeted planning estimate of 290 MB VRAM per camera process; a mandatory 1,500 MB (1.5 GB) safety buffer per GPU; dynamic balancing of camera worker assignments across available GPUs.
             </div>
-<div className="md:col-span-4 flex flex-col gap-2">
+<div className="md:col-span-3 flex flex-col gap-2">
 <div className="font-label-timecode text-label-timecode text-on-surface bg-paper-sunken p-space-sm border border-line">
 <span className="text-ink-muted block text-[10px] uppercase">Result</span>
                 sustained 130+ cameras across 2x NVIDIA L4 GPUs (actual per-camera memory varied from 245 MB to 360 MB) with zero OOM crashes.

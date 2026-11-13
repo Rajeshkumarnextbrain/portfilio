@@ -27,7 +27,7 @@ export default function AnalyticsAgentPage() {
 </div>
 {/* Mega Headline (Space Grotesk, 3 lines, tight tracking) */}
 <div className="flex flex-col mb-space-xl">
-<h1 className="font-mega-display text-display md:text-mega-display leading-none tracking-tighter uppercase font-bold text-primary flex flex-col">
+<h1 className="font-mega-display text-[34px] xs:text-[46px] sm:text-[68px] md:text-[96px] lg:text-[110px] xl:text-[124px] leading-[0.92] tracking-tighter uppercase font-bold text-primary flex flex-col">
 <span>Ask the</span>
 <span><mark className="bg-signal-orange-tint text-secondary px-space-xs inline-block">cameras</mark></span>
 <span>anything.</span>

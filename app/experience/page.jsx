@@ -35,7 +35,7 @@ export default function ExperiencePage() {
 </div>
 {/* Mega Headline & Subtitle */}
 <div className="flex flex-col gap-space-lg">
-<h1 className="font-mega-display text-mega-display text-on-surface tracking-tighter uppercase select-none">
+<h1 className="font-mega-display text-[34px] xs:text-[46px] sm:text-[68px] md:text-[96px] lg:text-[120px] xl:text-mega-display leading-[0.94] text-on-surface tracking-tighter uppercase select-none">
           FOUR YEARS.<br/>
           ONE <span className="relative inline-block bg-signal-orange-tint px-3 py-1 text-secondary -rotate-1">PIPELINE</span><br/>
           AT A TIME.
@@ -46,15 +46,15 @@ export default function ExperiencePage() {
 </div>
 {/* Full-Width Interactive Filmstrip Scrubber */}
 <div className="flex flex-col gap-3 pt-space-lg">
-<div className="flex justify-between items-center font-label-sm text-label-sm text-ink-muted uppercase">
-<span className="flex items-center gap-2">
-<span className="material-symbols-outlined text-[14px] text-secondary">movie</span>
-            TIMELINE SCRUBBER // MAY 2022 — PRESENT
-          </span>
-<span className="font-label-timecode text-label-timecode text-secondary font-medium">PLAYHEAD: 00:04:18:22</span>
+<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-label-sm text-xs sm:text-label-sm text-ink-muted uppercase">
+<span className="flex items-center gap-2 truncate">
+<span className="material-symbols-outlined text-[14px] text-secondary shrink-0">movie</span>
+<span className="truncate">TIMELINE SCRUBBER // MAY 2022 — PRESENT</span>
+</span>
+<span className="font-label-timecode text-label-timecode text-secondary font-medium shrink-0">PLAYHEAD: 00:04:18:22</span>
 </div>
 {/* Scrubber Track & Ticks */}
-<div className="relative w-full bg-paper-sunken p-3 select-none">
+<div className="relative w-full bg-paper-sunken p-2 sm:p-3 select-none">
 {/* Filmstrip Sproc Holes (Top) */}
 <div className="flex justify-between pb-2 border-b border-line opacity-60">
 <span className="w-2 h-1.5 bg-line"></span><span className="w-2 h-1.5 bg-line"></span><span className="w-2 h-1.5 bg-line"></span><span className="w-2 h-1.5 bg-line"></span>
@@ -62,47 +62,47 @@ export default function ExperiencePage() {
 <span className="w-2 h-1.5 bg-line"></span><span className="w-2 h-1.5 bg-line"></span><span className="w-2 h-1.5 bg-line"></span><span className="w-2 h-1.5 bg-line"></span>
 </div>
 {/* Segments */}
-<div className="grid grid-cols-12 gap-1.5 my-3 h-14 relative">
-{/* Clip 3: Tech Support (May - Jul 2022) ~ 1 col */}
-<a className="col-span-1 bg-surface-container-highest hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1.5 transition-colors group" href="#chapter-3">
-<span className="font-label-sm text-[10px] text-ink-muted group-hover:text-primary">CLIP 03</span>
-<span className="font-label-sm text-[9px] truncate">VEDANT</span>
+<div className="grid grid-cols-12 gap-1 sm:gap-1.5 my-2 sm:my-3 h-14 relative">
+{/* Clip 3: Tech Support (May - Jul 2022) ~ 2 cols on mobile, 1 col on sm */}
+<a className="col-span-2 sm:col-span-1 bg-surface-container-highest hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1 sm:p-1.5 transition-colors group overflow-hidden" href="#chapter-3">
+<span className="font-label-sm text-[8px] sm:text-[10px] text-ink-muted group-hover:text-primary leading-tight">03</span>
+<span className="font-label-sm text-[8px] sm:text-[9px] truncate">VEDANT</span>
 </a>
 {/* Clip 2: Junior Vision (Jul 2022 - Jul 2023) ~ 3 cols */}
-<a className="col-span-3 bg-surface-container-high hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-2 transition-colors group" href="#chapter-2">
-<span className="font-label-sm text-label-sm text-ink-muted group-hover:text-primary">CLIP 02</span>
-<span className="font-headline-md text-body-sm font-semibold truncate">SS AUTOMATION</span>
+<a className="col-span-3 bg-surface-container-high hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1.5 sm:p-2 transition-colors group overflow-hidden" href="#chapter-2">
+<span className="font-label-sm text-[8px] sm:text-label-sm text-ink-muted group-hover:text-primary leading-tight">CLIP 02</span>
+<span className="font-headline-md text-[10px] sm:text-body-sm font-semibold truncate">SS AUTO</span>
 </a>
-{/* Clip 1: Team Lead (Jul 2023 - Present) ~ 8 cols */}
-<a className="col-span-8 bg-secondary text-on-secondary flex items-center justify-between px-4 relative overflow-hidden group" href="#chapter-1">
-<div className="flex flex-col z-10">
-<div className="flex items-center gap-2">
-<span className="w-2 h-2 rounded-full bg-surface-bright animate-ping"></span>
-<span className="font-label-sm text-label-sm tracking-wider uppercase">ACTIVE CLIP 01 · TEAM LEAD</span>
+{/* Clip 1: Team Lead (Jul 2023 - Present) ~ 7 cols on mobile, 8 cols on sm */}
+<a className="col-span-7 sm:col-span-8 bg-secondary text-on-secondary flex items-center justify-between px-2 sm:px-4 relative overflow-hidden group" href="#chapter-1">
+<div className="flex flex-col z-10 min-w-0 pr-4">
+<div className="flex items-center gap-1.5">
+<span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-surface-bright animate-ping shrink-0"></span>
+<span className="font-label-sm text-[8px] sm:text-label-sm tracking-wider uppercase truncate">ACTIVE CLIP 01</span>
 </div>
-<span className="font-headline-md text-headline-md font-bold tracking-tight">VISIONFACTS.AI // NEXTBRAIN</span>
+<span className="font-headline-md text-[11px] sm:text-body-md lg:text-headline-md font-bold tracking-tight truncate">VISIONFACTS.AI</span>
 </div>
 <div className="hidden lg:flex flex-col items-end z-10 font-label-timecode text-label-timecode">
 <span>REC // LIVE STREAM</span>
 <span className="text-signal-orange-tint">150+ STREAMS</span>
 </div>
 {/* Playhead Needle */}
-<div className="absolute right-12 top-0 bottom-0 w-0.5 bg-surface-bright shadow-[0_0_8px_#ffffff] z-20 flex flex-col items-center">
+<div className="absolute right-4 sm:right-12 top-0 bottom-0 w-0.5 bg-surface-bright shadow-[0_0_8px_#ffffff] z-20 flex flex-col items-center">
 <span className="w-2 h-2 -top-1 absolute rotate-45 bg-surface-bright"></span>
 </div>
 </a>
 </div>
-{/* Axis Ticks (Q2'22 to Q1'26) */}
-<div className="flex justify-between pt-2 border-t border-line font-label-timecode text-[10px] text-ink-faint">
+{/* Axis Ticks (Responsive frequency: 5 on mobile, 9 on desktop) */}
+<div className="flex justify-between pt-2 border-t border-line font-label-timecode text-[9px] sm:text-[10px] text-ink-faint">
 <span>Q2'22</span>
-<span>Q4'22</span>
+<span className="hidden sm:inline">Q4'22</span>
 <span>Q2'23</span>
-<span>Q4'23</span>
+<span className="hidden sm:inline">Q4'23</span>
 <span>Q2'24</span>
-<span>Q4'24</span>
+<span className="hidden sm:inline">Q4'24</span>
 <span>Q2'25</span>
-<span>Q4'25</span>
-<span>Q1'26 [NOW]</span>
+<span className="hidden sm:inline">Q4'25</span>
+<span className="font-bold text-secondary">Q1'26 [NOW]</span>
 </div>
 </div>
 </div>
@@ -632,7 +632,7 @@ export default function ExperiencePage() {
               Led 3–5 engineers across CV and GenAI sprints. Instituted rigorous GPU memory profiling standards using NVIDIA Nsight Systems and Nsight Compute, eliminating CUDA memory fragmentation, memory leaks, and thread race conditions before reaching master branches.
             </p>
 </div>
-<div className="flex flex-col items-start lg:items-end justify-center min-w-[260px]">
+<div className="flex flex-col items-start lg:items-end justify-center w-full lg:w-auto lg:min-w-[260px]">
 <span className="bg-secondary text-on-secondary px-3 py-1 font-label-sm text-[11px] uppercase tracking-wider font-semibold">
               MECHANISM
             </span>
@@ -655,7 +655,7 @@ export default function ExperiencePage() {
               Constructed real-time drift telemetry and latency monitors across multi-stream RTSP ingestion using Prometheus, Grafana, and OpenTelemetry. Established automated anomaly alerts to catch dropped camera frames, decoding buffer bottlenecks, and model drift before client impact.
             </p>
 </div>
-<div className="flex flex-col items-start lg:items-end justify-center min-w-[260px]">
+<div className="flex flex-col items-start lg:items-end justify-center w-full lg:w-auto lg:min-w-[260px]">
 <span className="bg-paper-raised border border-line text-on-surface px-3 py-1 font-label-sm text-[11px] uppercase tracking-wider">
               MECHANISM
             </span>
@@ -678,7 +678,7 @@ export default function ExperiencePage() {
               Standardized multi-environment model repositories on NVIDIA Triton with automated canary rollouts. Enforced strict version hashing, configuration validation, and automated rollback logic, guaranteeing zero video analytics downtime during live model upgrades.
             </p>
 </div>
-<div className="flex flex-col items-start lg:items-end justify-center min-w-[260px]">
+<div className="flex flex-col items-start lg:items-end justify-center w-full lg:w-auto lg:min-w-[260px]">
 <span className="bg-paper-raised border border-line text-on-surface px-3 py-1 font-label-sm text-[11px] uppercase tracking-wider">
               MECHANISM
             </span>
@@ -845,7 +845,7 @@ export default function ExperiencePage() {
 </div>
 <span className="font-label-timecode text-label-timecode text-ink-faint">TRANSMISSION CHANNEL: OPEN</span>
 </div>
-<h2 className="font-mega-display text-mega-display text-surface tracking-tight uppercase select-none">
+<h2 className="font-mega-display text-[34px] xs:text-[46px] sm:text-[68px] md:text-[96px] lg:text-[120px] xl:text-mega-display leading-[0.94] text-surface tracking-tight uppercase select-none">
           Need someone to lead the next pipeline?
         </h2>
 <p className="font-body-lg text-body-lg text-ink-faint max-w-3xl leading-relaxed">

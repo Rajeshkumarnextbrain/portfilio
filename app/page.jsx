@@ -8,8 +8,36 @@ export default function HomePage() {
   const [timeDisplay, setTimeDisplay] = useState("14:02:48:19");
   const [copied, setCopied] = useState(false);
   const [camTiles, setCamTiles] = useState(() => Array(150).fill(false));
+  const [activeStage, setActiveStage] = useState("01");
+
+  const stages = [
+    { id: "stage-01", num: "01", path: "stage-01-ingest", label: "FRAME 01 / 05 · INGEST" },
+    { id: "stage-02", num: "02", path: "stage-02-share", label: "FRAME 02 / 05 · SHARE" },
+    { id: "stage-03", num: "03", path: "stage-03-detect", label: "FRAME 03 / 05 · DETECT" },
+    { id: "stage-04", num: "04", path: "stage-04-reason", label: "FRAME 04 / 05 · REASON" },
+    { id: "stage-05", num: "05", path: "stage-05-deliver", label: "FRAME 05 / 05 · DELIVER" },
+  ];
 
   useEffect(() => {
+    // Scroll tracking for Telemetry Rail & Frame indicator
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + window.innerHeight * 0.35;
+      for (let i = stages.length - 1; i >= 0; i--) {
+        const el = document.getElementById(stages[i].id);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPos >= top) {
+            setActiveStage(stages[i].num);
+            return;
+          }
+        }
+      }
+      setActiveStage("01");
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
     // Slot machine rotation
     const slotTimer = setInterval(() => {
       setSlotIndex((prev) => (prev + 1) % 3);
@@ -43,6 +71,7 @@ export default function HomePage() {
     }, 80);
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       clearInterval(slotTimer);
       clearInterval(clockTimer);
       clearInterval(camTimer);
@@ -57,18 +86,66 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="hidden lg:flex fixed left-0 top-16 bottom-0 w-16 z-40 flex-col items-center justify-between py-space-xl"><div className="font-label-sm text-label-sm uppercase tracking-widest text-ink-faint -rotate-90 origin-center whitespace-nowrap mt-space-xl">TELEMETRY RAIL</div><div className="flex flex-col items-center gap-space-lg"><div className="w-[1px] h-12 bg-line"></div><nav className="flex flex-col items-center gap-space-md" data-active-classes="text-primary font-bold"><a className="group flex items-center justify-center w-8 h-8 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" data-path="stage-01-ingest" href="#stage-01"><span className="group-hover:scale-110 transition-transform">01</span></a><a className="group flex items-center justify-center w-8 h-8 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" data-path="stage-02-share" href="#stage-02"><span className="group-hover:scale-110 transition-transform">02</span></a><a className="group flex items-center justify-center w-8 h-8 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" data-path="stage-03-detect" href="#stage-03"><span className="group-hover:scale-110 transition-transform">03</span></a><a className="group flex items-center justify-center w-8 h-8 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" data-path="stage-04-reason" href="#stage-04"><span className="group-hover:scale-110 transition-transform">04</span></a><a className="group flex items-center justify-center w-8 h-8 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" data-path="stage-05-deliver" href="#stage-05"><span className="group-hover:scale-110 transition-transform">05</span></a></nav><div className="w-[1px] h-12 bg-line"></div></div><div className="font-label-sm text-label-sm text-ink-faint">+</div></div><div className="fixed bottom-4 left-4 z-40 hidden sm:flex items-center gap-space-xs bg-paper-raised px-space-sm py-1 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><span className="text-ink-muted font-label-sm text-label-sm">+</span><span className="font-label-timecode text-label-timecode uppercase tracking-wider text-primary font-medium">FRAME 01 / 05 · INGEST</span><span className="text-ink-muted font-label-sm text-label-sm">+</span></div>
-      <main className="w-full pt-16 bg-surface lg:pl-16"><div className="flex flex-col w-full text-on-surface select-none">
+      <div className="hidden lg:flex fixed left-0 top-16 bottom-0 w-16 z-40 flex-col items-center justify-between py-space-xl">
+        <div className="font-label-sm text-label-sm uppercase tracking-widest text-ink-faint -rotate-90 origin-center whitespace-nowrap mt-space-xl">
+          TELEMETRY RAIL
+        </div>
+        <div className="flex flex-col items-center gap-space-lg">
+          <div className="w-[1px] h-12 bg-line"></div>
+          <nav className="flex flex-col items-center gap-space-md">
+            {stages.map((st) => {
+              const isActive = activeStage === st.num;
+              return (
+                <a
+                  key={st.num}
+                  className={`group flex items-center justify-center w-8 h-8 font-label-sm text-label-sm transition-all duration-200 relative ${
+                    isActive
+                      ? "text-secondary font-bold"
+                      : "text-on-surface-variant hover:text-primary"
+                  }`}
+                  data-path={st.path}
+                  href={`#${st.id}`}
+                  aria-current={isActive ? "true" : undefined}
+                >
+                  {isActive && (
+                    <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                  )}
+                  <span
+                    className={`transition-all duration-200 ${
+                      isActive ? "scale-125 font-bold text-secondary" : "group-hover:scale-110"
+                    }`}
+                  >
+                    {st.num}
+                  </span>
+                </a>
+              );
+            })}
+          </nav>
+          <div className="w-[1px] h-12 bg-line"></div>
+        </div>
+        <div className="font-label-sm text-label-sm text-ink-faint">+</div>
+      </div>
+      <div className="fixed bottom-4 left-4 z-40 hidden sm:flex items-center gap-space-xs bg-paper-raised px-space-sm py-1 shadow-[0_1px_8px_rgba(0,0,0,0.04)] border border-line">
+        <span className="text-ink-muted font-label-sm text-label-sm">+</span>
+        <span className="font-label-timecode text-label-timecode uppercase tracking-wider text-primary font-semibold">
+          {stages.find((s) => s.num === activeStage)?.label || "FRAME 01 / 05 · INGEST"}
+        </span>
+        <span className="text-ink-muted font-label-sm text-label-sm">+</span>
+      </div>
+      <main className="w-full pt-16 bg-surface lg:pl-16"><div className="flex flex-col w-full text-on-surface">
 {/* Top Progress Calibration Bar */}
-<div className="w-full flex items-center justify-between px-space-md lg:px-space-xl py-2 bg-paper-sunken font-label-sm text-label-sm text-ink-muted border-b border-line">
+<div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between px-space-md lg:px-space-xl py-2 bg-paper-sunken font-label-sm text-label-sm text-ink-muted border-b border-line gap-1.5 sm:gap-2">
 <div className="flex items-center gap-space-sm">
-<span className="w-2 h-2 rounded-full bg-status-success animate-ping"></span>
-<span className="tracking-widest uppercase font-semibold text-primary">SYS_INIT :: PIPELINE_MONITOR</span>
-<span className="text-ink-faint">|</span>
-<span>BUFFER: CUDA_IPC_RING</span>
+<span className="relative flex h-2 w-2 shrink-0">
+  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span>
+  <span className="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span>
+</span>
+<span className="tracking-widest uppercase font-semibold text-primary text-[11px] sm:text-label-sm">SYS_INIT :: PIPELINE_MONITOR</span>
+<span className="hidden sm:inline text-ink-faint">|</span>
+<span className="hidden sm:inline">BUFFER: CUDA_IPC_RING</span>
 </div>
-<div className="flex items-center gap-space-md">
-<span className="font-mono">CLK: {timeDisplay}</span>
+<div className="flex items-center justify-between w-full sm:w-auto gap-space-sm sm:gap-space-md font-mono text-[11px] sm:text-xs">
+<span>CLK: {timeDisplay}</span>
 <span className="hidden md:inline-block text-ink-faint">CALIBRATION_HASH: 0x884E_L4x2</span>
 <span className="px-1.5 py-0.5 bg-line text-primary font-bold">100% HARDWARE SYNC</span>
 </div>
@@ -77,8 +154,8 @@ export default function HomePage() {
        CHAPTER 00: HERO (Paper / Warm Tactile Surface)
        ========================================================================= */}
 <section className="relative w-full bg-surface px-space-md lg:px-space-xl py-space-xl lg:py-space-3xl flex flex-col justify-between border-b border-line overflow-hidden" id="stage-00">
-{/* Viewfinder Background Grids (Archival Ticks) */}
-<div className="absolute inset-0 pointer-events-none opacity-40">
+{/* Viewfinder Background Grids (Archival Ticks - Desktop & Tablet only) */}
+<div className="hidden md:block absolute inset-0 pointer-events-none opacity-40">
 <div className="absolute left-6 top-8 text-ink-faint font-label-sm">+ 00.00.00</div>
 <div className="absolute right-6 top-8 text-ink-faint font-label-sm">COORDINATE_REF: [12.9716, 77.5946]</div>
 <div className="absolute left-1/2 top-0 bottom-0 w-[1px] border-r border-dashed border-line"></div>
@@ -92,7 +169,7 @@ export default function HomePage() {
           AVAILABLE FOR HIRE · 30-DAY NOTICE
         </span>
 </div>
-<div className="font-label-timecode text-label-timecode text-ink-muted flex items-center gap-space-xs">
+<div className="font-label-timecode text-label-timecode text-ink-muted flex items-center gap-space-xs flex-wrap">
 <span className="text-secondary font-bold">●</span>
 <span>LATENCY TARGET: &lt; 10ms</span>
 <span className="mx-1 text-ink-faint">/</span>
@@ -108,13 +185,19 @@ export default function HomePage() {
 <span className="text-secondary font-bold">/</span>
 <span>SR. ARCHITECT</span>
 </div>
-<h1 className="font-mega-display text-[56px] sm:text-[84px] lg:text-[118px] leading-[0.92] tracking-tighter text-primary font-semibold">
-          I build production AI systems that
-          <span className="block relative mt-2 inline-block h-[1.1em] overflow-hidden align-top text-secondary">
-<span className="flex flex-col transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" style={{ transform: `translateY(-${slotIndex * 33.333}%)` }}>
-    <span className="bg-signal-orange-tint px-2 py-0.5 text-secondary border-b-2 border-secondary">[see]</span>
-    <span className="bg-signal-orange-tint px-2 py-0.5 text-secondary border-b-2 border-secondary">[reason]</span>
-    <span className="bg-signal-orange-tint px-2 py-0.5 text-secondary border-b-2 border-secondary">[scale]</span>
+<h1 className="font-mega-display text-[34px] xs:text-[44px] sm:text-[76px] lg:text-[104px] xl:text-[118px] leading-[0.94] tracking-tighter text-primary font-semibold">
+          I build production AI systems that{" "}
+          <span className="inline-block relative overflow-hidden align-middle h-[1.18em] text-secondary ml-1 sm:ml-2">
+<span className="flex flex-col transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" style={{ transform: `translateY(-${slotIndex * 33.3333}%)` }}>
+    <span className="h-[1.18em] flex items-center">
+      <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary leading-none rounded-sm">[see]</span>
+    </span>
+    <span className="h-[1.18em] flex items-center">
+      <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary leading-none rounded-sm">[reason]</span>
+    </span>
+    <span className="h-[1.18em] flex items-center">
+      <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary leading-none rounded-sm">[scale]</span>
+    </span>
   </span>
 </span>
 </h1>
@@ -122,12 +205,12 @@ export default function HomePage() {
           Computer Vision, Vision-Language Models, and Generative AI. 4+ years architecting and shipping low-latency RTSP video analytics, multimodal intelligence, and multi-agent reasoning at enterprise scale.
         </p>
 {/* CTA Buttons */}
-<div className="flex flex-wrap items-center gap-space-md pt-space-md">
-<a className="group inline-flex items-center gap-space-sm px-space-xl py-3.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-label-timecode uppercase font-semibold tracking-wider rounded-full transition-all shadow-sm" href="#stage-01">
+<div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-md pt-space-md">
+<a className="group inline-flex items-center justify-center gap-space-sm px-space-xl py-3.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-label-timecode uppercase font-semibold tracking-wider rounded-full transition-all shadow-sm text-center" href="#stage-01">
 <span>Follow the frame</span>
 <span className="material-symbols-outlined text-[18px] group-hover:translate-y-0.5 transition-transform">arrow_downward</span>
 </a>
-<a className="inline-flex items-center gap-space-sm px-space-lg py-3.5 bg-transparent hover:bg-paper-raised text-primary border border-primary font-label-timecode text-label-timecode uppercase font-semibold tracking-wider rounded-full transition-colors" href="#stage-05">
+<a className="inline-flex items-center justify-center gap-space-sm px-space-lg py-3.5 bg-transparent hover:bg-paper-raised text-primary border border-primary font-label-timecode text-label-timecode uppercase font-semibold tracking-wider rounded-full transition-colors text-center" href="#stage-05">
 <span>View projects</span>
 <span className="font-mono text-ink-faint">(03)</span>
 </a>
@@ -186,21 +269,21 @@ export default function HomePage() {
 </div>
 </div>
 {/* Bottom Telemetry HUD Inside Monitor */}
-<div className="relative z-10 flex items-center justify-between bg-primary text-on-primary px- space-sm py-1.5 font-label-sm text-[11px]">
-<div className="flex items-center gap-space-sm font-mono">
+<div className="relative z-10 flex flex-wrap items-center justify-between bg-primary text-on-primary px-space-sm py-1.5 font-label-sm text-[10px] sm:text-[11px] gap-1">
+<div className="flex items-center gap-2 sm:gap-space-sm font-mono flex-wrap">
 <span className="text-secondary-fixed">RTSP H.265</span>
 <span>92 FPS</span>
 <span>p95 8.4 ms</span>
-<span>3.8 GB VRAM</span>
+<span className="hidden sm:inline">3.8 GB VRAM</span>
 </div>
 <div className="flex items-center gap-1 text-secondary-container font-semibold">
 <span className="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
-<span>SINGLE-STREAM LIVE</span>
+<span>LIVE</span>
 </div>
 </div>
 </div>
 {/* Bottom Micro-specs */}
-<div className="mt-space-sm flex items-center justify-between font-label-sm text-ink-muted">
+<div className="mt-space-sm flex flex-wrap items-center justify-between font-label-sm text-ink-muted gap-2">
 <span className="flex items-center gap-1">
 <span className="font-bold text-primary">FRAME_SPEC:</span> 1920x1080 YUV420 → RGB
             </span>
@@ -210,10 +293,32 @@ export default function HomePage() {
 </div>
 </div>
 {/* Ticker Banner at Chapter Base */}
-<div className="relative z-10 mt-space-2xl pt-space-md border-t border-line overflow-hidden w-full">
-<div className="flex items-center gap-space-md whitespace-nowrap font-label-timecode text-label-timecode uppercase text-ink-muted">
+<div className="relative z-10 mt-space-2xl pt-space-md border-t border-line w-full flex items-center font-label-timecode text-label-timecode uppercase text-ink-muted">
+<div className="shrink-0 z-10 bg-surface pr-space-md flex items-center border-r border-line py-1">
 <span className="text-secondary font-bold tracking-widest text-[10px]">CORE RUNTIME:</span>
-<div className="flex items-center gap-space-xl tracking-wider text-primary font-medium animate-[marquee_25s_linear_infinite]">
+</div>
+<div className="overflow-hidden flex-1 relative pl-space-md whitespace-nowrap">
+<div className="inline-flex items-center gap-space-xl tracking-wider text-primary font-medium animate-[marquee_25s_linear_infinite]">
+<span>TRITON SERVER</span>
+<span className="text-line">✦</span>
+<span>TENSORRT ENGINE</span>
+<span className="text-line">✦</span>
+<span>DEEPSTREAM SDK</span>
+<span className="text-line">✦</span>
+<span>CUDA IPC ZERO-COPY</span>
+<span className="text-line">✦</span>
+<span>YOLO26 MULTI-HEAD</span>
+<span className="text-line">✦</span>
+<span>GEMMA E4B AWQ</span>
+<span className="text-line">✦</span>
+<span>LANGGRAPH AGENTS</span>
+<span className="text-line">✦</span>
+<span>MCP TOOLS</span>
+<span className="text-line">✦</span>
+<span>QDRANT VECTOR DB</span>
+<span className="text-line">✦</span>
+<span>FASTAPI ASYNC</span>
+<span className="text-line">✦</span>
 <span>TRITON SERVER</span>
 <span className="text-line">✦</span>
 <span>TENSORRT ENGINE</span>
@@ -263,7 +368,7 @@ export default function HomePage() {
 {/* Viewfinder calibration notches */}
 <div className="absolute top-2 left-2 text-ink-faint font-label-sm">⌜ CAM_MATRIX_150</div>
 <div className="absolute top-2 right-2 text-ink-faint font-label-sm">ACTIVE ⌝</div>
-<div className="flex items-center justify-between mb-space-md pt-space-sm text-ink-muted font-label-sm">
+<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4 mb-space-md pt-space-sm text-ink-muted font-label-sm text-xs sm:text-label-sm">
 <span>RTSP DEMUX :: DECODE POOL</span>
 <span className="text-status-success font-mono font-bold flex items-center gap-1">
 <span className="w-1.5 h-1.5 rounded-full bg-status-success"></span>
@@ -271,7 +376,7 @@ export default function HomePage() {
             </span>
 </div>
 {/* Camera Grid (150 tiles generated cleanly via loop script or dense layout) */}
-<div className="grid grid-cols-15 gap-1 w-full aspect-[16/9] bg-paper-sunken p-2 border border-line">
+<div className="grid grid-cols-15 gap-[2px] sm:gap-1 w-full aspect-[16/9] bg-paper-sunken p-1.5 sm:p-2 border border-line">
     {camTiles.map((isActive, idx) => (
       <div
         key={idx}
@@ -291,7 +396,7 @@ export default function HomePage() {
 <div className="font-label-sm text-label-sm uppercase tracking-widest text-ink-muted mb-space-xs">
               SCALE REGISTER #01
             </div>
-<div className="font-metric-numeral text-[96px] lg:text-[130px] font-bold text-primary leading-none tracking-tighter">
+<div className="font-metric-numeral text-[54px] sm:text-[84px] lg:text-[130px] font-bold text-primary leading-none tracking-tighter">
               150<span className="text-secondary">+</span>
 </div>
 <div className="font-label-timecode text-label-timecode font-medium text-ink-muted uppercase tracking-wider mt-2">
@@ -305,7 +410,7 @@ export default function HomePage() {
 <div className="font-label-sm text-label-sm uppercase tracking-widest text-ink-muted mb-space-xs">
               SCALE REGISTER #02
             </div>
-<div className="font-metric-numeral text-[80px] lg:text-[104px] font-bold text-primary leading-none tracking-tighter">
+<div className="font-metric-numeral text-[48px] sm:text-[72px] lg:text-[104px] font-bold text-primary leading-none tracking-tighter">
               5<span className="text-secondary">+</span>
 </div>
 <div className="font-label-timecode text-label-timecode font-medium text-ink-muted uppercase tracking-wider mt-2">
@@ -341,7 +446,7 @@ export default function HomePage() {
 {/* The Bar Duel: Visual Benchmark Comparison */}
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-2xl items-start">
 {/* VRAM DUEL */}
-<div className="flex flex-col gap-space-md bg-paper-sunken p-space-xl border border-line relative">
+<div className="flex flex-col gap-space-md bg-paper-sunken p-space-md sm:p-space-xl border border-line relative">
 <div className="flex items-center justify-between border-b border-line pb-space-sm">
 <span className="font-label-timecode text-label-timecode font-bold uppercase text-primary">01 // VRAM CONSUMPTION (50 CAMERAS)</span>
 <span className="px-2 py-0.5 bg-secondary-container text-on-secondary font-label-sm font-bold uppercase tracking-wider">
@@ -377,7 +482,7 @@ export default function HomePage() {
           </div>
 </div>
 {/* THROUGHPUT DUEL */}
-<div className="flex flex-col gap-space-md bg-paper-sunken p-space-xl border border-line relative">
+<div className="flex flex-col gap-space-md bg-paper-sunken p-space-md sm:p-space-xl border border-line relative">
 <div className="flex items-center justify-between border-b border-line pb-space-sm">
 <span className="font-label-timecode text-label-timecode font-bold uppercase text-primary">02 // INFERENCE THROUGHPUT</span>
 <span className="px-2 py-0.5 bg-secondary-container text-on-secondary font-label-sm font-bold uppercase tracking-wider">
@@ -414,11 +519,11 @@ export default function HomePage() {
 </div>
 </div>
 {/* Latency & Architecture Ruled Schematic */}
-<div className="border border-line bg-paper-raised p-space-xl flex flex-col lg:flex-row items-center justify-between gap-space-xl">
-<div className="flex flex-col gap-space-xs max-w-md">
+<div className="border border-line bg-paper-raised p-space-md sm:p-space-xl flex flex-col lg:flex-row items-center justify-between gap-space-xl">
+<div className="flex flex-col gap-space-xs max-w-md w-full">
 <span className="font-label-sm text-ink-muted tracking-widest uppercase">LATENCY SLICE BENCHMARK</span>
-<div className="font-metric-numeral text-[72px] lg:text-[96px] font-bold text-primary leading-none">
-            &lt;100<span className="text-secondary text-[48px] lg:text-[60px] font-mono">ms</span>
+<div className="font-metric-numeral text-[52px] sm:text-[72px] lg:text-[96px] font-bold text-primary leading-none">
+            &lt;100<span className="text-secondary text-[32px] sm:text-[48px] lg:text-[60px] font-mono">ms</span>
 </div>
 <span className="font-label-timecode text-label-timecode uppercase text-ink-muted font-semibold">
             END-TO-END P95 ACROSS 150+ CONCURRENT LIVE RTSP STREAMS
@@ -434,21 +539,21 @@ export default function HomePage() {
 <span className="font-mono text-secondary">POSIX_SHM_RING</span>
 </div>
 {/* Visual Nodes Row */}
-<div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-center font-label-sm">
+<div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center font-label-sm">
 <div className="p-3 bg-surface border border-line">
-<div className="text-secondary font-bold">01. RTSP CAM</div>
+<div className="text-secondary font-bold text-xs sm:text-sm">01. RTSP CAM</div>
 <div className="text-[10px] text-ink-muted mt-1">NVDEC H.264/5</div>
 </div>
 <div className="p-3 bg-surface border border-line">
-<div className="text-primary font-bold">02. SHM BUFFER</div>
-<div className="text-[10px] text-ink-muted mt-1">POSIX Ring Ring</div>
+<div className="text-primary font-bold text-xs sm:text-sm">02. SHM BUFFER</div>
+<div className="text-[10px] text-ink-muted mt-1">POSIX Ring</div>
 </div>
 <div className="p-3 bg-surface border-2 border-secondary bg-signal-orange-tint/30">
-<div className="text-secondary font-bold">03. TRITON ENGINE</div>
-<div className="text-[10px] text-ink-muted mt-1">Single Model TensorRT</div>
+<div className="text-secondary font-bold text-xs sm:text-sm">03. TRITON ENGINE</div>
+<div className="text-[10px] text-ink-muted mt-1">TensorRT Backbone</div>
 </div>
 <div className="p-3 bg-surface border border-line">
-<div className="text-primary font-bold">04. DISPATCH</div>
+<div className="text-primary font-bold text-xs sm:text-sm">04. DISPATCH</div>
 <div className="text-[10px] text-ink-muted mt-1">IPC Client Sync</div>
 </div>
 </div>
@@ -530,25 +635,25 @@ export default function HomePage() {
             REGISTRY 01 // COMPUTER VISION STACK
           </div>
 <div className="divide-y divide-ink-muted/25 font-body-md text-surface-bright">
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Detection Models</span>
-<span className="font-mono text-surface-dim text-right">YOLO26, YOLOv11, YOLOv7</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">YOLO26, YOLOv11, YOLOv7</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Pose &amp; Action</span>
-<span className="font-mono text-surface-dim text-right">YOLO-Pose, OpenPose 2D, Keypoint Kalmans</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">YOLO-Pose, OpenPose 2D, Kalmans</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Biometric ID</span>
-<span className="font-mono text-surface-dim text-right">RetinaFace + ArcFace Cosine Search</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">RetinaFace + ArcFace Cosine</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Tracking &amp; Fusion</span>
-<span className="font-mono text-surface-dim text-right">ByteTrack, DeepSORT, Kalman Filtering</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">ByteTrack, DeepSORT, Kalmans</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Foundational Vision</span>
-<span className="font-mono text-surface-dim text-right">DINOv3, Segment Anything, OpenCV CUDA</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">DINOv3, SAM, OpenCV CUDA</span>
 </div>
 </div>
 </div>
@@ -558,25 +663,25 @@ export default function HomePage() {
             REGISTRY 02 // MODEL SERVING &amp; ACCELERATION
           </div>
 <div className="divide-y divide-ink-muted/25 font-body-md text-surface-bright">
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Inference Server</span>
-<span className="font-mono text-surface-dim text-right">Triton Inference Server, TensorRT 10.x</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">Triton Inference Server, TensorRT 10.x</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">IPC Architecture</span>
-<span className="font-mono text-surface-dim text-right">CUDA IPC, POSIX Shared Memory Rings</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">CUDA IPC, POSIX Shared Memory Rings</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Hardware Targets</span>
-<span className="font-mono text-surface-dim text-right">NVIDIA L4, A100, Jetson AGX Orin / Xavier</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">NVIDIA L4, A100, Jetson AGX Orin</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Low-Latency Protocols</span>
-<span className="font-mono text-surface-dim text-right">gRPC Async, ZeroMQ, WebRTC, RTSP Demux</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">gRPC Async, ZeroMQ, WebRTC</span>
 </div>
-<div className="py-space-md flex items-start justify-between gap-space-md">
+<div className="py-space-md flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-space-md">
 <span className="font-bold text-on-primary">Profiling Tooling</span>
-<span className="font-mono text-surface-dim text-right">Nsight Systems, Perf Analyzer, PyTorch Trace</span>
+<span className="font-mono text-surface-dim text-left sm:text-right">Nsight Systems, Perf Analyzer</span>
 </div>
 </div>
 </div>
@@ -601,10 +706,10 @@ export default function HomePage() {
         </p>
 </div>
 {/* Architectural SVG Pipeline Flow */}
-<div className="w-full bg-paper-sunken border border-line p-space-lg lg:p-space-xl relative">
-<div className="font-label-sm text-ink-muted uppercase tracking-widest mb-space-lg flex items-center justify-between">
-<span>EVENT_PROPAGATION_TOPOLOGY</span>
-<span className="font-mono text-status-success">STATE: CONVERGED</span>
+<div className="w-full bg-paper-sunken border border-line p-space-md sm:p-space-lg lg:p-space-xl relative">
+<div className="font-label-sm text-ink-muted uppercase tracking-widest mb-space-md sm:mb-space-lg flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
+<span className="text-xs sm:text-label-sm">EVENT_PROPAGATION_TOPOLOGY</span>
+<span className="font-mono text-status-success text-xs sm:text-label-sm font-semibold">STATE: CONVERGED</span>
 </div>
 {/* Flow Visualizer */}
 <div className="grid grid-cols-1 md:grid-cols-5 gap-space-md items-center relative">
@@ -807,10 +912,10 @@ export default function HomePage() {
         </p>
 </div>
 {/* Vertical Hairline Timeline */}
-<div className="relative border-l border-primary/20 ml-4 lg:ml-12 pl-6 lg:pl-12 flex flex-col gap-space-2xl">
+<div className="relative border-l border-primary/20 ml-2 sm:ml-4 lg:ml-12 pl-4 sm:pl-6 lg:pl-12 flex flex-col gap-space-2xl">
 {/* Milestone 1 */}
 <div className="relative">
-<div className="absolute -left-[31px] lg:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-secondary border-4 border-surface"></div>
+<div className="absolute -left-[23px] sm:-left-[31px] lg:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-secondary border-4 border-surface"></div>
 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-space-xs mb-space-xs">
 <h3 className="font-headline-md text-headline-md font-bold text-primary">
               Team Lead – AI &amp; Computer Vision
@@ -828,7 +933,7 @@ export default function HomePage() {
 </div>
 {/* Milestone 2 */}
 <div className="relative">
-<div className="absolute -left-[31px] lg:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-4 border-surface"></div>
+<div className="absolute -left-[23px] sm:-left-[31px] lg:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-4 border-surface"></div>
 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-space-xs mb-space-xs">
 <h3 className="font-headline-md text-headline-md font-bold text-primary">
               Junior Vision Engineer
@@ -846,7 +951,7 @@ export default function HomePage() {
 </div>
 {/* Milestone 3 */}
 <div className="relative">
-<div className="absolute -left-[31px] lg:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-line border-4 border-surface"></div>
+<div className="absolute -left-[23px] sm:-left-[31px] lg:-left-[55px] top-1.5 w-3.5 h-3.5 rounded-full bg-line border-4 border-surface"></div>
 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-space-xs mb-space-xs">
 <h3 className="font-headline-md text-headline-md font-bold text-primary">
               Technical Support Engineer
@@ -879,7 +984,7 @@ export default function HomePage() {
 </div>
 {/* Giant Invitation Headline */}
 <div className="flex flex-col gap-space-md">
-<h2 className="font-mega-display text-[54px] sm:text-[80px] lg:text-[124px] font-bold text-on-primary leading-[0.92] tracking-tighter">
+<h2 className="font-mega-display text-[34px] xs:text-[46px] sm:text-[72px] lg:text-[110px] xl:text-[124px] font-bold text-on-primary leading-[0.92] tracking-tighter">
           Let's build the next pipeline.
         </h2>
 <p className="font-body-lg text-body-lg text-surface-dim max-w-3xl mt-space-sm">
@@ -887,30 +992,36 @@ export default function HomePage() {
         </p>
 </div>
 {/* Action Box & Direct Links */}
-<div className="flex flex-wrap items-center gap-space-md pt-space-md">
-<button className="inline-flex items-center gap-space-sm px-space-xl py-4 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-label-timecode uppercase font-bold tracking-wider rounded-full transition-all" id="copy-email-btn" onClick={handleCopyEmail}>
-<span className="material-symbols-outlined text-[20px]">mail</span>
-<span id="email-btn-text">{copied ? "COPIED TO CLIPBOARD!" : "COPY DIRECT EMAIL: rajesh.ai.engineer@outlook.com"}</span>
-<span className="material-symbols-outlined text-[18px]">content_copy</span>
+<div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-space-md pt-space-md">
+<button className="inline-flex items-center justify-center gap-space-sm px-4 sm:px-space-xl py-3.5 sm:py-4 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-label-timecode uppercase font-bold tracking-wider rounded-full transition-all w-full sm:w-auto" id="copy-email-btn" onClick={handleCopyEmail}>
+<span className="material-symbols-outlined text-[20px] shrink-0">mail</span>
+<span id="email-btn-text" className="truncate">{copied ? "COPIED TO CLIPBOARD!" : "COPY DIRECT EMAIL: rajesh.ai.engineer@outlook.com"}</span>
+<span className="material-symbols-outlined text-[18px] shrink-0">content_copy</span>
 </button>
-<a className="inline-flex items-center gap-space-xs px-space-lg py-4 border border-surface-dim/40 hover:border-surface text-surface font-label-timecode text-label-timecode uppercase tracking-wider rounded-full transition-colors" href="https://linkedin.com" rel="noopener" target="_blank">
+<div className="flex items-center gap-space-md justify-center sm:justify-start">
+<a className="inline-flex items-center gap-space-xs px-space-lg py-3.5 sm:py-4 border border-surface-dim/40 hover:border-surface text-surface font-label-timecode text-label-timecode uppercase tracking-wider rounded-full transition-colors flex-1 sm:flex-none justify-center" href="https://linkedin.com" rel="noopener" target="_blank">
 <span>LinkedIn</span>
 <span className="font-mono text-secondary-fixed">↗</span>
 </a>
-<a className="inline-flex items-center gap-space-xs px-space-lg py-4 border border-surface-dim/40 hover:border-surface text-surface font-label-timecode text-label-timecode uppercase tracking-wider rounded-full transition-colors" href="https://github.com" rel="noopener" target="_blank">
+<a className="inline-flex items-center gap-space-xs px-space-lg py-3.5 sm:py-4 border border-surface-dim/40 hover:border-surface text-surface font-label-timecode text-label-timecode uppercase tracking-wider rounded-full transition-colors flex-1 sm:flex-none justify-center" href="https://github.com" rel="noopener" target="_blank">
 <span>GitHub</span>
 <span className="font-mono text-secondary-fixed">↗</span>
 </a>
 </div>
+</div>
 {/* Archival System Stamp at Section Bottom */}
-<div className="pt-space-2xl border-t border-ink-muted/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md font-label-sm text-surface-dim">
-<div className="flex items-center gap-space-sm">
-<span className="text-secondary font-bold">●</span>
-<span>© 2026 RAJESH KUMAR S</span>
-<span>·</span>
-<span>BANGALORE, INDIA</span>
-<span>·</span>
-<span>UTC+5:30</span>
+<div className="pt-space-xl sm:pt-space-2xl border-t border-ink-muted/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md font-label-sm text-surface-dim">
+<div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-space-sm text-xs sm:text-label-sm">
+  <div className="flex items-center gap-2">
+    <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0"></span>
+    <span className="whitespace-nowrap font-medium text-surface">© 2026 RAJESH KUMAR S</span>
+  </div>
+  <div className="flex items-center gap-2 text-surface-dim/80 pl-3.5 sm:pl-0">
+    <span className="hidden sm:inline text-ink-muted">·</span>
+    <span className="whitespace-nowrap">BANGALORE, INDIA</span>
+    <span className="text-ink-muted">·</span>
+    <span className="whitespace-nowrap font-mono">UTC+5:30</span>
+  </div>
 </div>
 <div className="font-mono text-[10px] text-surface-variant">
           SPEC: 2026.1-EDITORIAL · PIPELINE TELEMETRY ACTIVE
