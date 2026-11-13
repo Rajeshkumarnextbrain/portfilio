@@ -1,109 +1,61 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { m } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
-import { useMotionOK } from '@/lib/useMotionOK';
+import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
+
+const ROTATING_WORDS = ['[see]', '[reason]', '[scale]'];
 
 export function HeroHeadline() {
   const motionOK = useMotionOK();
+  const isVisible = useDocumentVisible();
+  const [slotIndex, setSlotIndex] = useState(0);
+
+  useEffect(() => {
+    if (!motionOK || !isVisible) return;
+
+    const timer = setInterval(() => {
+      setSlotIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
+    }, 2500);
+
+    return () => clearInterval(timer);
+  }, [motionOK, isVisible]);
 
   return (
     <h1
-      className="font-headline-lg font-semibold tracking-[-0.04em] leading-[1.0] text-[#1c1c18] select-none"
-      style={{ fontSize: 'clamp(2.75rem, 6vw, 5.25rem)' }}
+      className="font-headline-lg font-semibold tracking-[-0.04em] leading-[0.95] text-[#1c1c18] select-none"
+      style={{ fontSize: 'clamp(2.5rem, 5.5vw, 4.75rem)' }}
     >
-      {/* Line 1 */}
-      <span className="block overflow-hidden">
-        {motionOK ? (
-          <m.span
-            data-motion="hero-line"
-            initial={{ y: 24 }}
-            animate={{ y: 0 }}
-            transition={{ duration: TIMING.reveal, ease: EASING.out }}
-            className="block"
-          >
-            I build production
-          </m.span>
-        ) : (
-          <span className="block">I build production</span>
-        )}
-      </span>
+      {/* Transform-only reveal on initial mount, text stays 100% visible */}
+      <m.span
+        data-motion="hero-headline"
+        className="inline"
+        initial={motionOK ? { y: 20 } : { y: 0 }}
+        animate={{ y: 0 }}
+        transition={{ duration: TIMING.reveal, ease: EASING.out }}
+      >
+        I build production AI systems that{' '}
+      </m.span>
 
-      {/* Line 2 */}
-      <span className="block overflow-hidden">
-        {motionOK ? (
-          <m.span
-            data-motion="hero-line"
-            initial={{ y: 24 }}
-            animate={{ y: 0 }}
-            transition={{
-              duration: TIMING.reveal,
-              delay: TIMING.stagger,
-              ease: EASING.out,
-            }}
-            className="block"
-          >
-            AI systems that
-          </m.span>
-        ) : (
-          <span className="block">AI systems that</span>
-        )}
-      </span>
-
-      {/* Line 3 with inline sweep highlight */}
-      <span className="block overflow-hidden pt-1">
-        {motionOK ? (
-          <m.span
-            data-motion="hero-line"
-            initial={{ y: 24 }}
-            animate={{ y: 0 }}
-            transition={{
-              duration: TIMING.reveal,
-              delay: TIMING.stagger * 2,
-              ease: EASING.out,
-            }}
-            className="block"
-          >
-            <m.span
-              style={{
-                display: 'inline',
-                WebkitBoxDecorationBreak: 'clone',
-                boxDecorationBreak: 'clone',
-                padding: '0 0.12em',
-                backgroundImage: 'linear-gradient(to right, #FFE6DA, #FFE6DA)',
-                backgroundRepeat: 'no-repeat',
-                borderBottom: '2px solid #AE3200',
-                color: '#AE3200',
-              }}
-              initial={{ backgroundSize: '0% 100%' }}
-              animate={{ backgroundSize: '100% 100%' }}
-              transition={{
-                duration: TIMING.reveal,
-                delay: TIMING.reveal,
-                ease: EASING.out,
-              }}
-            >
-              see, reason and scale.
-            </m.span>
-          </m.span>
-        ) : (
-          <span className="block">
-            <span
-              style={{
-                display: 'inline',
-                WebkitBoxDecorationBreak: 'clone',
-                boxDecorationBreak: 'clone',
-                padding: '0 0.12em',
-                background: '#FFE6DA',
-                borderBottom: '2px solid #AE3200',
-                color: '#AE3200',
-              }}
-            >
-              see, reason and scale.
+      {/* Rotating Verb Slot: see -> reason -> scale */}
+      <span className="block sm:inline-block relative overflow-hidden align-middle h-[1.18em] text-secondary mt-1 sm:mt-0 sm:ml-2">
+        <span
+          className={`flex flex-col ${
+            motionOK ? 'transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]' : ''
+          }`}
+          style={{
+            transform: `translateY(-${slotIndex * 33.3333}%)`,
+          }}
+        >
+          {ROTATING_WORDS.map((word) => (
+            <span key={word} className="h-[1.18em] flex items-center justify-start sm:justify-center">
+              <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary border-b-2 border-secondary leading-none rounded-sm">
+                {word}
+              </span>
             </span>
-          </span>
-        )}
+          ))}
+        </span>
       </span>
     </h1>
   );
