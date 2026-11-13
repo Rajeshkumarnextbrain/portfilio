@@ -3,9 +3,15 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export const metadata = {
-  title: 'Rajesh Kumar S — Senior AI Engineer & Vision Systems Architect',
+  title: 'Rajesh Kumar S · AI Engineer & Team Lead',
   description:
-    'Editorial engineering portfolio of Rajesh Kumar S. Computer Vision, Vision-Language Models, and Generative AI systems serving real-world operations at scale.',
+    'Rajesh Kumar S · AI Engineer & Team Lead. I build AI that watches cameras, answers questions about data and tutors students.',
+  openGraph: {
+    title: 'Rajesh Kumar S · AI Engineer & Team Lead',
+    description:
+      'Rajesh Kumar S · AI Engineer & Team Lead. I build AI that watches cameras, answers questions about data and tutors students.',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }) {
