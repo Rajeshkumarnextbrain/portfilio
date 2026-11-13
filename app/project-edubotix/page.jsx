@@ -16,6 +16,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { StickyJumpBar } from "@/components/project/StickyJumpBar";
 import { MemoryProgressionDiagram } from "@/components/project/MemoryProgressionDiagram";
+import { ProblemSolutionRow } from "@/components/project/ProblemSolutionRow";
 
 const JUMP_SECTIONS = [
   { id: 'overview', label: 'Overview' },
@@ -148,10 +149,10 @@ export default function EdubotixPage() {
 
               <div className="flex items-center justify-between border-b border-line pb-3">
                 <span className="font-label-sm text-xs font-bold uppercase text-secondary">
-                  DETERMINISTIC VERIFICATION TRACE
+                  STEP-BY-STEP CALCULATION TRACE
                 </span>
                 <span className="font-label-timecode text-xs text-ink-muted">
-                  TOOL: PINT (SI UNITS) + SYMPY EVALUATOR
+                  VERIFIED WITH: PINT (SI UNITS) + SYMPY EVALUATOR
                 </span>
               </div>
 
@@ -184,25 +185,11 @@ export default function EdubotixPage() {
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-y border-line py-8">
-              <div className="flex flex-col gap-3 md:border-r md:border-line md:pr-8">
-                <span className="font-label-sm text-xs uppercase tracking-wider text-ink-muted font-bold">
-                  THE PROBLEM
-                </span>
-                <p className="font-body-md text-sm sm:text-base text-on-surface leading-relaxed">
-                  Generic LLMs predict the next statistical token rather than computing deterministic arithmetic. In physics and chemistry, this results in believable but incorrect numbers, invalid chemical bonds, and curriculum drift where answers use out-of-syllabus methods from random websites.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-3 md:pl-4">
-                <span className="font-label-sm text-xs uppercase tracking-wider text-secondary font-bold">
-                  THE SOLUTION
-                </span>
-                <p className="font-body-md text-sm sm:text-base text-on-surface leading-relaxed">
-                  Edubotix pairs an LLM with RAG grounded strictly in approved curriculum textbooks stored in Qdrant. All math and chemistry steps are routed to 9 deterministic tools (SymPy, Pint, RDKit), guaranteeing verified calculations instead of AI guesses.
-                </p>
-              </div>
-            </div>
+            {/* 2-Column Split: Problem vs Solution with Animated ProblemSolutionRow */}
+            <ProblemSolutionRow
+              problemText="Generic LLMs predict the next statistical token rather than computing deterministic arithmetic. In physics and chemistry, this results in believable but incorrect numbers, invalid chemical bonds, and curriculum drift where answers use out-of-syllabus methods from random websites."
+              solutionText="Edubotix pairs an LLM with RAG grounded strictly in approved curriculum textbooks stored in Qdrant. All math and chemistry steps are routed to 9 deterministic tools (SymPy, Pint, RDKit), guaranteeing verified calculations instead of AI guesses."
+            />
           </div>
         </section>
 
@@ -462,7 +449,7 @@ export default function EdubotixPage() {
         {/* ================================================================= */}
         {/* CLOSING NAVIGATION & CTA */}
         {/* ================================================================= */}
-        <section className="w-full bg-surface py-10 md:py-16 px-4 sm:px-6 lg:px-12">
+        <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12">
           <div className="max-w-[1200px] mx-auto flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-2 border border-line divide-y md:divide-y-0 md:divide-x divide-line">
               <Link href="/project-analytics-agent" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">

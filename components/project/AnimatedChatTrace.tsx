@@ -36,10 +36,10 @@ export function AnimatedChatTrace() {
 
       <div className="flex items-center justify-between border-b border-line pb-3">
         <span className="font-label-sm text-xs font-bold uppercase text-secondary">
-          AD-HOC TELEMETRY REASONING TRACE
+          NATURAL LANGUAGE QUERY EXECUTION TRACE
         </span>
         <span className="font-label-timecode text-xs text-ink-muted">
-          PROTOCOL: SSE · MCP (FASTJSON-RPC)
+          STREAMING PROTOCOL: SSE &amp; TOOL CALLING VIA MCP
         </span>
       </div>
 

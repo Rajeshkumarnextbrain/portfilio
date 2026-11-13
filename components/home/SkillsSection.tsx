@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import { m } from 'framer-motion';
 import { Stagger, StaggerItem } from '@/components/motion/Stagger';
+import { useMotionOK } from '@/lib/useMotionOK';
 
 interface SkillGroupItem {
   title: string;
@@ -15,6 +17,7 @@ interface SkillsSectionProps {
 
 export function SkillsSection({ skillGroups }: SkillsSectionProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const motionOK = useMotionOK();
 
   return (
     <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -38,17 +41,38 @@ export function SkillsSection({ skillGroups }: SkillsSectionProps) {
                 {group.plainSentence}
               </p>
               <div className="flex flex-wrap gap-2 pt-2 border-t border-line">
-                {group.skills.map((s) => (
-                  <span
-                    key={s}
-                    className={`px-2.5 py-1 bg-surface border text-xs font-mono transition-colors duration-150 ${
-                      isHovered
-                        ? 'border-secondary text-secondary font-semibold'
-                        : 'border-line text-primary font-medium'
-                    }`}
-                  >
-                    {s}
-                  </span>
+                {group.skills.map((s, chipIdx) => (
+                  motionOK ? (
+                    <m.span
+                      key={s}
+                      initial={{ opacity: 0, y: 6 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-10% 0px' }}
+                      transition={{
+                        duration: 0.2,
+                        delay: chipIdx * 0.03, // 30ms chip stagger
+                        ease: 'easeOut',
+                      }}
+                      className={`px-2.5 py-1 bg-surface border text-xs font-mono transition-colors duration-150 ${
+                        isHovered
+                          ? 'border-secondary text-secondary font-semibold'
+                          : 'border-line text-primary font-medium'
+                      }`}
+                    >
+                      {s}
+                    </m.span>
+                  ) : (
+                    <span
+                      key={s}
+                      className={`px-2.5 py-1 bg-surface border text-xs font-mono transition-colors duration-150 ${
+                        isHovered
+                          ? 'border-secondary text-secondary font-semibold'
+                          : 'border-line text-primary font-medium'
+                      }`}
+                    >
+                      {s}
+                    </span>
+                  )
                 ))}
               </div>
             </div>

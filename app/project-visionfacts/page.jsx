@@ -15,6 +15,7 @@ import { GrowBar } from "@/components/motion/GrowBar";
 import { Reveal } from "@/components/motion/Reveal";
 import { FlowToken } from "@/components/motion/FlowToken";
 import { StickyJumpBar } from "@/components/project/StickyJumpBar";
+import { ProblemSolutionRow } from "@/components/project/ProblemSolutionRow";
 
 const VISIONFACTS_STAGES = [
   {
@@ -267,32 +268,13 @@ export default function VisionFactsFlagshipPage() {
               </div>
             </Reveal>
 
-            {/* 2-Column Split: Problem vs Solution with GrowBar Comparison */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-y border-line py-8">
-              <div className="flex flex-col gap-3 md:border-r md:border-line md:pr-8">
-                <span className="font-label-sm text-xs uppercase tracking-wider text-ink-muted font-bold">
-                  THE PROBLEM
-                </span>
-                <p className="font-body-md text-sm sm:text-base text-on-surface leading-relaxed">
-                  Traditional CCTV relies on human operators staring at dozens of screens simultaneously. Operators experience cognitive fatigue within 20 minutes, leading to missed safety violations, unnoticed inventory damage, and delayed emergency responses.
-                </p>
-                <div className="p-3 bg-paper-raised border border-line text-xs font-mono text-ink-muted mt-2">
-                  Key risk: Loading AI models inside each individual camera worker would require ~32.5 GB of redundant GPU VRAM, immediately crashing standard servers.
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-3 md:pl-4">
-                <span className="font-label-sm text-xs uppercase tracking-wider text-secondary font-bold">
-                  THE SOLUTION
-                </span>
-                <p className="font-body-md text-sm sm:text-base text-on-surface leading-relaxed">
-                  VisionFacts.ai connects directly to RTSP camera feeds, decodes frames in hardware, passes them via zero-copy shared memory to centralized AI models on Triton, and evaluates safety rules in real time.
-                </p>
-                <div className="p-3 bg-paper-raised border border-line text-xs font-mono text-secondary mt-2">
-                  Key result: ~6.5x less GPU memory (~5 GB Triton combined vs ~32.5 GB) sustaining {VERIFIED_NUMBERS.camerasCount} cameras on 2x NVIDIA L4 GPUs.
-                </div>
-              </div>
-            </div>
+            {/* 2-Column Split: Problem vs Solution with Animated ProblemSolutionRow */}
+            <ProblemSolutionRow
+              problemText="Traditional CCTV relies on human operators staring at dozens of screens simultaneously. Operators experience cognitive fatigue within 20 minutes, leading to missed safety violations, unnoticed inventory damage, and delayed emergency responses."
+              problemCallout="Key risk: Loading AI models inside each individual camera worker would require ~32.5 GB of redundant GPU VRAM, immediately crashing standard servers."
+              solutionText="VisionFacts.ai connects directly to RTSP camera feeds, decodes frames in hardware, passes them via zero-copy shared memory to centralized AI models on Triton, and evaluates safety rules in real time."
+              solutionCallout={`Key result: ~6.5x less GPU memory (~5 GB Triton combined vs ~32.5 GB) sustaining ${VERIFIED_NUMBERS.camerasCount} cameras on 2x NVIDIA L4 GPUs.`}
+            />
 
             {/* GPU Memory Comparison Visualization (GrowBar) */}
             <div className="p-6 bg-paper-raised border border-line flex flex-col lg:flex-row items-center justify-between gap-6">
@@ -635,7 +617,7 @@ export default function VisionFactsFlagshipPage() {
         {/* ================================================================= */}
         {/* CLOSING NAVIGATION & CTA */}
         {/* ================================================================= */}
-        <section className="w-full bg-surface py-10 md:py-16 px-4 sm:px-6 lg:px-12">
+        <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12">
           <div className="max-w-[1200px] mx-auto flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-2 border border-line divide-y md:divide-y-0 md:divide-x divide-line">
               <Link href="/" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">

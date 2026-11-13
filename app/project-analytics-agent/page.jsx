@@ -15,6 +15,8 @@ import { Reveal } from "@/components/motion/Reveal";
 import { FlowToken } from "@/components/motion/FlowToken";
 import { StickyJumpBar } from "@/components/project/StickyJumpBar";
 import { AnimatedChatTrace } from "@/components/project/AnimatedChatTrace";
+import { ProblemSolutionRow } from "@/components/project/ProblemSolutionRow";
+import { ProxyPacketDiagram } from "@/components/project/ProxyPacketDiagram";
 
 const ASK_PIPELINE_STEPS = [
   {
@@ -213,25 +215,11 @@ export default function AnalyticsAgentPage() {
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-y border-line py-8">
-              <div className="flex flex-col gap-3 md:border-r md:border-line md:pr-8">
-                <span className="font-label-sm text-xs uppercase tracking-wider text-ink-muted font-bold">
-                  THE PROBLEM
-                </span>
-                <p className="font-body-md text-sm sm:text-base text-on-surface leading-relaxed">
-                  VisionFacts.ai continuously tracks thousands of physical events across {VERIFIED_NUMBERS.camerasCount} cameras. However, warehouse managers and safety supervisors had no direct SQL skills to query this data. Analyzing cross-domain incidents (e.g. linking a vehicle entry with missing worker badges) required raising IT tickets with 24-to-48 hour response delays.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-3 md:pl-4">
-                <span className="font-label-sm text-xs uppercase tracking-wider text-secondary font-bold">
-                  THE SOLUTION
-                </span>
-                <p className="font-body-md text-sm sm:text-base text-on-surface leading-relaxed">
-                  Built a dual-pipeline architecture using LangGraph and MCP. The &ldquo;Ask&rdquo; pipeline allows interactive natural language questions over Server-Sent Events, while the &ldquo;Watch&rdquo; pipeline runs autonomous background audits and emails shift digests before supervisors arrive.
-                </p>
-              </div>
-            </div>
+            {/* 2-Column Split: Problem vs Solution with Animated ProblemSolutionRow */}
+            <ProblemSolutionRow
+              problemText={`VisionFacts.ai continuously tracks thousands of physical events across ${VERIFIED_NUMBERS.camerasCount} cameras. However, warehouse managers and safety supervisors had no direct SQL skills to query this data. Analyzing cross-domain incidents (e.g. linking a vehicle entry with missing worker badges) required raising IT tickets with 24-to-48 hour response delays.`}
+              solutionText="Built a dual-pipeline architecture using LangGraph and MCP. The &ldquo;Ask&rdquo; pipeline allows interactive natural language questions over Server-Sent Events, while the &ldquo;Watch&rdquo; pipeline runs autonomous background audits and emails shift digests before supervisors arrive."
+            />
           </div>
         </section>
 
@@ -293,18 +281,23 @@ export default function AnalyticsAgentPage() {
 
             <div className="flex flex-col border-t border-line divide-y divide-line">
               {/* Fix 1 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  1. LAN Snapshot Proxy Security Isolation
+              <div className="py-6 flex flex-col gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                  <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
+                    1. LAN Snapshot Proxy Security Isolation
+                  </div>
+                  <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
+                    <strong className="text-on-surface block mb-1">Problem:</strong>
+                    CCTV cameras resided on private, isolated local networks. Directly querying snapshots from client browsers violated perimeter network security policies.
+                  </div>
+                  <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
+                    <strong className="text-secondary block mb-1">Fix & Result:</strong>
+                    Built a secure snapshot proxy inside FastAPI: browser requests pass through an authenticated proxy that validates camera IDs against an allowlist and forwards approved feeds from the LAN without exposing cameras directly.
+                  </div>
                 </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  CCTV cameras resided on private, isolated local networks. Directly querying snapshots from client browsers violated perimeter network security policies.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Built a secure snapshot proxy inside FastAPI: browser requests pass through an authenticated proxy that validates camera IDs against an allowlist and forwards approved feeds from the LAN without exposing cameras directly.
-                </div>
+
+                {/* Animated Packet Flow Diagram */}
+                <ProxyPacketDiagram />
               </div>
 
               {/* Fix 2 */}
@@ -433,7 +426,7 @@ export default function AnalyticsAgentPage() {
         {/* ================================================================= */}
         {/* CLOSING NAVIGATION & CTA */}
         {/* ================================================================= */}
-        <section className="w-full bg-surface py-10 md:py-16 px-4 sm:px-6 lg:px-12">
+        <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12">
           <div className="max-w-[1200px] mx-auto flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-2 border border-line divide-y md:divide-y-0 md:divide-x divide-line">
               <Link href="/project-visionfacts" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">

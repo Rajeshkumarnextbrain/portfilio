@@ -31,7 +31,7 @@ export default function HomePage() {
         {/* =========================================================================
             CHAPTER 00: HERO (Paper / Warm Tactile Surface)
             ========================================================================= */}
-        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 py-12 lg:py-20 border-b border-line overflow-hidden">
+        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20 border-b border-line overflow-hidden">
           {/* Viewfinder Background Guidelines (Desktop Only) */}
           <div className="hidden md:block absolute inset-0 pointer-events-none opacity-30">
             <div className="max-w-7xl mx-auto h-full relative border-x border-dashed border-line"></div>
@@ -135,7 +135,7 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: AT A GLANCE (6 Ruled Rows + Verified Career Facts)
             ========================================================================= */}
-        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 py-16">
+        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
@@ -163,7 +163,7 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: HOW IT WORKS (Plain-English 5 Steps)
             ========================================================================= */}
-        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-16">
+        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
@@ -196,7 +196,7 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: PROJECTS (Interactive Ruled Rows)
             ========================================================================= */}
-        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-16" id="projects">
+        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20" id="projects">
           <div className="max-w-7xl mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
@@ -224,7 +224,7 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: SKILLS (Plain-English Grouping)
             ========================================================================= */}
-        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-16">
+        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
@@ -252,7 +252,7 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: CAREER PREVIEW
             ========================================================================= */}
-        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 py-16">
+        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
@@ -286,7 +286,7 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: CONTACT CTA
             ========================================================================= */}
-        <section className="w-full bg-primary text-on-primary px-4 sm:px-6 lg:px-8 py-16">
+        <section className="w-full bg-primary text-on-primary px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto flex flex-col gap-8">
             <div className="flex items-center justify-between border-b border-ink-muted/30 pb-3">
               <div className="flex items-center gap-2">
