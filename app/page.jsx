@@ -5,15 +5,15 @@ import {
   CONTACT_INFO,
   PROOF_METRICS,
   AT_A_GLANCE_METRICS,
+  BUSINESS_IMPACT_ITEMS,
   PROJECTS,
-  HOW_IT_WORKS_STEPS,
   EXPERIENCE_ROLES,
 } from "../content/facts";
 
 import { HeroHeadline } from "@/components/home/HeroHeadline";
 import { HeroLiveDemo } from "@/components/home/HeroLiveDemo";
 import { AtAGlanceSection } from "@/components/home/AtAGlanceSection";
-import { HowItWorksSection } from "@/components/home/HowItWorksSection";
+import { BusinessImpactSection } from "@/components/home/BusinessImpactSection";
 import { ProjectsSection } from "@/components/home/ProjectsSection";
 import { SkillsSection } from "@/components/home/SkillsSection";
 import { ExperiencePreview } from "@/components/home/ExperiencePreview";
@@ -59,9 +59,9 @@ export default function HomePage() {
                     In simple terms, I build software that:
                   </p>
                   <ul className="mt-1.5 space-y-1 font-body-md text-xs sm:text-[13.5px] text-ink-muted list-disc list-inside">
-                    <li><strong className="text-primary font-semibold">Watches security cameras</strong> and spots safety problems automatically.</li>
-                    <li><strong className="text-primary font-semibold">Lets managers ask questions</strong> about company data and get reports in plain English.</li>
-                    <li><strong className="text-primary font-semibold">Helps students learn</strong> from their verified curriculum textbooks.</li>
+                    <li><strong className="text-primary font-semibold">Watches security cameras</strong> and spots safety hazards automatically while cutting GPU costs.</li>
+                    <li><strong className="text-primary font-semibold">Builds autonomous AI agents</strong> that answer data questions and dispatch shift reports in seconds.</li>
+                    <li><strong className="text-primary font-semibold">Tutors students from textbooks</strong> using verified calculation tools instead of AI guesswork.</li>
                   </ul>
                 </div>
 
@@ -142,7 +142,7 @@ export default function HomePage() {
         </section>
 
         {/* =========================================================================
-            SECTION: HOW IT WORKS (Plain-English 5 Steps)
+            SECTION: BUSINESS IMPACT & ROI (Costing, Efficiency, Turnaround)
             ========================================================================= */}
         <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20">
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
@@ -150,27 +150,22 @@ export default function HomePage() {
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
                   <span className="font-label-timecode text-xs text-secondary font-bold uppercase tracking-widest block">
-                    02 / ARCHITECTURE BLUEPRINT
+                    02 / BUSINESS IMPACT &amp; COSTING
                   </span>
                   <div className="w-24">
                     <DrawLine className="h-[1px] w-full bg-secondary" />
                   </div>
                 </div>
                 <h2 className="font-headline-lg text-2xl sm:text-4xl font-bold text-primary tracking-tight">
-                  How the video pipeline works.
+                  Engineering that solves business problems.
                 </h2>
               </div>
               <p className="font-body-md text-sm sm:text-base text-ink-muted max-w-md">
-                How one centralized server processes 130+ cameras simultaneously without lagging or crashing.
+                How technical decisions translate directly into cloud cost savings, operational fatigue reduction, and instant decision making.
               </p>
             </div>
 
-            <HowItWorksSection
-              steps={HOW_IT_WORKS_STEPS}
-              modelMemoryNaive={VERIFIED_NUMBERS.modelMemoryNaive}
-              modelMemoryCentralized={VERIFIED_NUMBERS.modelMemoryCentralized}
-              memoryReduction={VERIFIED_NUMBERS.memoryReduction}
-            />
+            <BusinessImpactSection items={BUSINESS_IMPACT_ITEMS} />
           </div>
         </section>
 

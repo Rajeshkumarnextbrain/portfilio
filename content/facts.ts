@@ -75,17 +75,22 @@ export const VERIFIED_NUMBERS = {
 };
 
 export const PROOF_METRICS = [
-  { value: "4+", label: "years experience", caption: "production AI & computer vision" },
-  { value: "130+", label: "cameras analysed live", caption: "2x NVIDIA L4 GPUs in production" },
-  { value: "25+", label: "AI features delivered", caption: "safety, intrusion, inventory & retail" },
-  { value: "5+", label: "client deployments", caption: "manufacturing, logistics & warehousing" },
+  { value: "4+", label: "years experience", caption: "production AI & systems engineering" },
+  { value: "130+", label: "cameras analysed live", caption: "real-time computer vision at scale" },
+  { value: "3", label: "AI agent & RAG systems", caption: "LangGraph, FastMCP & Bedrock" },
+  { value: "$3,400/mo", label: "saved per cluster", caption: "62% lower monthly cloud GPU costs" },
 ];
 
 export const AT_A_GLANCE_METRICS = [
   {
     value: "130+",
     title: "cameras analysed live",
-    caption: "Watches over 130 live security feeds simultaneously across manufacturing plants and warehouses.",
+    caption: "Watches over 130 live security feeds simultaneously with hardware NVDEC decoding.",
+  },
+  {
+    value: "2",
+    title: "LangGraph agent pipelines",
+    caption: "Interactive 'Ask' and autonomous 'Watch' workflows with FastMCP tool servers.",
   },
   {
     value: "~6.5x less",
@@ -93,24 +98,49 @@ export const AT_A_GLANCE_METRICS = [
     caption: "Centralized Triton architecture cut model memory from ~32.5 GB down to ~5 GB (~2.5 GB per GPU).",
   },
   {
-    value: "25+",
-    title: "AI use cases delivered",
-    caption: "From PPE compliance and intrusion geofencing to slip-and-fall detection and customer traffic heatmaps.",
-  },
-  {
-    value: "5+",
-    title: "client deployments",
-    caption: "Deployed in active industrial production with zero-downtime canary updates and automated failover.",
+    value: "9",
+    title: "scientific FastMCP tools",
+    caption: "Deterministic math & chemistry engines (SymPy, Pint, RDKit) eliminating calculation hallucinations.",
   },
   {
     value: "74%",
     title: "fewer false alarms",
-    caption: "Secondary vision-language reasoning eliminates false positives from shadows and reflections.",
+    caption: "Secondary Gemma 3 E4B vision-language reasoning eliminates false positives from reflections and shadows.",
   },
   {
     value: "$3,400/mo",
     title: "saved per cluster",
     caption: "Dynamic request batching and TensorRT FP32 optimizations cut monthly cloud GPU expenditure by 62%.",
+  },
+];
+
+export const BUSINESS_IMPACT_ITEMS = [
+  {
+    id: "gpu-costs",
+    metric: "$3,400/mo",
+    metricLabel: "saved per deployed cluster",
+    badge: "Cloud GPU Cost ROI",
+    problem: "Running 130+ camera models naively required ~32.5 GB of redundant GPU VRAM, multiplying monthly cloud GPU rental bills.",
+    solution: "Centralized Triton serving with TensorRT FP32 graph compilation, dynamic request batching, and zero-copy CUDA IPC shared memory.",
+    outcome: "62% lower monthly GPU expenditure (~5 GB VRAM vs ~32.5 GB naive replication).",
+  },
+  {
+    id: "false-alarms",
+    metric: "74%",
+    metricLabel: "fewer false safety alarms",
+    badge: "Operational Noise & Fatigue",
+    problem: "Standard object detectors flooded control rooms with false alarms from reflections, shadows, and worker clothes, causing operator alert fatigue.",
+    solution: "Engineered a secondary zero-shot audit layer using Gemma 3 E4B Vision-Language Model (VLM) to verify flagged incidents before alerting.",
+    outcome: "Eliminated false alarms by 74% without dropping a single genuine safety violation.",
+  },
+  {
+    id: "ticket-turnaround",
+    metric: "< 3s",
+    metricLabel: "query response vs 48-hr wait",
+    badge: "Operational Speed & Decision Making",
+    problem: "Facility directors and safety supervisors waited 24 to 48 hours for database administrators to write custom SQL queries to audit incidents.",
+    solution: "Built autonomous LangGraph multi-agent pipelines with FastMCP tool servers and strict AST security guardrails for read-only database access.",
+    outcome: "85% reduction in DBA tickets with zero unauthorized mutations across 5 data domains.",
   },
 ];
 
