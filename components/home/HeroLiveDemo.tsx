@@ -219,7 +219,7 @@ export function HeroLiveDemo() {
               <span className="absolute inset-0 rounded-full bg-status-success animate-ping opacity-75" />
               <span className="relative w-2 h-2 rounded-full bg-status-success" />
             </span>
-            <span className="font-mono text-[13px] font-semibold text-primary uppercase tracking-wider whitespace-nowrap">
+            <span className="hidden xs:inline font-mono text-[11px] sm:text-[13px] font-semibold text-primary uppercase tracking-wider whitespace-nowrap">
               LIVE EXAMPLE
             </span>
           </div>

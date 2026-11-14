@@ -64,12 +64,12 @@ export default function ContactPage() {
                 </Reveal>
 
                 {/* Top Action Buttons with Stagger */}
-                <Stagger className="flex flex-wrap items-center gap-3">
+                <Stagger className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                   <StaggerItem>
                     <CopyButton
                       textToCopy={CONTACT_INFO.email}
-                      label={`Email: ${CONTACT_INFO.email}`}
-                      className="px-6 py-3.5 bg-secondary hover:bg-signal-orange-hover text-on-secondary rounded-full font-label-sm text-xs uppercase tracking-wider font-semibold transition-colors shadow-sm"
+                      label="Copy Email Address"
+                      className="px-4 sm:px-6 py-3 sm:py-3.5 bg-secondary hover:bg-signal-orange-hover text-on-secondary rounded-full font-label-sm text-xs uppercase tracking-wider font-semibold transition-colors shadow-sm"
                     />
                   </StaggerItem>
 
@@ -77,7 +77,7 @@ export default function ContactPage() {
                     <a
                       href={CONTACT_INFO.resumeUrl}
                       download
-                      className="inline-flex items-center gap-2 px-6 py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
+                      className="inline-flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
                     >
                       <span className="material-symbols-outlined text-[18px]">download</span>
                       <span>Download Resume (PDF)</span>
@@ -89,7 +89,7 @@ export default function ContactPage() {
                       href={CONTACT_INFO.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-6 py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
+                      className="inline-flex items-center gap-1.5 px-4 sm:px-6 py-3 sm:py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
                     >
                       <span>LinkedIn</span>
                       <span className="material-symbols-outlined text-[16px]">north_east</span>
@@ -101,7 +101,7 @@ export default function ContactPage() {
                       href={CONTACT_INFO.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-6 py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
+                      className="inline-flex items-center gap-1.5 px-4 sm:px-6 py-3 sm:py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
                     >
                       <span>GitHub</span>
                       <span className="material-symbols-outlined text-[16px]">north_east</span>

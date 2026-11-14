@@ -26,7 +26,7 @@ export function HeroHeadline() {
     <h1
       aria-label="I build production AI systems that see, reason and scale."
       className="font-headline-lg font-semibold tracking-[-0.04em] leading-[0.95] text-[#1c1c18]"
-      style={{ fontSize: 'clamp(2.5rem, 5.5vw, 4.75rem)' }}
+      style={{ fontSize: 'clamp(1.85rem, 5.5vw, 4.75rem)' }}
     >
       {/* Transform-only reveal on initial mount, text stays 100% visible */}
       <m.span

@@ -88,10 +88,10 @@ export default function Navbar() {
           {/* Email Me Solid Orange Pill Button */}
           <a
             href={`mailto:${CONTACT_INFO.email}`}
-            className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-1.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-[13px] uppercase font-bold tracking-wider rounded-full transition-all duration-150 shadow-sm shrink-0 active:scale-[0.97] group"
+            className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 py-1 sm:px-5 sm:py-1.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-xs sm:text-[13px] uppercase font-bold tracking-wider rounded-full transition-all duration-150 shadow-sm shrink-0 active:scale-[0.97] group"
           >
             <span>EMAIL ME</span>
-            <span className="material-symbols-outlined text-[15px] transition-transform duration-150 group-hover:translate-x-[2px]">
+            <span className="material-symbols-outlined text-[14px] sm:text-[15px] transition-transform duration-150 group-hover:translate-x-[2px]">
               arrow_forward
             </span>
           </a>

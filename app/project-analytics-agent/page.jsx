@@ -62,7 +62,7 @@ export default function AnalyticsAgentPage() {
 
             {/* Mega Headline */}
             <div className="flex flex-col gap-4">
-              <h1 className="font-mega-display text-[36px] xs:text-[48px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
+              <h1 className="font-mega-display text-[32px] xs:text-[44px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
                 {ANALYTICS_AGENT_OVERVIEW.headlinePre}<br />
                 <span className="bg-signal-orange-tint text-secondary px-3 py-0.5 inline-block -rotate-1">
                   {ANALYTICS_AGENT_OVERVIEW.headlineHighlight}

@@ -7,14 +7,14 @@ import { useMotionOK } from '@/lib/useMotionOK';
 export function CameraGridDots() {
   const motionOK = useMotionOK();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-10% 0px' });
+  const inView = useInView(ref, { once: true, margin: '0px' });
 
   // 130 dots (13 x 10) representing 130+ cameras in cluster
   const dots = Array.from({ length: 130 });
 
   return (
     <div ref={ref} className="flex flex-col gap-2">
-      <div className="flex justify-between items-center text-xs font-mono text-ink-muted">
+      <div className="flex flex-wrap justify-between items-center text-[10px] sm:text-xs font-mono text-ink-muted gap-1">
         <span>ACTIVE CAMERA CLUSTER GRID (130 FEEDS)</span>
         <span className="text-secondary font-bold">112 / 130 ONLINE</span>
       </div>

@@ -21,7 +21,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col md:items-end gap-2 font-label-timecode text-[13px] text-ink-muted">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <a
               href={`mailto:${CONTACT_INFO.email}`}
               className="hover:text-primary transition-colors underline underline-offset-4"

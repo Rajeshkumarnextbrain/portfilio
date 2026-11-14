@@ -35,7 +35,9 @@ export function CopyButton({
       >
         {copied ? 'check' : 'content_copy'}
       </span>
-      <span>{copied ? 'Copied ✓' : label || `Email: ${textToCopy}`}</span>
+      <span className="truncate max-w-[220px] xs:max-w-none">
+        {copied ? 'Copied ✓' : label || `Email: ${textToCopy}`}
+      </span>
       <span className="sr-only" aria-live="polite">
         {copied ? 'Email address copied to clipboard' : ''}
       </span>

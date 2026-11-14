@@ -53,7 +53,7 @@ export default function ExperiencePage() {
               <div className="lg:col-span-7 flex flex-col gap-6">
                 <Reveal>
                   <div className="flex flex-col gap-4">
-                    <h1 className="font-serif text-[42px] xs:text-[54px] sm:text-[72px] md:text-[88px] lg:text-[96px] xl:text-[110px] leading-[0.92] text-on-surface tracking-tight uppercase select-none font-bold">
+                    <h1 className="font-serif text-[34px] xs:text-[46px] sm:text-[68px] md:text-[88px] lg:text-[96px] xl:text-[110px] leading-[0.92] text-on-surface tracking-tight uppercase select-none font-bold">
                       FOUR YEARS.<br />
                       ONE <span className="relative inline-block bg-signal-orange-tint px-3 py-1 text-secondary -rotate-1">PIPELINE</span><br />
                       AT A TIME.
@@ -388,49 +388,51 @@ export default function ExperiencePage() {
                 <span>INSPECTION TOPOLOGY // HIGH-SPEED CONVEYOR LINE</span>
                 <span className="font-label-timecode text-xs text-secondary font-medium">OPTO-TRIGGER: 24V PLC PULSE</span>
               </div>
-              <div className="relative h-64 bg-paper-raised border border-line flex items-center justify-between px-8 overflow-hidden">
-                {/* Background Grid Lines */}
-                <div className="absolute inset-0 opacity-10 flex justify-between pointer-events-none">
-                  <div className="w-px h-full bg-primary"></div>
-                  <div className="w-px h-full bg-primary"></div>
-                  <div className="w-px h-full bg-primary"></div>
-                  <div className="w-px h-full bg-primary"></div>
-                  <div className="w-px h-full bg-primary"></div>
-                </div>
-                {/* Conveyor Belt Graphic */}
-                <div className="absolute bottom-6 left-0 right-0 h-4 bg-line flex items-center">
-                  <div className="w-full border-t border-dashed border-ink-muted"></div>
-                </div>
-                {/* Camera Setup */}
-                <div className="flex flex-col items-center gap-1 z-10">
-                  <div className="w-16 h-12 bg-primary text-on-primary flex items-center justify-center font-label-sm text-[10px] text-center uppercase p-1">
-                    GIGE CAM 5MP
+              <div className="w-full overflow-x-auto pb-1">
+                <div className="relative min-w-[520px] h-64 bg-paper-raised border border-line flex items-center justify-between px-8 overflow-hidden">
+                  {/* Background Grid Lines */}
+                  <div className="absolute inset-0 opacity-10 flex justify-between pointer-events-none">
+                    <div className="w-px h-full bg-primary"></div>
+                    <div className="w-px h-full bg-primary"></div>
+                    <div className="w-px h-full bg-primary"></div>
+                    <div className="w-px h-full bg-primary"></div>
+                    <div className="w-px h-full bg-primary"></div>
                   </div>
-                  <div className="w-1 h-12 bg-secondary"></div>
-                  <span className="font-label-timecode text-[10px] text-ink-muted">STROBE 10µs</span>
-                </div>
-                {/* Detected Workpiece with Bounding Box */}
-                <div className="relative w-48 h-36 bg-paper-sunken border-2 border-dashed border-line flex items-center justify-center z-10">
-                  <div className="absolute inset-4 border-2 border-secondary flex flex-col justify-between p-1">
-                    <span className="bg-secondary text-on-secondary font-label-sm text-[9px] px-1 py-0.5 w-max">
-                      DEFECT #08: CRACK DETECTED · CONF 82%
-                    </span>
-                    <div className="flex justify-between font-label-timecode text-[8px] text-secondary">
-                      <span>DIM: 1.2mm x 4.8mm</span>
-                      <span>LOC: [X:142, Y:89]</span>
+                  {/* Conveyor Belt Graphic */}
+                  <div className="absolute bottom-6 left-0 right-0 h-4 bg-line flex items-center">
+                    <div className="w-full border-t border-dashed border-ink-muted"></div>
+                  </div>
+                  {/* Camera Setup */}
+                  <div className="flex flex-col items-center gap-1 z-10">
+                    <div className="w-16 h-12 bg-primary text-on-primary flex items-center justify-center font-label-sm text-[10px] text-center uppercase p-1">
+                      GIGE CAM 5MP
                     </div>
+                    <div className="w-1 h-12 bg-secondary"></div>
+                    <span className="font-label-timecode text-[10px] text-ink-muted">STROBE 10µs</span>
                   </div>
-                  <span className="font-label-sm text-ink-faint text-center">BILLET SPECIMEN #304</span>
-                </div>
-                {/* Jetson + PLC Node */}
-                <div className="flex flex-col items-center gap-2 z-10">
-                  <div className="p-3 bg-primary text-on-primary font-label-sm text-center text-[11px] uppercase">
-                    JETSON XAVIER NX<br />
-                    <span className="text-secondary font-label-timecode">INFER: 18.2 ms</span>
+                  {/* Detected Workpiece with Bounding Box */}
+                  <div className="relative w-48 h-36 bg-paper-sunken border-2 border-dashed border-line flex items-center justify-center z-10">
+                    <div className="absolute inset-4 border-2 border-secondary flex flex-col justify-between p-1">
+                      <span className="bg-secondary text-on-secondary font-label-sm text-[9px] px-1 py-0.5 w-max">
+                        DEFECT #08: CRACK DETECTED · CONF 82%
+                      </span>
+                      <div className="flex justify-between font-label-timecode text-[8px] text-secondary">
+                        <span>DIM: 1.2mm x 4.8mm</span>
+                        <span>LOC: [X:142, Y:89]</span>
+                      </div>
+                    </div>
+                    <span className="font-label-sm text-ink-faint text-center">BILLET SPECIMEN #304</span>
                   </div>
-                  <div className="w-0.5 h-6 bg-primary"></div>
-                  <div className="px-3 py-1 bg-paper-raised border border-primary font-label-sm text-[10px] uppercase">
-                    SIEMENS S7-1200 PLC
+                  {/* Jetson + PLC Node */}
+                  <div className="flex flex-col items-center gap-2 z-10">
+                    <div className="p-3 bg-primary text-on-primary font-label-sm text-center text-[11px] uppercase">
+                      JETSON XAVIER NX<br />
+                      <span className="text-secondary font-label-timecode">INFER: 18.2 ms</span>
+                    </div>
+                    <div className="w-0.5 h-6 bg-primary"></div>
+                    <div className="px-3 py-1 bg-paper-raised border border-primary font-label-sm text-[10px] uppercase">
+                      SIEMENS S7-1200 PLC
+                    </div>
                   </div>
                 </div>
               </div>

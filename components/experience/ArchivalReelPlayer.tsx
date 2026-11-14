@@ -13,7 +13,7 @@ export function ArchivalReelPlayer() {
   const [vuRight, setVuRight] = useState<number>(84);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(containerRef, { margin: '-10% 0px' });
+  const inView = useInView(containerRef, { margin: '0px' });
   const motionOK = useMotionOK();
   const isDocVisible = useDocumentVisible();
 

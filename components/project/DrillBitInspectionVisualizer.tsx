@@ -92,7 +92,7 @@ export function DrillBitInspectionVisualizer() {
               {/* Left: Camera Reticle & Tip Visualizer */}
               <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-6 border border-line flex flex-col justify-between gap-6 relative overflow-hidden">
                 {/* Camera HUD Telemetry */}
-                <div className="flex justify-between items-center font-mono text-[11px] text-[#B5B2A8] border-b border-surface/10 pb-3">
+                <div className="flex flex-wrap justify-between items-center gap-2 font-mono text-[11px] text-[#B5B2A8] border-b border-surface/10 pb-3">
                   <span className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-status-success animate-ping" />
                     HIKROBOT CAM #1 · FRONT OPTICS
@@ -234,7 +234,7 @@ export function DrillBitInspectionVisualizer() {
             >
               {/* Left: 360° Profile Canvas */}
               <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-6 border border-line flex flex-col justify-between gap-6 relative overflow-hidden">
-                <div className="flex justify-between items-center font-mono text-[11px] text-[#B5B2A8] border-b border-surface/10 pb-3">
+                <div className="flex flex-wrap justify-between items-center gap-2 font-mono text-[11px] text-[#B5B2A8] border-b border-surface/10 pb-3">
                   <span className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-status-success animate-ping" />
                     HIKROBOT CAM #2 · TOP PROFILE

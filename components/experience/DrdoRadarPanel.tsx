@@ -47,7 +47,7 @@ export default function DrdoRadarPanel() {
 
       {/* Header inside the panel */}
       <div className="flex flex-col gap-3 pb-6 mb-8 border-b border-surface-container-highest/20">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A5C]" />
             <span className="font-mono text-[13px] text-[#FF8A5C] uppercase font-semibold">

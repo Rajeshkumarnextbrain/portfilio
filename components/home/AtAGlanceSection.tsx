@@ -47,7 +47,7 @@ export function AtAGlanceSection({ metrics, identity }: AtAGlanceSectionProps) {
 
       {/* Career Facts Quick Strip */}
       <Reveal delay={0.2}>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-paper-raised border border-line font-label-sm text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-paper-raised border border-line font-label-sm text-xs">
           <div>
             <span className="text-ink-muted block uppercase">TARGET ROLES</span>
             <span className="font-semibold text-primary block mt-0.5">{identity.targetRoles}</span>

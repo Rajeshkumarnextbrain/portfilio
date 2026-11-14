@@ -9,7 +9,7 @@ import { BLUEPRINT_NODES } from '@/content/facts';
 export function BlueprintFlow() {
   const motionOK = useMotionOK();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-10% 0px' });
+  const inView = useInView(ref, { once: true, margin: '0px' });
   const [activeNodeIndex, setActiveNodeIndex] = useState<number>(motionOK ? -1 : 3);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 

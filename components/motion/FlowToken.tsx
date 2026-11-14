@@ -20,7 +20,7 @@ interface FlowTokenProps {
 export function FlowToken({ steps, className = '' }: FlowTokenProps) {
   const motionOK = useMotionOK();
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: '-10% 0px' });
+  const isInView = useInView(containerRef, { once: true, margin: '0px' });
   const [activeStepIndex, setActiveStepIndex] = useState<number>(motionOK ? -1 : steps.length - 1);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 

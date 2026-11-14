@@ -8,7 +8,7 @@ import { useMotionOK } from '@/lib/useMotionOK';
 export function ProxyPacketDiagram() {
   const motionOK = useMotionOK();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-10% 0px' });
+  const inView = useInView(ref, { once: true, margin: '0px' });
   const [packetStage, setPacketStage] = useState(motionOK ? 0 : 3);
   const [allowlistFlashing, setAllowlistFlashing] = useState(false);
 
