@@ -118,11 +118,11 @@ export const BUSINESS_IMPACT_ITEMS = [
   {
     id: "gpu-costs",
     metric: "$3,400/mo",
-    metricLabel: "saved per deployed cluster",
-    badge: "Cloud GPU Cost ROI",
-    problem: "Running 130+ camera models naively required ~32.5 GB of redundant GPU VRAM, multiplying monthly cloud GPU rental bills.",
-    solution: "Centralized Triton serving with TensorRT FP32 graph compilation, dynamic request batching, and zero-copy CUDA IPC shared memory.",
-    outcome: "62% lower monthly GPU expenditure (~5 GB VRAM vs ~32.5 GB naive replication).",
+    metricLabel: "saved per deployed cluster (62% lower GPU cost)",
+    badge: "Cloud GPU Cost & Multi-Model Architecture",
+    problem: "Analyzing each camera requires a multi-model suite: YOLO26, YOLO-Pose, PPE compliance, Fall detection, RetinaFace, and ArcFace. Loading this suite naively per camera consumed ~3 GB VRAM—scaling to 130+ cameras would require an impossible ~390 GB of GPU memory.",
+    solution: "Centralized all model instances on an NVIDIA Triton Inference Server, loading weights only once. Each camera runs in an isolated lightweight worker using minimal memory for pre/post-processing, passing frame tensors directly to Triton via zero-copy CUDA IPC shared memory.",
+    outcome: "130+ cameras fit on just 2x NVIDIA L4 GPUs (48 GB total VRAM), cutting monthly cloud GPU infrastructure costs by 62% ($3,400/mo saved).",
   },
   {
     id: "false-alarms",
