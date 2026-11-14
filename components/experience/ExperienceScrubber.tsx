@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { EASING } from '@/lib/motion';
 import { useMotionOK } from '@/lib/useMotionOK';
+import { TIMELINE_SCRUBBER_CLIPS } from '@/content/facts';
 
 export function ExperienceScrubber() {
   const motionOK = useMotionOK();
@@ -63,59 +64,55 @@ export function ExperienceScrubber() {
 
         {/* Segments */}
         <div className="grid grid-cols-12 gap-1 sm:gap-1.5 my-2 sm:my-3 h-14 relative">
-          {/* Clip 3: Tech Support (May - Jul 2022) ~ 2 cols on mobile, 1 col on sm */}
-          <a
-            href="#chapter-3"
-            onClick={(e) => handleScrollTo(e, 'chapter-3')}
-            className="col-span-2 sm:col-span-1 bg-surface-container-highest hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1 sm:p-1.5 transition-colors group overflow-hidden border border-line/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
-          >
-            <span className="font-label-sm text-[8px] sm:text-[10px] text-ink-muted group-hover:text-primary leading-tight">
-              CLIP 03
-            </span>
-            <span className="font-label-sm text-[8px] sm:text-[9px] truncate font-semibold">VEDANT</span>
-          </a>
+          {TIMELINE_SCRUBBER_CLIPS.map((clip) => {
+            if (clip.isCurrent) {
+              return (
+                <a
+                  key={clip.id}
+                  href={`#${clip.id}`}
+                  onClick={(e) => handleScrollTo(e, clip.id)}
+                  className={`${clip.colSpan} bg-secondary text-on-secondary flex items-center justify-between px-2 sm:px-4 relative overflow-hidden group shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary`}
+                >
+                  <div className="flex flex-col z-10 min-w-0 pr-4">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-surface-bright animate-ping shrink-0"></span>
+                      <span className="font-label-sm text-[8px] sm:text-label-sm tracking-wider uppercase truncate font-medium">
+                        ACTIVE {clip.clipNumber} · TEAM LEAD
+                      </span>
+                    </div>
+                    <span className="font-headline-md text-[11px] sm:text-body-md lg:text-headline-md font-bold tracking-tight truncate">
+                      VISIONFACTS.AI // NEXTBRAIN
+                    </span>
+                  </div>
+                  <div className="hidden lg:flex flex-col items-end z-10 font-label-timecode text-label-timecode">
+                    <span>REC // LIVE STREAM</span>
+                    <span className="text-signal-orange-tint">150+ STREAMS</span>
+                  </div>
 
-          {/* Clip 2: Junior Vision (Jul 2022 - Jul 2023) ~ 3 cols */}
-          <a
-            href="#chapter-2"
-            onClick={(e) => handleScrollTo(e, 'chapter-2')}
-            className="col-span-3 bg-surface-container-high hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1.5 sm:p-2 transition-colors group overflow-hidden border border-line/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
-          >
-            <span className="font-label-sm text-[8px] sm:text-label-sm text-ink-muted group-hover:text-primary leading-tight">
-              CLIP 02
-            </span>
-            <span className="font-headline-md text-[10px] sm:text-body-sm font-semibold truncate">
-              SS AUTOMATION
-            </span>
-          </a>
+                  {/* Playhead Needle */}
+                  <div className="absolute right-4 sm:right-12 top-0 bottom-0 w-0.5 bg-surface-bright shadow-[0_0_8px_#ffffff] z-20 flex flex-col items-center">
+                    <span className="w-2 h-2 -top-1 absolute rotate-45 bg-surface-bright"></span>
+                  </div>
+                </a>
+              );
+            }
 
-          {/* Clip 1: Team Lead (Jul 2023 - Present) ~ 7 cols on mobile, 8 cols on sm */}
-          <a
-            href="#chapter-1"
-            onClick={(e) => handleScrollTo(e, 'chapter-1')}
-            className="col-span-7 sm:col-span-8 bg-secondary text-on-secondary flex items-center justify-between px-2 sm:px-4 relative overflow-hidden group shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <div className="flex flex-col z-10 min-w-0 pr-4">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-surface-bright animate-ping shrink-0"></span>
-                <span className="font-label-sm text-[8px] sm:text-label-sm tracking-wider uppercase truncate font-medium">
-                  ACTIVE CLIP 01 · TEAM LEAD
+            return (
+              <a
+                key={clip.id}
+                href={`#${clip.id}`}
+                onClick={(e) => handleScrollTo(e, clip.id)}
+                className={`${clip.colSpan} bg-surface-container-high hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1.5 sm:p-2 transition-colors group overflow-hidden border border-line/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary`}
+              >
+                <span className="font-label-sm text-[8px] sm:text-[10px] text-ink-muted group-hover:text-primary leading-tight">
+                  {clip.clipNumber}
                 </span>
-              </div>
-              <span className="font-headline-md text-[11px] sm:text-body-md lg:text-headline-md font-bold tracking-tight truncate">
-                VISIONFACTS.AI // NEXTBRAIN
-              </span>
-            </div>
-            <div className="hidden lg:flex flex-col items-end z-10 font-label-timecode text-label-timecode">
-              <span>REC // LIVE STREAM</span>
-              <span className="text-signal-orange-tint">150+ STREAMS</span>
-            </div>
-
-            {/* Playhead Needle */}
-            <div className="absolute right-4 sm:right-12 top-0 bottom-0 w-0.5 bg-surface-bright shadow-[0_0_8px_#ffffff] z-20 flex flex-col items-center">
-              <span className="w-2 h-2 -top-1 absolute rotate-45 bg-surface-bright"></span>
-            </div>
-          </a>
+                <span className="font-headline-md text-[10px] sm:text-body-sm font-semibold truncate">
+                  {clip.title}
+                </span>
+              </a>
+            );
+          })}
         </div>
 
         {/* Axis Ticks (Responsive frequency: 5 on mobile, 9 on desktop) */}

@@ -4,45 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
 import { useMotionOK } from '@/lib/useMotionOK';
-
-interface BlueprintNode {
-  nodeNumber: string;
-  stageName: string;
-  title: string;
-  description: string;
-  spec: string;
-}
-
-const BLUEPRINT_NODES: BlueprintNode[] = [
-  {
-    nodeNumber: 'NODE 01',
-    stageName: 'INGEST',
-    title: '130+ Feeds Ingest & Decode',
-    description: 'RTSP ingest with NVDEC hardware decoding directly into GPU memory buffers, bypassing host CPU bottlenecks.',
-    spec: 'HW NVDEC · H.264 / H.265',
-  },
-  {
-    nodeNumber: 'NODE 02',
-    stageName: 'TRANSPORT',
-    title: 'CUDA IPC Zero-Copy',
-    description: 'Shared memory IPC handles transfer decoded frame tensors between processes without host-to-device PCIe copies.',
-    spec: 'CUDA IPC SHARED MEMORY',
-  },
-  {
-    nodeNumber: 'NODE 03',
-    stageName: 'INFERENCE',
-    title: 'Centralized Triton Serving',
-    description: 'YOLO26 primary model (107 ms mean execution) filters high-throughput streams, triggering Gemma 3 E4B VLM for deep reasoning.',
-    spec: 'TENSORRT FP32 + TRITON',
-  },
-  {
-    nodeNumber: 'NODE 04',
-    stageName: 'DISPATCH',
-    title: 'Reasoned Alerts & Evidence',
-    description: 'Structured JSON outputs with natural-language explanation and audit crops dispatched via FastAPI and message brokers.',
-    spec: 'FASTAPI · REDIS · WEBSOCKETS',
-  },
-];
+import { BLUEPRINT_NODES } from '@/content/facts';
 
 export function BlueprintFlow() {
   const motionOK = useMotionOK();

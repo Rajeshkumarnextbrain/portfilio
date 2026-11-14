@@ -7,6 +7,12 @@ import {
   IDENTITY,
   VERIFIED_NUMBERS,
   PROJECTS,
+  EDUBOTIX_OVERVIEW,
+  EDUBOTIX_COMPONENTS,
+  EDUBOTIX_CHALLENGES,
+  EDUBOTIX_CONTRIBUTIONS,
+  EDUBOTIX_RESULTS,
+  EDUBOTIX_TECH_PILLARS,
 } from "@/content/facts";
 
 import { CountUp } from "@/components/motion/CountUp";
@@ -50,21 +56,21 @@ export default function EdubotixPage() {
                 </span>
               </div>
               <span className="font-label-timecode text-xs text-secondary font-medium">
-                MULTIMODAL STEM TUTOR
+                {EDUBOTIX_OVERVIEW.tagline}
               </span>
             </div>
 
             {/* Mega Headline */}
             <div className="flex flex-col gap-4">
               <h1 className="font-mega-display text-[36px] xs:text-[48px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
-                Show your<br />
+                {EDUBOTIX_OVERVIEW.headlinePre}<br />
                 <span className="bg-signal-orange-tint text-secondary px-3 py-0.5 inline-block -rotate-1">
-                  working.
+                  {EDUBOTIX_OVERVIEW.headlineHighlight}
                 </span><br />
-                Every answer.
+                {EDUBOTIX_OVERVIEW.headlinePost}
               </h1>
               <p className="font-body-lg text-sm sm:text-base md:text-lg text-ink-muted max-w-3xl leading-relaxed">
-                A context-aware multimodal academic intelligence platform that lets students learn from verified curriculum textbooks using natural language, equations, chemistry structures, and photos of homework problems.
+                {EDUBOTIX_OVERVIEW.leadParagraph}
               </p>
             </div>
 
@@ -79,32 +85,20 @@ export default function EdubotixPage() {
                 </div>
 
                 <p className="font-body-lg text-sm sm:text-base text-on-surface leading-relaxed">
-                  Most AI chatbots make subtle math and physics mistakes because they guess words instead of calculating. Edubotix connects AI to verified curriculum textbooks using RAG (AI that looks up answers in documents). When a student asks a physics or chemistry question, the AI runs all math through verified symbolic calculation tools, shows step-by-step working, and cites the exact textbook page and chapter.
+                  {EDUBOTIX_OVERVIEW.plainEnglish}
                 </p>
 
                 {/* 3-Number Result Strip with CountUp */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-line py-4">
-                  <div className="flex flex-col">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-on-surface">
-                      <CountUp value={VERIFIED_NUMBERS.edubotixIngestionSpeed} />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">Faster Content Ingestion</span>
-                    <span className="text-xs text-ink-muted mt-1">Multi-threaded 15-worker textbook embedding</span>
-                  </div>
-                  <div className="flex flex-col sm:border-l sm:border-line sm:pl-4">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-secondary">
-                      <CountUp value={VERIFIED_NUMBERS.edubotixScientificTools} />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">Scientific Tools Built-in</span>
-                    <span className="text-xs text-ink-muted mt-1">RDKit chemistry, Pint SI units, SymPy math</span>
-                  </div>
-                  <div className="flex flex-col sm:border-l sm:border-line sm:pl-4">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-on-surface">
-                      <CountUp value="100%" />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">Verified Attributions</span>
-                    <span className="text-xs text-ink-muted mt-1">{VERIFIED_NUMBERS.edubotixCitations}</span>
-                  </div>
+                  {EDUBOTIX_OVERVIEW.stripMetrics.map((metric, idx) => (
+                    <div key={metric.label} className={`flex flex-col ${idx > 0 ? 'sm:border-l sm:border-line sm:pl-4' : ''}`}>
+                      <span className={`font-metric-numeral text-2xl sm:text-3xl font-bold ${metric.highlight ? 'text-secondary' : 'text-on-surface'}`}>
+                        <CountUp value={metric.value} />
+                      </span>
+                      <span className="font-label-sm text-xs text-secondary font-semibold uppercase">{metric.label}</span>
+                      <span className="text-xs text-ink-muted mt-1">{metric.detail}</span>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Metadata Block */}
@@ -158,12 +152,12 @@ export default function EdubotixPage() {
 
               <div className="p-3 bg-surface border border-line flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <span className="text-xs font-label-timecode text-ink-muted uppercase">CALCULATION VERIFIED:</span>
-                <span className="font-mono text-sm sm:text-base font-bold text-on-surface">5 m/s × 10 s = 50 m</span>
+                <span className="font-mono text-sm sm:text-base font-bold text-on-surface">{EDUBOTIX_OVERVIEW.traceCalculation}</span>
               </div>
 
               <div className="p-3 bg-surface border border-line flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <span className="text-xs font-label-timecode text-ink-muted uppercase">GROUNDED CITATION:</span>
-                <span className="text-xs font-mono text-secondary font-semibold">NCERT Physics Grade 11 · Chapter 3: Motion · Section 3.2 · Page 42</span>
+                <span className="text-xs font-mono text-secondary font-semibold">{EDUBOTIX_OVERVIEW.traceCitation}</span>
               </div>
             </div>
           </div>
@@ -187,8 +181,8 @@ export default function EdubotixPage() {
 
             {/* 2-Column Split: Problem vs Solution with Animated ProblemSolutionRow */}
             <ProblemSolutionRow
-              problemText="Generic LLMs predict the next statistical token rather than computing deterministic arithmetic. In physics and chemistry, this results in believable but incorrect numbers, invalid chemical bonds, and curriculum drift where answers use out-of-syllabus methods from random websites."
-              solutionText="Edubotix pairs an LLM with RAG grounded strictly in approved curriculum textbooks stored in Qdrant. All math and chemistry steps are routed to 9 deterministic tools (SymPy, Pint, RDKit), guaranteeing verified calculations instead of AI guesses."
+              problemText={EDUBOTIX_OVERVIEW.problem}
+              solutionText={EDUBOTIX_OVERVIEW.solution}
             />
           </div>
         </section>
@@ -219,56 +213,24 @@ export default function EdubotixPage() {
 
             {/* Architecture Cards with Stagger */}
             <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <StaggerItem>
-                <div className="p-6 bg-paper-raised border border-line hover:border-secondary transition-colors flex flex-col justify-between gap-4 h-full">
-                  <div className="flex flex-col gap-2">
-                    <span className="font-label-sm text-xs text-secondary uppercase font-bold">COMPONENT 01</span>
-                    <h3 className="font-headline-md text-base sm:text-lg font-bold text-on-surface uppercase">
-                      Hybrid Retrieval (Titan + BM25)
-                    </h3>
-                    <p className="text-xs text-ink-muted leading-relaxed">
-                      Combines 1024-dimensional dense semantic vectors (Amazon Titan V2) with sparse lexical BM25 tokens in Qdrant. Ensures domain terms like &ldquo;centripetal acceleration&rdquo; hit the exact formula definition.
-                    </p>
+              {EDUBOTIX_COMPONENTS.map((comp) => (
+                <StaggerItem key={comp.number}>
+                  <div className="p-6 bg-paper-raised border border-line hover:border-secondary transition-colors flex flex-col justify-between gap-4 h-full">
+                    <div className="flex flex-col gap-2">
+                      <span className="font-label-sm text-xs text-secondary uppercase font-bold">{comp.number}</span>
+                      <h3 className="font-headline-md text-base sm:text-lg font-bold text-on-surface uppercase">
+                        {comp.title}
+                      </h3>
+                      <p className="text-xs text-ink-muted leading-relaxed">
+                        {comp.description}
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-label-timecode text-ink-muted pt-2 border-t border-line">
+                      {comp.spec}
+                    </span>
                   </div>
-                  <span className="text-[10px] font-label-timecode text-ink-muted pt-2 border-t border-line">
-                    COSINE + BM25 FUSION
-                  </span>
-                </div>
-              </StaggerItem>
-
-              <StaggerItem>
-                <div className="p-6 bg-paper-raised border border-line hover:border-secondary transition-colors flex flex-col justify-between gap-4 h-full">
-                  <div className="flex flex-col gap-2">
-                    <span className="font-label-sm text-xs text-secondary uppercase font-bold">COMPONENT 02</span>
-                    <h3 className="font-headline-md text-base sm:text-lg font-bold text-on-surface uppercase">
-                      9 Scientific FastMCP Tools
-                    </h3>
-                    <p className="text-xs text-ink-muted leading-relaxed">
-                      Calculations run in verified tools instead of AI guesses. Pint enforces dimensional SI consistency, SymPy evaluates symbolic fractions, and RDKit validates chemical SMILES structures into clean SVG diagrams.
-                    </p>
-                  </div>
-                  <span className="text-[10px] font-label-timecode text-ink-muted pt-2 border-t border-line">
-                    ZERO CALCULATION GUESSWORK
-                  </span>
-                </div>
-              </StaggerItem>
-
-              <StaggerItem>
-                <div className="p-6 bg-paper-raised border border-line hover:border-secondary transition-colors flex flex-col justify-between gap-4 h-full">
-                  <div className="flex flex-col gap-2">
-                    <span className="font-label-sm text-xs text-secondary uppercase font-bold">COMPONENT 03</span>
-                    <h3 className="font-headline-md text-base sm:text-lg font-bold text-on-surface uppercase">
-                      Progressive Session Memory
-                    </h3>
-                    <p className="text-xs text-ink-muted leading-relaxed">
-                      A sliding-window buffer retains immediate context while an automated 20-turn rolling summary retains long-range pedagogical continuity without context window dilution or high token overhead.
-                    </p>
-                  </div>
-                  <span className="text-[10px] font-label-timecode text-ink-muted pt-2 border-t border-line">
-                    STABLE MULTI-HOUR SESSIONS
-                  </span>
-                </div>
-              </StaggerItem>
+                </StaggerItem>
+              ))}
             </Stagger>
 
             {/* Progressive Session Memory Diagram */}
@@ -291,33 +253,21 @@ export default function EdubotixPage() {
             </div>
 
             <div className="flex flex-col border-t border-line divide-y divide-line">
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  1. Token-Guessing Arithmetic Failures
+              {EDUBOTIX_CHALLENGES.map((item) => (
+                <div key={item.number} className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+                  <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
+                    {item.number}. {item.title}
+                  </div>
+                  <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
+                    <strong className="text-on-surface block mb-1">Problem:</strong>
+                    {item.problem}
+                  </div>
+                  <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
+                    <strong className="text-secondary block mb-1">Fix & Result:</strong>
+                    {item.fixResult}
+                  </div>
                 </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  LLMs consistently made subtle errors in unit arithmetic (e.g. converting km/h to m/s) and molecular balancing.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Calculations run in verified tools instead of AI guesses. Created 9 FastMCP tools with Pint and SymPy, eliminating calculation hallucinations completely.
-                </div>
-              </div>
-
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  2. Slow Textbook Ingestion at Scale
-                </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  Chunking, extracting LaTeX, and generating dual dense-sparse embeddings for full science textbooks took hours per book.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Built a 15-worker multi-threaded batch ingestion pipeline with rate-limited Bedrock connection pooling, achieving &gt;70% faster textbook ingestion.
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -337,39 +287,28 @@ export default function EdubotixPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* GrowBar for >70% faster */}
-              <div className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between gap-2">
-                <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">CONTENT INGESTION</span>
-                <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-secondary mt-1">
-                  <CountUp value=">70%" />
-                </span>
-                <div className="w-full h-2 bg-surface/10 rounded-full overflow-hidden mt-1">
-                  <GrowBar targetPercent={70} className="h-full bg-secondary" delay={0.3} />
+              {EDUBOTIX_RESULTS.map((res) => (
+                <div key={res.label} className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between gap-2">
+                  <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">{res.label}</span>
+                  {res.hasBar ? (
+                    <>
+                      <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-secondary mt-1">
+                        <CountUp value={res.value} />
+                      </span>
+                      <div className="w-full h-2 bg-surface/10 rounded-full overflow-hidden mt-1">
+                        <GrowBar targetPercent={70} className="h-full bg-secondary" delay={0.3} />
+                      </div>
+                    </>
+                  ) : res.success ? (
+                    <span className="font-headline-lg text-lg sm:text-xl font-bold text-status-success mt-2">{res.value}</span>
+                  ) : (
+                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-surface mt-2">
+                      <CountUp value={res.value} />
+                    </span>
+                  )}
+                  <span className="text-xs text-ink-faint mt-1">{res.detail}</span>
                 </div>
-                <span className="text-xs text-ink-faint mt-1">Faster textbook indexing pipeline</span>
-              </div>
-
-              <div className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between">
-                <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">SCIENTIFIC TOOLS</span>
-                <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-surface mt-2">
-                  <CountUp value="9" />
-                </span>
-                <span className="text-xs text-ink-faint mt-1">Deterministic calculations</span>
-              </div>
-
-              <div className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between">
-                <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">CALCULATIONS</span>
-                <span className="font-headline-lg text-lg sm:text-xl font-bold text-status-success mt-2">VERIFIED</span>
-                <span className="text-xs text-ink-faint mt-1">Calculations run in verified tools</span>
-              </div>
-
-              <div className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between">
-                <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">SOURCE CITATIONS</span>
-                <span className="font-headline-lg text-2xl sm:text-3xl font-bold text-surface mt-2">
-                  <CountUp value="100%" />
-                </span>
-                <span className="text-xs text-ink-faint mt-1">Exact chapter, page &amp; section cited</span>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -389,24 +328,14 @@ export default function EdubotixPage() {
             </div>
 
             <div className="flex flex-col border-t border-line divide-y divide-line">
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">Hybrid Retrieval Architecture</span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Architected dual dense-sparse vector indexing combining Amazon Titan V2 embeddings with BM25 sparse postings in Qdrant.
-                </span>
-              </div>
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">Scientific FastMCP Suite</span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Developed the FastMCP tool server wrapping SymPy, Pint, and RDKit to execute deterministic scientific computations.
-                </span>
-              </div>
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">Progressive Session Memory</span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Engineered sliding-window conversation retention with automated 20-turn rolling summaries in MongoDB.
-                </span>
-              </div>
+              {EDUBOTIX_CONTRIBUTIONS.map((item) => (
+                <div key={item.area} className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
+                  <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">{item.area}</span>
+                  <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
+                    {item.detail}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -426,22 +355,12 @@ export default function EdubotixPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">FOUNDATION MODELS</span>
-                <span className="text-xs font-semibold text-on-surface">AWS Bedrock (Claude 3.5 Sonnet, Titan V2)</span>
-              </div>
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">VECTOR DATABASE</span>
-                <span className="text-xs font-semibold text-on-surface">Qdrant (Dense-Sparse Hybrid Vector Search)</span>
-              </div>
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">SCIENTIFIC ENGINES</span>
-                <span className="text-xs font-semibold text-on-surface">FastMCP, SymPy, Pint, RDKit, KaTeX</span>
-              </div>
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">BACKEND &amp; STORAGE</span>
-                <span className="text-xs font-semibold text-on-surface">FastAPI, Python 3.11, MongoDB, Redis, Docker</span>
-              </div>
+              {EDUBOTIX_TECH_PILLARS.map((pillar) => (
+                <div key={pillar.category} className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
+                  <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">{pillar.category}</span>
+                  <span className="text-xs font-semibold text-on-surface">{pillar.items}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>

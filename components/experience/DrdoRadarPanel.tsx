@@ -3,27 +3,10 @@
 import React, { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
-
-const DRDO_ROWS = [
-  {
-    label: 'Work area',
-    value: 'Radar data processing, target tracking and signal analysis',
-  },
-  {
-    label: 'Methods',
-    value: 'Kalman filtering (target state estimation); K-Nearest Neighbors (noise classification)',
-  },
-  {
-    label: 'My part',
-    value: 'Supported testing and empirical validation of radar signal processing algorithms',
-  },
-  {
-    label: 'Processing',
-    value: 'Real-time stream processing',
-  },
-];
+import { DRDO_RADAR_ROWS, EXPERIENCE_ROLES } from '@/content/facts';
 
 export default function DrdoRadarPanel() {
+  const vedantRole = EXPERIENCE_ROLES[2];
   const panelRef = useRef<HTMLDivElement>(null);
   const inView = useInView(panelRef, { margin: '-10% 0px' });
   const motionOK = useMotionOK();
@@ -68,20 +51,20 @@ export default function DrdoRadarPanel() {
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A5C]" />
             <span className="font-mono text-[13px] text-[#FF8A5C] uppercase font-semibold">
-              ROLE 03 · May 2022 – Jul 2022
+              ROLE 03 · {vedantRole.period}
             </span>
           </div>
           <span className="font-mono text-[12px] text-[#B5B2A8]">DEFENSE RESEARCH VALIDATION</span>
         </div>
 
         <h2 className="font-display text-display text-[#F5F2EC] uppercase tracking-tight">
-          Technical Support Engineer
+          {vedantRole.title}
         </h2>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[13px] md:text-sm text-[#B5B2A8]">
-          <span className="font-semibold text-[#F5F2EC]">Vedant Tech Solutions Pvt. Ltd. (DRDO project)</span>
+          <span className="font-semibold text-[#F5F2EC]">{vedantRole.company}</span>
           <span>·</span>
-          <span className="text-[#FF8A5C] font-medium">May 2022 – Jul 2022</span>
+          <span className="text-[#FF8A5C] font-medium">{vedantRole.period}</span>
         </div>
 
         <div className="p-4 bg-surface/5 border border-surface-container-highest/20 mt-1">
@@ -89,7 +72,7 @@ export default function DrdoRadarPanel() {
             <strong className="text-[#FF8A5C] font-mono text-xs uppercase font-semibold mr-2">
               In plain English:
             </strong>
-            I worked on radar data processing and target tracking.
+            {vedantRole.plainSummary}
           </p>
         </div>
       </div>
@@ -165,7 +148,7 @@ export default function DrdoRadarPanel() {
         {/* Right column: Rows & Explanations */}
         <div className="md:col-span-7 flex flex-col justify-center">
           <div className="flex flex-col border-t border-surface-container-highest/20">
-            {DRDO_ROWS.map((row) => (
+            {DRDO_RADAR_ROWS.map((row) => (
               <div
                 key={row.label}
                 className="py-3.5 border-b border-surface-container-highest/20 grid grid-cols-1 sm:grid-cols-12 gap-1.5 sm:gap-4 items-baseline"

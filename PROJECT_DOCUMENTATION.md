@@ -256,76 +256,49 @@ Configured in `lib/motion.ts` and `lib/useMotionOK.ts`:
 
 All quantitative claims, career dates, contact links, and skills across the site are defined in the `content/` directory. **Never hardcode metrics inside JSX pages.**
 
-### 5.1 `content/facts.ts`
-Contains all authoritative constants:
+### 5.1 `content/facts.ts` (SSOT Hub)
+Acts as the central export gateway. Contains authoritative core constants and re-exports domain data:
 
 ```typescript
-// Contacts
-export const CONTACT_INFO = {
-  email: "rajesh.ai.engineer@outlook.com",
-  linkedin: "https://linkedin.com/in/rajesh-kumar-ai",
-  github: "https://github.com/rajesh-kumar-s",
-  resumeUrl: "/resume.pdf",
-};
+// Contacts, Candidate Core Identity, and Telemetry Numbers
+export const CONTACT_INFO = { ... };
+export const IDENTITY = { ... };
+export const VERIFIED_NUMBERS = { ... };
 
-// Candidate Core Identity
-export const IDENTITY = {
-  name: "Rajesh Kumar S",
-  headlineRole: "AI Engineer & Team Lead · Computer Vision and Generative AI",
-  location: "Bangalore, India",
-  yearsExperience: "4+",
-  teamSizeLed: "3–5 engineers",
-  noticePeriod: "90 days",
-  replyTime: "within 24 hours",
-  availabilityStatus: "Available for hire · 90-day notice · Bangalore, India",
-  targetRoles: "Lead AI Engineer, Staff Computer Vision Engineer, Staff GenAI Systems Architect",
-  timezone: "IST (UTC+5:30), flexible for US and European working hours",
-  shortSummary: "I build production AI systems that see, reason and scale...",
-};
-
-// Verified Telemetry & Production Benchmark Numbers
-export const VERIFIED_NUMBERS = {
-  camerasCount: "130+",
-  hardware: "2x NVIDIA L4 GPUs (24 GB each, 48 GB total)",
-  modelMemoryNaive: "~32.5 GB",
-  modelMemoryCentralized: "~5 GB",
-  memoryReduction: "~6.5x less",
-  throughputPrimaryMean: "192 req/s average",
-  yolo26ExecutionMean: "107 ms",
-  yolo26QueueLatencyMean: "90.7 ms",
-  latencyEndToEnd: "141 ms",
-  streamRateAvg: "7.47 FPS",
-  hostCpuUtilization: "80.1%",
-  hostRamUtilization: "87.7%",
-  clusterCapacity: "88% sustained load",
-  aiUseCasesCount: "25+",
-  clientDeploymentsCount: "5+",
-  costReductionCloudGpu: "62% lower monthly cloud GPU cost",
-  falseAlarmsReduction: "74% fewer false safety alarms",
-  costSavingsPerCluster: "$3,400/month saved per deployed cluster (dynamic request batching)",
-  edubotixIngestionSpeed: ">70% faster",
-  edubotixScientificTools: "9",
-  analyticsPipelines: "2 pipelines (Ask and Watch)",
-  analyticsMcpServers: "2 MCP servers",
-  analyticsWriteAccess: "SELECT-only database access",
-  // ...
-};
-
-// Collections: PROOF_METRICS, AT_A_GLANCE_METRICS, EXPERIENCE_ROLES, PROJECTS, HOW_IT_WORKS_STEPS
+// Re-exports from domain-specific data modules
+export * from "./contactData";
+export * from "./caseStudiesData";
+export * from "./experienceData";
 ```
 
-### 5.2 `content/skills.ts`
-Defines the 4 primary skill domains with scannable, highlighted tool/algorithm badges:
-1. **Computer Vision:** `130+ cameras analysed live`, `25+ AI features delivered` (PyTorch, TensorFlow, ONNX, YOLOv11, YOLO26, DINOv3, RetinaFace, ArcFace, ByteTrack, OpenCV, Object detection, Pose estimation, Face recognition, Multi-object tracking).
-2. **Generative AI & Agents:** `3 AI systems built` (LangChain, LangGraph, MCP/FastMCP, RAG, Deep Agents, Vision-Language Models/Gemma, OpenAI, Gemini, Ollama, AWS Bedrock).
-3. **Fast, Efficient AI:** `~6.5x less GPU memory`, `62% lower cloud GPU cost` (Triton Inference Server, TensorRT, ONNX Runtime, CUDA, NVIDIA Nsight Compute, NVIDIA NGC, gRPC, NVIDIA Jetson).
-4. **Reliable Systems & Leadership:** `3–5 engineers led` (Python, Multiprocessing systems, Event-driven pipelines, Distributed inference, FastAPI, PostgreSQL, MongoDB, Qdrant, ChromaDB, Docker, Git & GitHub, LangSmith, Guardrails, Prometheus & Grafana).
+### 5.2 Domain Data Modules (`content/`)
+To prevent hardcoded copy in JSX presentation files, all page narrative, FAQ disclosures, challenges, contributions, and benchmarks are split into focused domain files:
 
-### 5.3 `content/heroScenes.ts`
-Contains simulation dialogues and step sequences for the interactive Hero demo:
-- **Watch:** `VisionFacts.ai` live camera grid simulation, alerts for missing helmet, forklift proximity, restricted zone intrusion, fall detection.
-- **Ask:** `Analytics Agent` multi-agent query trace correlating gate entries with attendance and email dispatch.
-- **Learn:** `Edubotix` STEM tutor calculating speed-distance formula using Pint & SymPy with textbook page citations.
+1. **`content/contactData.ts`**:
+   - `RECRUITER_DOSSIER_TEXT`: Full text for candidate terminal export.
+   - `CANDIDATE_FACTS`: Quick metadata strip for recruiter assessment.
+   - `CORE_VALUE_CARDS`: The 4 hiring pillars (High-Throughput CV, Autonomous GenAI, Cost Efficiency, Production Leadership).
+   - `CONTACT_FAQS`: Structured FAQ entries with answer lists, ideal roles, and compensation transparency.
+
+2. **`content/caseStudiesData.ts`**:
+   - `VISIONFACTS_OVERVIEW`, `ANALYTICS_AGENT_OVERVIEW`, `EDUBOTIX_OVERVIEW`: Hero typography, plain-English explainer, 3-metric strips, and problem/solution texts.
+   - `VISIONFACTS_STAGES`, `VISIONFACTS_SIMULATED_CAMERAS`, `VISIONFACTS_CHALLENGES`, `VISIONFACTS_CONTRIBUTIONS`, `VISIONFACTS_TECH_PILLARS`.
+   - `ANALYTICS_ASK_STEPS`, `ANALYTICS_WATCH_STEPS`, `ANALYTICS_AGENT_CHALLENGES`, `ANALYTICS_AGENT_CONTRIBUTIONS`, `ANALYTICS_AGENT_RESULTS`.
+   - `EDUBOTIX_COMPONENTS`, `EDUBOTIX_CHALLENGES`, `EDUBOTIX_CONTRIBUTIONS`, `EDUBOTIX_RESULTS`, `EDUBOTIX_TECH_PILLARS`.
+
+3. **`content/experienceData.ts`**:
+   - `EXPERIENCE_HERO_METRICS`: 4 hero telemetry numerals.
+   - `NEXTBRAIN_ROLE_METRICS` & `SS_AUTO_ROLE_METRICS`: Ruled metrics for individual role chapters.
+   - `LEADERSHIP_STAGES`: 3-stage team leadership and profiling protocol.
+   - `BLUEPRINT_NODES`: The 4 pipeline nodes (Ingest, Transport, Inference, Dispatch).
+   - `DRDO_RADAR_ROWS`: Radar data processing and telemetry validation specs.
+   - `TIMELINE_SCRUBBER_CLIPS`: Interactive filmstrip scrubber segments.
+
+4. **`content/skills.ts`**:
+   - Defines the 4 primary skill domains with scannable, highlighted tool/algorithm badges.
+
+5. **`content/heroScenes.ts`**:
+   - Contains simulation dialogues and step sequences for the interactive Hero demo (Watch, Ask, Learn).
 
 ---
 

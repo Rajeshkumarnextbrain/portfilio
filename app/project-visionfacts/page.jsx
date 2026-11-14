@@ -7,6 +7,12 @@ import {
   IDENTITY,
   VERIFIED_NUMBERS,
   PROJECTS,
+  VISIONFACTS_OVERVIEW,
+  VISIONFACTS_STAGES,
+  VISIONFACTS_SIMULATED_CAMERAS,
+  VISIONFACTS_CHALLENGES,
+  VISIONFACTS_CONTRIBUTIONS,
+  VISIONFACTS_TECH_PILLARS,
 } from "@/content/facts";
 
 import { CountUp } from "@/components/motion/CountUp";
@@ -16,57 +22,6 @@ import { Reveal } from "@/components/motion/Reveal";
 import { FlowToken } from "@/components/motion/FlowToken";
 import { StickyJumpBar } from "@/components/project/StickyJumpBar";
 import { ProblemSolutionRow } from "@/components/project/ProblemSolutionRow";
-
-const VISIONFACTS_STAGES = [
-  {
-    number: '01',
-    plainTitle: 'RTSP Ingest',
-    plainDesc: 'Continuous RTSP video streams received over gigabit networks from 130+ cameras.',
-    techDesc: 'H.264 / H.265 HW NVDEC decode into pinned memory.',
-  },
-  {
-    number: '02',
-    plainTitle: 'Process Isolation',
-    plainDesc: 'One isolated Python worker per camera ensures single drops never disrupt neighbors.',
-    techDesc: 'Multiprocessing isolation with zero cross-feed interference.',
-  },
-  {
-    number: '03',
-    plainTitle: 'NVDEC Decode',
-    plainDesc: 'Decodes frames directly in GPU memory with zero CPU saturation.',
-    techDesc: 'Pinned memory zero-copy decode buffers.',
-  },
-  {
-    number: '04',
-    plainTitle: 'Zero-Copy Inference',
-    plainDesc: 'Frames pass via CUDA IPC shared memory to centralized Triton without CPU PCIe copies.',
-    techDesc: 'Triton + TensorRT FP32 primary model (192 req/s mean).',
-  },
-  {
-    number: '05',
-    plainTitle: 'Rule Logic',
-    plainDesc: 'Evaluates spatial geofences, pose angles, and dwell timers against detected objects.',
-    techDesc: 'Spatial polygon intersection & ByteTrack temporal tracking.',
-  },
-  {
-    number: '06',
-    plainTitle: 'VLM Reasoning',
-    plainDesc: 'Gemma 3 E4B audits edge cases and cuts false safety alarms by 74%.',
-    techDesc: 'Zero-shot prompt verification on incident crops.',
-  },
-  {
-    number: '07',
-    plainTitle: 'Persistence',
-    plainDesc: 'Structured incident JSON documents, crop images, and audit evidence committed to MongoDB.',
-    techDesc: 'MongoDB timeseries & Redis pub/sub queue.',
-  },
-  {
-    number: '08',
-    plainTitle: 'Client Alerting',
-    plainDesc: 'Pushes real-time alerts and telemetry to client web dashboards in under 150 ms.',
-    techDesc: 'FastAPI async change streams & WebSockets.',
-  },
-];
 
 const JUMP_SECTIONS = [
   { id: 'overview', label: 'Overview' },
@@ -100,21 +55,21 @@ export default function VisionFactsFlagshipPage() {
                 </span>
               </div>
               <span className="font-label-timecode text-xs text-secondary font-medium">
-                FLAGSHIP VIDEO ANALYTICS PLATFORM
+                {VISIONFACTS_OVERVIEW.tagline}
               </span>
             </div>
 
             {/* Mega Headline */}
             <div className="flex flex-col gap-4">
               <h1 className="font-mega-display text-[36px] xs:text-[48px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
-                Teaching<br />
+                {VISIONFACTS_OVERVIEW.headlinePre}<br />
                 <span className="bg-signal-orange-tint text-secondary px-3 py-0.5 inline-block -rotate-1">
-                  {VERIFIED_NUMBERS.camerasCount} cameras
+                  {VISIONFACTS_OVERVIEW.headlineHighlight}
                 </span><br />
-                to watch.
+                {VISIONFACTS_OVERVIEW.headlinePost}
               </h1>
               <p className="font-body-lg text-sm sm:text-base md:text-lg text-ink-muted max-w-3xl leading-relaxed">
-                A production computer vision platform that transforms standard CCTV feeds into automated, real-time safety, security, and operational intelligence for manufacturing plants, logistics hubs, and warehouses.
+                {VISIONFACTS_OVERVIEW.leadParagraph}
               </p>
             </div>
 
@@ -129,32 +84,20 @@ export default function VisionFactsFlagshipPage() {
                 </div>
 
                 <p className="font-body-lg text-sm sm:text-base text-on-surface leading-relaxed">
-                  Instead of forcing security operators to stare at dozens of video monitors, this system runs AI directly on {VERIFIED_NUMBERS.camerasCount} live camera streams to detect missing hardhats, intrusions into hazardous zones, falls, forklift traffic hazards, and equipment blockages in real time—instantly alerting floor supervisors before accidents happen.
+                  {VISIONFACTS_OVERVIEW.plainEnglish}
                 </p>
 
                 {/* 3-Number Result Strip with CountUp */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-line py-4">
-                  <div className="flex flex-col">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-on-surface">
-                      <CountUp value={VERIFIED_NUMBERS.camerasCount} />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">Cameras Analysed Live</span>
-                    <span className="text-xs text-ink-muted mt-1">112 online in 30-min Grafana snapshot</span>
-                  </div>
-                  <div className="flex flex-col sm:border-l sm:border-line sm:pl-4">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-secondary">
-                      <CountUp value="~6.5x less" />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">GPU Model Memory</span>
-                    <span className="text-xs text-ink-muted mt-1">~5 GB Triton vs ~32.5 GB per-camera copies</span>
-                  </div>
-                  <div className="flex flex-col sm:border-l sm:border-line sm:pl-4">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-on-surface">
-                      <CountUp value="74%" />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">Fewer False Safety Alarms</span>
-                    <span className="text-xs text-ink-muted mt-1">Zero-shot reasoning via Gemma 3 E4B VLM</span>
-                  </div>
+                  {VISIONFACTS_OVERVIEW.stripMetrics.map((metric, idx) => (
+                    <div key={metric.label} className={`flex flex-col ${idx > 0 ? 'sm:border-l sm:border-line sm:pl-4' : ''}`}>
+                      <span className={`font-metric-numeral text-2xl sm:text-3xl font-bold ${metric.highlight ? 'text-secondary' : 'text-on-surface'}`}>
+                        <CountUp value={metric.value} />
+                      </span>
+                      <span className="font-label-sm text-xs text-secondary font-semibold uppercase">{metric.label}</span>
+                      <span className="text-xs text-ink-muted mt-1">{metric.detail}</span>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Metadata Block */}
@@ -199,49 +142,18 @@ export default function VisionFactsFlagshipPage() {
               <span className="absolute -bottom-2 -right-2 text-primary font-headline-lg select-none leading-none">⌟</span>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 bg-on-surface p-2">
-                <div className="aspect-video bg-neutral-900 text-white p-3 flex flex-col justify-between border border-neutral-800">
-                  <div className="flex justify-between items-center text-[10px] font-label-timecode">
-                    <span>CAM_01 · LOGISTICS_DOCK</span>
-                    <span className="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+                {VISIONFACTS_SIMULATED_CAMERAS.map((cam) => (
+                  <div key={cam.id} className="aspect-video bg-neutral-900 text-white p-3 flex flex-col justify-between border border-neutral-800">
+                    <div className="flex justify-between items-center text-[10px] font-label-timecode">
+                      <span>{cam.id} · {cam.name}</span>
+                      <span className="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+                    </div>
+                    <div className="border border-secondary/80 p-1 bg-secondary/10 self-center w-3/4 text-center">
+                      <span className="text-[10px] font-mono text-secondary uppercase font-bold">{cam.detection}</span>
+                    </div>
+                    <span className="text-[9px] text-neutral-400 font-label-timecode">FPS: {cam.fps} · LATENCY: {cam.latency}</span>
                   </div>
-                  <div className="border border-secondary/80 p-1 bg-secondary/10 self-center w-3/4 text-center">
-                    <span className="text-[10px] font-mono text-secondary uppercase font-bold">FORKLIFT 0.94</span>
-                  </div>
-                  <span className="text-[9px] text-neutral-400 font-label-timecode">FPS: 7.5 · LATENCY: 104 ms</span>
-                </div>
-
-                <div className="aspect-video bg-neutral-900 text-white p-3 flex flex-col justify-between border border-neutral-800">
-                  <div className="flex justify-between items-center text-[10px] font-label-timecode">
-                    <span>CAM_14 · ASSEMBLY_LINE</span>
-                    <span className="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
-                  </div>
-                  <div className="border border-secondary/80 p-1 bg-secondary/10 self-center w-3/4 text-center">
-                    <span className="text-[10px] font-mono text-secondary uppercase font-bold">PPE: NO HARDHAT</span>
-                  </div>
-                  <span className="text-[9px] text-neutral-400 font-label-timecode">FPS: 7.4 · LATENCY: 98 ms</span>
-                </div>
-
-                <div className="aspect-video bg-neutral-900 text-white p-3 flex flex-col justify-between border border-neutral-800">
-                  <div className="flex justify-between items-center text-[10px] font-label-timecode">
-                    <span>CAM_42 · NORTH_PERIMETER</span>
-                    <span className="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
-                  </div>
-                  <div className="border border-secondary/80 p-1 bg-secondary/10 self-center w-3/4 text-center">
-                    <span className="text-[10px] font-mono text-secondary uppercase font-bold">INTRUSION DETECTED</span>
-                  </div>
-                  <span className="text-[9px] text-neutral-400 font-label-timecode">FPS: 7.8 · LATENCY: 112 ms</span>
-                </div>
-
-                <div className="aspect-video bg-neutral-900 text-white p-3 flex flex-col justify-between border border-neutral-800">
-                  <div className="flex justify-between items-center text-[10px] font-label-timecode">
-                    <span>CAM_88 · STORAGE_BAY</span>
-                    <span className="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
-                  </div>
-                  <div className="border border-secondary/80 p-1 bg-secondary/10 self-center w-3/4 text-center">
-                    <span className="text-[10px] font-mono text-secondary uppercase font-bold">FALL INCIDENT 0.89</span>
-                  </div>
-                  <span className="text-[9px] text-neutral-400 font-label-timecode">FPS: 7.2 · LATENCY: 109 ms</span>
-                </div>
+                ))}
               </div>
 
               <div className="mt-2 flex flex-wrap items-center justify-between text-xs font-label-timecode text-ink-muted p-2 bg-paper-raised border-t border-line">
@@ -364,80 +276,21 @@ export default function VisionFactsFlagshipPage() {
             </div>
 
             <div className="flex flex-col border-t border-line divide-y divide-line">
-              {/* Fix 1 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  1. GPU Memory Duplication (32.5 GB Bottleneck)
+              {VISIONFACTS_CHALLENGES.map((fix) => (
+                <div key={fix.number} className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                  <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
+                    {fix.number}. {fix.title}
+                  </div>
+                  <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
+                    <strong className="text-on-surface block mb-1">Problem:</strong>
+                    {fix.problem}
+                  </div>
+                  <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
+                    <strong className="text-secondary block mb-1">Fix &amp; Result:</strong>
+                    {fix.fixResult}
+                  </div>
                 </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  Loading models inside each camera process duplicated weights across {VERIFIED_NUMBERS.camerasCount} feeds (130 × ~250 MB = ~32.5 GB), immediately exceeding single or dual GPU limits.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Centralized all model instances inside NVIDIA Triton with CUDA shared memory. Triton model memory dropped to ~2.5 GB per GPU (~5 GB combined)—an estimated ~6.5x model memory reduction.
-                </div>
-              </div>
-
-              {/* Fix 2 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  2. Host-to-Device Memory Transfer Overhead
-                </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  Copying 1080p frames between Python camera workers and the inference server via standard buffers saturated the PCIe bus and created frame drops.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Implemented zero-copy CUDA IPC shared memory. Camera workers place decoded tensors directly into shared GPU memory handles that Triton reads with zero memory thrashing.
-                </div>
-              </div>
-
-              {/* Fix 3 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  3. Dynamic VRAM Safety Buffer (1,500 MB)
-                </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  Varying camera resolutions and sudden burst workloads risked out-of-memory (OOM) GPU crashes across dual L4 GPUs.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Engineered dynamic VRAM allocation: budgeted 290 MB per camera process with a mandatory 1,500 MB safety buffer reserved per GPU, eliminating all OOM crashes in production.
-                </div>
-              </div>
-
-              {/* Fix 4 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  4. Shared Primary Detection Multi-Tasking
-                </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  Running separate inference passes per camera for hardhats, vests, intrusion, and phone usage multiplied GPU loads by 4–5x.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  A single primary YOLO26 pass detects base objects; all downstream safety rules evaluate that single detection tensor, slashing duplicate inference passes.
-                </div>
-              </div>
-
-              {/* Fix 5 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  5. On-Premises Intellectual Property Protection
-                </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  Enterprise clients required deployment on private local servers, exposing proprietary Python source code to tampering.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Compiled all Python application modules into stripped native C-extension shared objects (.so) using Nuitka, containerized in hardened Docker images.
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -537,41 +390,16 @@ export default function VisionFactsFlagshipPage() {
             </div>
 
             <div className="flex flex-col border-t border-line divide-y divide-line">
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  Architecture &amp; Systems Design
-                </span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Designed the multiprocessing stream isolation model, centralized Triton serving architecture, and shared primary detection pattern.
-                </span>
-              </div>
-
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  GPU &amp; Memory Optimization
-                </span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Compiled TensorRT FP32 engines, implemented CUDA shared memory IPC, dynamic memory budgeting, and the 1,500 MB safety buffer.
-                </span>
-              </div>
-
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  Model &amp; Multimodal Integration
-                </span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Integrated YOLO26 object detection, pose estimation, face verification, and Gemma 3 E4B VLM zero-shot reasoning.
-                </span>
-              </div>
-
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  Packaging &amp; Observability
-                </span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Compiled native .so binaries with Nuitka, authored Docker Compose deployments, and created Prometheus/Grafana telemetry.
-                </span>
-              </div>
+              {VISIONFACTS_CONTRIBUTIONS.map((item, idx) => (
+                <div key={idx} className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
+                  <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
+                    {item.area}
+                  </span>
+                  <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
+                    {item.detail}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -591,25 +419,12 @@ export default function VisionFactsFlagshipPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">PIPELINE &amp; VISION</span>
-                <span className="text-xs font-semibold text-on-surface">Python 3.10+, OpenCV, PyTorch, YOLO26, ByteTrack</span>
-              </div>
-
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">ACCELERATION &amp; SERVING</span>
-                <span className="text-xs font-semibold text-on-surface">NVIDIA Triton, TensorRT FP32, CUDA IPC, Pinned Memory</span>
-              </div>
-
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">BACKEND &amp; STORAGE</span>
-                <span className="text-xs font-semibold text-on-surface">FastAPI, MongoDB, Redis, WebSockets</span>
-              </div>
-
-              <div className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
-                <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">MULTIMODAL &amp; PACKAGING</span>
-                <span className="text-xs font-semibold text-on-surface">Gemma 3 E4B VLM, Nuitka (.so binaries), Docker</span>
-              </div>
+              {VISIONFACTS_TECH_PILLARS.map((pillar, idx) => (
+                <div key={idx} className="p-4 bg-paper-raised border border-line flex flex-col gap-2">
+                  <span className="font-label-sm text-[10px] text-secondary uppercase font-bold">{pillar.category}</span>
+                  <span className="text-xs font-semibold text-on-surface">{pillar.items}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>

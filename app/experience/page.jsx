@@ -4,6 +4,10 @@ import {
   IDENTITY,
   VERIFIED_NUMBERS,
   EXPERIENCE_ROLES,
+  EXPERIENCE_HERO_METRICS,
+  LEADERSHIP_STAGES,
+  NEXTBRAIN_ROLE_METRICS,
+  SS_AUTO_ROLE_METRICS,
 } from "@/content/facts";
 
 import { ExperienceScrubber } from "@/components/experience/ExperienceScrubber";
@@ -82,34 +86,28 @@ export default function ExperiencePage() {
 
             {/* Ruled Metric Register with CountUp */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border-y border-line py-space-lg">
-              <div className="flex flex-col p-4 border-b sm:border-b-0 sm:border-r border-line">
-                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
-                  <CountUp value="4+" />
-                </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">YEARS PROD AI</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-1">End-to-end edge &amp; cloud execution</span>
-              </div>
-              <div className="flex flex-col p-4 border-b sm:border-b-0 lg:border-r border-line">
-                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
-                  <CountUp value="130+" />
-                </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">CONCURRENT RTSP</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-1">Multi-model Triton &amp; CUDA IPC</span>
-              </div>
-              <div className="flex flex-col p-4 border-b sm:border-b-0 sm:border-r border-line">
-                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
-                  &lt; 3s
-                </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">AGENT QUERY TURNAROUND</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-1">LangGraph + FastMCP vs 24-hr DBA wait</span>
-              </div>
-              <div className="flex flex-col p-4">
-                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
-                  <CountUp value="3–5" />
-                </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">ENGINEERS LED</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-1">Sprint delivery &amp; architecture</span>
-              </div>
+              {EXPERIENCE_HERO_METRICS.map((metric, idx) => (
+                <div
+                  key={idx}
+                  className={`flex flex-col p-4 border-b sm:border-b-0 ${
+                    idx < 3 ? 'sm:border-r' : ''
+                  } border-line`}
+                >
+                  <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
+                    {metric.value.startsWith('<') ? (
+                      metric.value
+                    ) : (
+                      <CountUp value={metric.value} />
+                    )}
+                  </span>
+                  <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">
+                    {metric.label}
+                  </span>
+                  <span className="font-body-sm text-body-sm text-ink-muted mt-1">
+                    {metric.detail}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -161,34 +159,22 @@ export default function ExperiencePage() {
 
             {/* Ruled Numbers Strip (4 Metrics: 2 CV, 2 GenAI) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-y border-line py-space-lg gap-6">
-              <div className="flex flex-col">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
-                  <CountUp value={VERIFIED_NUMBERS.camerasCount} />
-                </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">CAMERAS LIVE</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">Multi-stream video analytics on 2x L4 GPUs</span>
-              </div>
-              <div className="flex flex-col sm:border-l sm:border-line sm:pl-6">
-                <span className="font-metric-numeral text-headline-lg font-bold text-secondary">
-                  &lt; 3s
-                </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">AGENT RESPONSE</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">LangGraph + FastMCP vs 24-hr DBA queue</span>
-              </div>
-              <div className="flex flex-col lg:border-l lg:border-line lg:pl-6">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
-                  <CountUp value="74%" />
-                </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">FEWER FALSE ALARMS</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">Zero-shot Gemma 3 E4B VLM reasoning</span>
-              </div>
-              <div className="flex flex-col sm:border-l sm:border-line sm:pl-6">
-                <span className="font-metric-numeral text-headline-lg font-bold text-secondary">
-                  <CountUp value="62%" />
-                </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">LOWER GPU COST</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">$3,400/mo saved via centralized Triton serving</span>
-              </div>
+              {NEXTBRAIN_ROLE_METRICS.map((metric, idx) => (
+                <div
+                  key={metric.label}
+                  className={`flex flex-col ${idx > 0 ? (idx === 2 ? 'lg:border-l lg:border-line lg:pl-6 sm:border-l sm:border-line sm:pl-6' : 'sm:border-l sm:border-line sm:pl-6') : ''}`}
+                >
+                  <span className={`font-metric-numeral text-headline-lg font-bold ${metric.highlight ? 'text-secondary' : 'text-on-surface'}`}>
+                    {metric.value.startsWith('<') ? metric.value : <CountUp value={metric.value} />}
+                  </span>
+                  <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">
+                    {metric.label}
+                  </span>
+                  <span className="font-body-sm text-body-sm text-ink-muted">
+                    {metric.detail}
+                  </span>
+                </div>
+              ))}
             </div>
 
             {/* Plain-English Responsibility Rows Stagger */}
@@ -365,23 +351,19 @@ export default function ExperiencePage() {
 
             {/* Ruled Numbers Strip */}
             <div className="grid grid-cols-1 md:grid-cols-3 border-y border-line py-space-lg gap-6">
-              <div className="flex flex-col">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
-                  <CountUp value="70–85%" />
-                </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">DEFECT DETECTION ACCURACY</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">On factory lines with variable reflections</span>
-              </div>
-              <div className="flex flex-col md:border-l md:border-line md:pl-6">
-                <span className="font-headline-lg text-headline-lg font-bold text-on-surface">Jetson</span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">EMBEDDED EDGE HARDWARE</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">NVIDIA Nano &amp; Xavier NX edge inference</span>
-              </div>
-              <div className="flex flex-col md:border-l md:border-line md:pl-6">
-                <span className="font-headline-lg text-headline-lg font-bold text-on-surface">PLC</span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">INDUSTRIAL INTEGRATION</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">Hardware triggers and pneumatic line reject mechanisms</span>
-              </div>
+              {SS_AUTO_ROLE_METRICS.map((metric, idx) => (
+                <div key={metric.label} className={`flex flex-col ${idx > 0 ? 'md:border-l md:border-line md:pl-6' : ''}`}>
+                  <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
+                    {metric.value.includes('%') ? <CountUp value={metric.value} /> : metric.value}
+                  </span>
+                  <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">
+                    {metric.label}
+                  </span>
+                  <span className="font-body-sm text-body-sm text-ink-muted">
+                    {metric.detail}
+                  </span>
+                </div>
+              ))}
             </div>
 
             {/* Plain-English Responsibility Rows */}
@@ -519,64 +501,40 @@ export default function ExperiencePage() {
               </p>
             </div>
 
-            {/* 3 Plain-English Leadership Rows with Hover Fill */}
+            {/* Plain-English Leadership Rows with Hover Fill */}
             <div className="flex flex-col border-t border-line">
-              <div className="py-space-xl px-6 bg-paper-raised hover:bg-primary hover:text-on-primary focus-visible:bg-primary focus-visible:text-on-primary text-on-surface border-b border-line flex flex-col lg:flex-row lg:items-center justify-between gap-6 transition-colors duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary" tabIndex={0}>
-                <div className="flex flex-col gap-2 max-w-3xl">
-                  <div className="flex items-center gap-2 font-label-sm text-xs text-secondary group-hover:text-secondary-fixed group-focus-visible:text-secondary-fixed font-semibold uppercase">
-                    <span>STAGE 01 · TEAM LEADERSHIP &amp; PROFILING</span>
+              {LEADERSHIP_STAGES.map((stage, idx) => (
+                <div
+                  key={idx}
+                  className={`py-space-xl px-6 ${
+                    stage.isFirst ? 'bg-paper-raised' : 'bg-paper-sunken'
+                  } hover:bg-primary hover:text-on-primary focus-visible:bg-primary focus-visible:text-on-primary text-on-surface border-b border-line flex flex-col lg:flex-row lg:items-center justify-between gap-6 transition-colors duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary`}
+                  tabIndex={0}
+                >
+                  <div className="flex flex-col gap-2 max-w-3xl">
+                    <div className="flex items-center gap-2 font-label-sm text-xs text-secondary group-hover:text-secondary-fixed group-focus-visible:text-secondary-fixed font-semibold uppercase">
+                      <span>{stage.stage}</span>
+                    </div>
+                    <h3 className="font-headline-md text-headline-md text-on-surface group-hover:text-on-primary group-focus-visible:text-on-primary uppercase transition-colors">
+                      {stage.title}
+                    </h3>
+                    <p className="font-body-md text-body-md text-on-surface-variant group-hover:text-inverse-primary group-focus-visible:text-inverse-primary leading-relaxed transition-colors">
+                      {stage.description}
+                    </p>
                   </div>
-                  <h3 className="font-headline-md text-headline-md text-on-surface group-hover:text-on-primary group-focus-visible:text-on-primary uppercase transition-colors">
-                    Nsight GPU Profiling &amp; Bi-weekly Reviews
-                  </h3>
-                  <p className="font-body-md text-body-md text-on-surface-variant group-hover:text-inverse-primary group-focus-visible:text-inverse-primary leading-relaxed transition-colors">
-                    Led {IDENTITY.teamSizeLed} across computer vision and GenAI sprints. Instituted profiling checks using NVIDIA Nsight Systems and Nsight Compute, eliminating GPU memory leaks and CUDA race conditions before code merges to master.
-                  </p>
-                </div>
-                <div className="shrink-0">
-                  <span className="bg-secondary text-on-secondary group-hover:bg-primary-container group-hover:text-white px-3 py-1 font-label-sm text-xs uppercase font-semibold tracking-wider transition-colors">
-                    Bi-weekly Sprints
-                  </span>
-                </div>
-              </div>
-
-              <div className="py-space-xl px-6 bg-paper-sunken hover:bg-primary hover:text-on-primary focus-visible:bg-primary focus-visible:text-on-primary text-on-surface border-b border-line flex flex-col lg:flex-row lg:items-center justify-between gap-6 transition-colors duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary" tabIndex={0}>
-                <div className="flex flex-col gap-2 max-w-3xl">
-                  <div className="flex items-center gap-2 font-label-sm text-xs text-ink-muted group-hover:text-line group-focus-visible:text-line font-semibold uppercase">
-                    <span>STAGE 02 · OBSERVABILITY &amp; TELEMETRY</span>
+                  <div className="shrink-0">
+                    <span
+                      className={`${
+                        stage.isFirst
+                          ? 'bg-secondary text-on-secondary'
+                          : 'bg-paper-raised border border-line text-on-surface'
+                      } group-hover:bg-primary-container group-hover:text-white px-3 py-1 font-label-sm text-xs uppercase font-semibold tracking-wider transition-colors`}
+                    >
+                      {stage.badge}
+                    </span>
                   </div>
-                  <h3 className="font-headline-md text-headline-md text-on-surface group-hover:text-on-primary group-focus-visible:text-on-primary uppercase transition-colors">
-                    Real-Time Prometheus &amp; Grafana Monitoring
-                  </h3>
-                  <p className="font-body-md text-body-md text-on-surface-variant group-hover:text-inverse-primary group-focus-visible:text-inverse-primary leading-relaxed transition-colors">
-                    Built real-time telemetry dashboards tracking dropped frames, decode latency, model inference execution, and queue depth across {VERIFIED_NUMBERS.camerasCount} camera feeds, alongside LangSmith traces and AST guardrail observability for autonomous agent pipelines.
-                  </p>
                 </div>
-                <div className="shrink-0">
-                  <span className="bg-paper-raised group-hover:bg-primary-container group-hover:text-white border border-line text-on-surface px-3 py-1 font-label-sm text-xs uppercase font-semibold tracking-wider transition-colors">
-                    Zero Blindspots
-                  </span>
-                </div>
-              </div>
-
-              <div className="py-space-xl px-6 bg-paper-sunken hover:bg-primary hover:text-on-primary focus-visible:bg-primary focus-visible:text-on-primary text-on-surface border-b border-line flex flex-col lg:flex-row lg:items-center justify-between gap-6 transition-colors duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary" tabIndex={0}>
-                <div className="flex flex-col gap-2 max-w-3xl">
-                  <div className="flex items-center gap-2 font-label-sm text-xs text-ink-muted group-hover:text-line group-focus-visible:text-line font-semibold uppercase">
-                    <span>STAGE 03 · DEPLOYMENT RIGOR</span>
-                  </div>
-                  <h3 className="font-headline-md text-headline-md text-on-surface group-hover:text-on-primary group-focus-visible:text-on-primary uppercase transition-colors">
-                    Canary Rollouts &amp; Zero-Downtime Serving
-                  </h3>
-                  <p className="font-body-md text-body-md text-on-surface-variant group-hover:text-inverse-primary group-focus-visible:text-inverse-primary leading-relaxed transition-colors">
-                    Standardized model serving repositories on NVIDIA Triton with automated canary rollouts, strict version control, and health check validation, ensuring zero video analytics downtime during production model updates.
-                  </p>
-                </div>
-                <div className="shrink-0">
-                  <span className="bg-paper-raised group-hover:bg-primary-container group-hover:text-white border border-line text-on-surface px-3 py-1 font-label-sm text-xs uppercase font-semibold tracking-wider transition-colors">
-                    Zero Downtime
-                  </span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>

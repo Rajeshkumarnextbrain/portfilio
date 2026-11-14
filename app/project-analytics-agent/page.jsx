@@ -7,6 +7,12 @@ import {
   IDENTITY,
   VERIFIED_NUMBERS,
   PROJECTS,
+  ANALYTICS_AGENT_OVERVIEW,
+  ANALYTICS_ASK_STEPS,
+  ANALYTICS_WATCH_STEPS,
+  ANALYTICS_AGENT_CHALLENGES,
+  ANALYTICS_AGENT_CONTRIBUTIONS,
+  ANALYTICS_AGENT_RESULTS,
 } from "@/content/facts";
 
 import { CountUp } from "@/components/motion/CountUp";
@@ -17,60 +23,6 @@ import { StickyJumpBar } from "@/components/project/StickyJumpBar";
 import { AnimatedChatTrace } from "@/components/project/AnimatedChatTrace";
 import { ProblemSolutionRow } from "@/components/project/ProblemSolutionRow";
 import { ProxyPacketDiagram } from "@/components/project/ProxyPacketDiagram";
-
-const ASK_PIPELINE_STEPS = [
-  {
-    number: '01',
-    plainTitle: 'SSE Client Request',
-    plainDesc: 'Supervisor enters natural-language query streamed over Server-Sent Events.',
-    techDesc: 'FastAPI async SSE endpoint with token-by-token streaming.',
-  },
-  {
-    number: '02',
-    plainTitle: 'Schema Inspection',
-    plainDesc: 'Supervisor Agent queries describe_table via MCP tools across 5 domains.',
-    techDesc: 'FastMCP JSON-RPC schema introspection.',
-  },
-  {
-    number: '03',
-    plainTitle: 'AST Guardrail Verification',
-    plainDesc: 'Parses SQL abstract syntax tree to verify 100% read-only operations.',
-    techDesc: 'Zero destructive mutations: INSERT, UPDATE, DROP strictly blocked.',
-  },
-  {
-    number: '04',
-    plainTitle: 'Evidence Correlation',
-    plainDesc: 'Joins SQL results with physical camera crops from MongoDB.',
-    techDesc: 'Correlates timestamps with incident audit crops.',
-  },
-  {
-    number: '05',
-    plainTitle: 'Structured Response',
-    plainDesc: 'Delivers plain-English answer with data tables and clickable image crops.',
-    techDesc: 'Returns formatted markdown with signed image URLs in < 3s.',
-  },
-];
-
-const WATCH_PIPELINE_STEPS = [
-  {
-    number: '01',
-    plainTitle: 'Scheduled Trigger',
-    plainDesc: 'Cron scheduler fires 15 minutes prior to every facility shift change.',
-    techDesc: 'Celery Beat distributed periodic task runner.',
-  },
-  {
-    number: '02',
-    plainTitle: 'Cross-Domain Anomaly Scan',
-    plainDesc: 'Background agent audits zone dwell times, tailgating, and badge anomalies.',
-    techDesc: 'Parallel SQL aggregation across 8-hour shift windows.',
-  },
-  {
-    number: '03',
-    plainTitle: 'Automated Shift Digest',
-    plainDesc: 'Compiles PDF report and emails safety leadership before the shift handover starts.',
-    techDesc: 'FastAPI + Jinja2 PDF generation dispatched via SMTP.',
-  },
-];
 
 const JUMP_SECTIONS = [
   { id: 'overview', label: 'Overview' },
@@ -104,21 +56,21 @@ export default function AnalyticsAgentPage() {
                 </span>
               </div>
               <span className="font-label-timecode text-xs text-secondary font-medium">
-                MULTI-AGENT INTELLIGENCE
+                {ANALYTICS_AGENT_OVERVIEW.tagline}
               </span>
             </div>
 
             {/* Mega Headline */}
             <div className="flex flex-col gap-4">
               <h1 className="font-mega-display text-[36px] xs:text-[48px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
-                Ask the<br />
+                {ANALYTICS_AGENT_OVERVIEW.headlinePre}<br />
                 <span className="bg-signal-orange-tint text-secondary px-3 py-0.5 inline-block -rotate-1">
-                  cameras
+                  {ANALYTICS_AGENT_OVERVIEW.headlineHighlight}
                 </span><br />
-                anything.
+                {ANALYTICS_AGENT_OVERVIEW.headlinePost}
               </h1>
               <p className="font-body-lg text-sm sm:text-base md:text-lg text-ink-muted max-w-3xl leading-relaxed">
-                A multi-agent CCTV intelligence platform that lets operations and safety teams question surveillance and security records in plain English—and automatically delivers shift safety digests before they ask.
+                {ANALYTICS_AGENT_OVERVIEW.leadParagraph}
               </p>
             </div>
 
@@ -133,32 +85,20 @@ export default function AnalyticsAgentPage() {
                 </div>
 
                 <p className="font-body-lg text-sm sm:text-base text-on-surface leading-relaxed">
-                  Instead of waiting 24 to 48 hours for a database administrator to write custom SQL queries, warehouse directors and safety managers can ask natural-language questions like &ldquo;Which forklifts entered Gate 2 during shift change without a driver badge?&rdquo; The AI coordinates multiple specialized agents to check 5 data domains, verifies camera crop evidence, and replies with structured tables and images in under 3 seconds.
+                  {ANALYTICS_AGENT_OVERVIEW.plainEnglish}
                 </p>
 
                 {/* 3-Number Result Strip with CountUp */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-line py-4">
-                  <div className="flex flex-col">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-on-surface">
-                      <CountUp value={VERIFIED_NUMBERS.analyticsPipelines} />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">Execution Pipelines</span>
-                    <span className="text-xs text-ink-muted mt-1">Interactive &ldquo;Ask&rdquo; + Autonomous &ldquo;Watch&rdquo;</span>
-                  </div>
-                  <div className="flex flex-col sm:border-l sm:border-line sm:pl-4">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-secondary">
-                      <CountUp value={VERIFIED_NUMBERS.analyticsMcpServers} />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">MCP Servers</span>
-                    <span className="text-xs text-ink-muted mt-1">Model Context Protocol for database and CCTV tools</span>
-                  </div>
-                  <div className="flex flex-col sm:border-l sm:border-line sm:pl-4">
-                    <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-on-surface">
-                      <CountUp value="5" />
-                    </span>
-                    <span className="font-label-sm text-xs text-secondary font-semibold uppercase">Data Domains Guarded</span>
-                    <span className="text-xs text-ink-muted mt-1">{VERIFIED_NUMBERS.analyticsWriteAccess} (SELECT-only read operations)</span>
-                  </div>
+                  {ANALYTICS_AGENT_OVERVIEW.stripMetrics.map((metric, idx) => (
+                    <div key={metric.label} className={`flex flex-col ${idx > 0 ? 'sm:border-l sm:border-line sm:pl-4' : ''}`}>
+                      <span className={`font-metric-numeral text-2xl sm:text-3xl font-bold ${metric.highlight ? 'text-secondary' : 'text-on-surface'}`}>
+                        <CountUp value={metric.value} />
+                      </span>
+                      <span className="font-label-sm text-xs text-secondary font-semibold uppercase">{metric.label}</span>
+                      <span className="text-xs text-ink-muted mt-1">{metric.detail}</span>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Metadata Block */}
@@ -217,8 +157,8 @@ export default function AnalyticsAgentPage() {
 
             {/* 2-Column Split: Problem vs Solution with Animated ProblemSolutionRow */}
             <ProblemSolutionRow
-              problemText={`VisionFacts.ai continuously tracks thousands of physical events across ${VERIFIED_NUMBERS.camerasCount} cameras. However, warehouse managers and safety supervisors had no direct SQL skills to query this data. Analyzing cross-domain incidents (e.g. linking a vehicle entry with missing worker badges) required raising IT tickets with 24-to-48 hour response delays.`}
-              solutionText="Built a dual-pipeline architecture using LangGraph and MCP. The &ldquo;Ask&rdquo; pipeline allows interactive natural language questions over Server-Sent Events, while the &ldquo;Watch&rdquo; pipeline runs autonomous background audits and emails shift digests before supervisors arrive."
+              problemText={ANALYTICS_AGENT_OVERVIEW.problem}
+              solutionText={ANALYTICS_AGENT_OVERVIEW.solution}
             />
           </div>
         </section>
@@ -252,7 +192,7 @@ export default function AnalyticsAgentPage() {
               <h3 className="font-headline-md text-lg sm:text-xl font-bold text-on-surface uppercase">
                 Pipeline 1: Interactive &ldquo;Ask&rdquo; Workflow
               </h3>
-              <FlowToken steps={ASK_PIPELINE_STEPS} />
+              <FlowToken steps={ANALYTICS_ASK_STEPS} />
             </div>
 
             {/* Pipeline 2: Watch Pipeline */}
@@ -260,7 +200,7 @@ export default function AnalyticsAgentPage() {
               <h3 className="font-headline-md text-lg sm:text-xl font-bold text-on-surface uppercase">
                 Pipeline 2: Autonomous &ldquo;Watch&rdquo; Workflow
               </h3>
-              <FlowToken steps={WATCH_PIPELINE_STEPS} />
+              <FlowToken steps={ANALYTICS_WATCH_STEPS} />
             </div>
           </div>
         </section>
@@ -280,55 +220,24 @@ export default function AnalyticsAgentPage() {
             </div>
 
             <div className="flex flex-col border-t border-line divide-y divide-line">
-              {/* Fix 1 */}
-              <div className="py-6 flex flex-col gap-4">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                  <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                    1. LAN Snapshot Proxy Security Isolation
+              {ANALYTICS_AGENT_CHALLENGES.map((fix) => (
+                <div key={fix.number} className="py-6 flex flex-col gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                    <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
+                      {fix.number}. {fix.title}
+                    </div>
+                    <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
+                      <strong className="text-on-surface block mb-1">Problem:</strong>
+                      {fix.problem}
+                    </div>
+                    <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
+                      <strong className="text-secondary block mb-1">Fix &amp; Result:</strong>
+                      {fix.fixResult}
+                    </div>
                   </div>
-                  <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                    <strong className="text-on-surface block mb-1">Problem:</strong>
-                    CCTV cameras resided on private, isolated local networks. Directly querying snapshots from client browsers violated perimeter network security policies.
-                  </div>
-                  <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                    <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                    Built a secure snapshot proxy inside FastAPI: browser requests pass through an authenticated proxy that validates camera IDs against an allowlist and forwards approved feeds from the LAN without exposing cameras directly.
-                  </div>
+                  {fix.number === '1' && <ProxyPacketDiagram />}
                 </div>
-
-                {/* Animated Packet Flow Diagram */}
-                <ProxyPacketDiagram />
-              </div>
-
-              {/* Fix 2 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  2. AST Validation Against Data Loss
-                </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  LLMs generating arbitrary SQL risked destructive operations (DELETE, UPDATE, DROP) or schema alterations against production database clusters.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Constructed an SQL AST validator that verifies queries are 100% SELECT operations. Rejects multiple statements, mutations, or unrecognized table references before execution.
-                </div>
-              </div>
-
-              {/* Fix 3 */}
-              <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                <div className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  3. Token Reduction via Dynamic MCP Introspection
-                </div>
-                <div className="md:col-span-4 text-xs text-ink-muted leading-relaxed">
-                  <strong className="text-on-surface block mb-1">Problem:</strong>
-                  Loading entire database schemas into the LLM system prompt consumed thousands of tokens per turn and increased latency.
-                </div>
-                <div className="md:col-span-4 text-xs text-on-surface leading-relaxed p-3 bg-paper-raised border border-line">
-                  <strong className="text-secondary block mb-1">Fix & Result:</strong>
-                  Designed dynamic MCP schema introspection: the agent queries table names first, then inspects only relevant columns for the query, cutting prompt token consumption by &gt;60%.
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -351,29 +260,15 @@ export default function AnalyticsAgentPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between">
-                <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">QUERY RESPONSE TIME</span>
-                <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-secondary mt-2">
-                  <CountUp value="< 3s" />
-                </span>
-                <span className="text-xs text-ink-faint mt-1">From question to structured answer &amp; evidence</span>
-              </div>
-
-              <div className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between">
-                <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">IT TICKET REDUCTION</span>
-                <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-surface mt-2">
-                  <CountUp value="85%" />
-                </span>
-                <span className="text-xs text-ink-faint mt-1">Fewer ad-hoc data requests to DBAs</span>
-              </div>
-
-              <div className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between">
-                <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">SECURITY WRITE AUDIT</span>
-                <span className="font-metric-numeral text-2xl sm:text-3xl font-bold text-surface mt-2">
-                  <CountUp value="0" />
-                </span>
-                <span className="text-xs text-ink-faint mt-1">Unauthorized database mutations across {VERIFIED_NUMBERS.analyticsWriteAccess}</span>
-              </div>
+              {ANALYTICS_AGENT_RESULTS.map((res, idx) => (
+                <div key={idx} className="p-4 bg-surface/5 border border-surface-container-highest/20 flex flex-col justify-between">
+                  <span className="font-label-sm text-xs text-ink-faint uppercase font-semibold">{res.label}</span>
+                  <span className={`font-metric-numeral text-2xl sm:text-3xl font-bold mt-2 ${res.highlight ? 'text-secondary' : 'text-surface'}`}>
+                    <CountUp value={res.value} />
+                  </span>
+                  <span className="text-xs text-ink-faint mt-1">{res.detail}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -393,32 +288,16 @@ export default function AnalyticsAgentPage() {
             </div>
 
             <div className="flex flex-col border-t border-line divide-y divide-line">
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  Multi-Agent StateGraph Architecture
-                </span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Architected the LangGraph state machine with dedicated supervisor, router, tool execution, and synthesis nodes.
-                </span>
-              </div>
-
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  MCP Tool Server Development
-                </span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Authored custom FastMCP servers exposing database schema introspection, SQL execution, and LAN camera snapshot proxying.
-                </span>
-              </div>
-
-              <div className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
-                <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
-                  SQL Guardrails &amp; Security
-                </span>
-                <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
-                  Implemented AST validation ensuring 100% read-only compliance, table whitelisting, and query execution timeouts.
-                </span>
-              </div>
+              {ANALYTICS_AGENT_CONTRIBUTIONS.map((item, idx) => (
+                <div key={idx} className="py-4 grid grid-cols-1 md:grid-cols-12 gap-4">
+                  <span className="md:col-span-4 font-headline-md text-base sm:text-lg font-bold text-on-surface">
+                    {item.area}
+                  </span>
+                  <span className="md:col-span-8 text-xs text-ink-muted leading-relaxed">
+                    {item.detail}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </section>

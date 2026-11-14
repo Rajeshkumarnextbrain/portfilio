@@ -16,7 +16,7 @@ export default function Footer() {
             </span>
           </div>
           <p className="font-body-md text-sm text-ink-muted leading-relaxed">
-            AI Engineer & Team Lead. I build software that watches cameras, answers questions about data, and tutors students from textbooks.
+            {IDENTITY.footerBio}
           </p>
         </div>
 

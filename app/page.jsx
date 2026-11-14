@@ -59,9 +59,11 @@ export default function HomePage() {
                     In simple terms, I build software that:
                   </p>
                   <ul className="mt-1.5 space-y-1 font-body-md text-xs sm:text-[13.5px] text-ink-muted list-disc list-inside">
-                    <li><strong className="text-primary font-semibold">Watches security cameras</strong> and spots safety hazards automatically while cutting GPU costs.</li>
-                    <li><strong className="text-primary font-semibold">Builds autonomous AI agents</strong> that answer data questions and dispatch shift reports in seconds.</li>
-                    <li><strong className="text-primary font-semibold">Tutors students from textbooks</strong> using verified calculation tools instead of AI guesswork.</li>
+                    {IDENTITY.simpleTermsBullets?.map((bullet, idx) => (
+                      <li key={idx}>
+                        <strong className="text-primary font-semibold">{bullet.title}</strong> {bullet.detail}
+                      </li>
+                    ))}
                   </ul>
                 </div>
 
