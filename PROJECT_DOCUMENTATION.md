@@ -549,18 +549,17 @@ Case study on a multimodal, curriculum-grounded academic tutor that avoids LLM c
 High-efficiency, friction-free portal for recruiters, hiring managers, and founders.
 
 #### Detailed Sections:
-1. **Chapter 0: Hero & Quick Actions:**
+1. **Chapter 0: Hero & Quick Actions (2-Column Desktop Grid):**
    - Header with status pill (`AVAILABLE FOR HIRE · 90-DAY NOTICE · WITHIN 24 HOURS`).
-   - Giant headline: *"Let's talk."*
-   - Target roles highlighted: *Lead AI Engineer, Staff Computer Vision Engineer, Staff GenAI Systems Architect*.
-   - Action buttons with `<CopyButton>` for one-click email copying, resume download, LinkedIn, and GitHub links.
+   - **Left Column (7 cols):** Giant headline *"Let's talk."*, target roles highlighted (*Lead AI Engineer, Staff Computer Vision Engineer, Staff GenAI Systems Architect*), and action buttons with `<CopyButton>` for one-click email copying, resume download, LinkedIn, and GitHub links.
+   - **Right Column (5 cols) — Executive Fast-Track Dossier Card:** High-contrast Swiss-style recruiter dossier highlighting the 50/50 CV & GenAI split, 130+ camera production scale, ~390 GB → 48 GB VRAM compaction, LangGraph/FastMCP agentic architecture, team leadership over 3–5 engineers, worldwide mobility, and a 1-click *"Copy Recruiter Dossier (Slack / ATS ready)"* action button.
    - **Candidate Facts Strip (5 Cards):** Looking For (Lead / Staff AI), Location (Bangalore; onsite/hybrid/remote/relocation open), Notice Period (90 days), Timezone (IST UTC+5:30, flexible), Reply Time (< 24 hours).
 2. **Chapter 1: Four Things I'm Hired For (Core Value Quadrants):**
    - 2x2 grid of cards featuring an animated signal-orange hairline hover top border:
-     - 01 // Real-Time Video & Vision (130+ cameras, Triton, DeepStream, ByteTrack)
-     - 02 // Multimodal & Agents (Gemma 3 E4B, LangGraph, FastMCP, RAG)
-     - 03 // GPU Optimization & High Throughput (TensorRT FP32, CUDA IPC, 62% cost savings)
-     - 04 // Technical Engineering Leadership (Mentored 3–5 engineers, Nsight profiling, canary rollouts)
+     - 01 // Real-Time Video & Vision: 4+ years vision, 130+ cameras live on 2x L4 GPUs, full multi-model execution (YOLOv11, YOLO26, DINOv3, RetinaFace, ArcFace, ByteTrack, PyTorch, OpenCV).
+     - 02 // Multimodal & Agents: Gemma 3 VLM for 74% false alarm reduction, LangGraph multi-agent pipelines, FastMCP tool integration, and multimodal RAG in Edubotix.
+     - 03 // GPU Optimization & High Throughput: Avoided ~390 GB VRAM by centralizing the 6-model suite on Triton, TensorRT FP32 (192 req/s), CUDA IPC zero-copy memory, 62% cost savings.
+     - 04 // Technical Engineering Leadership: Mentored 3–5 engineers across CV and GenAI sprints, Nsight profiling cadences, zero-downtime canary rollouts, client discovery across 5+ deployments.
 3. **Chapter 2: Frequently Asked Questions (`<Disclosure>` Accordion):**
    - Animated collapsible accordion answering:
      1. *What specific full-time roles are you prioritizing?*
