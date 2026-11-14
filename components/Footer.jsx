@@ -4,7 +4,7 @@ import { IDENTITY, CONTACT_INFO } from '../content/facts';
 export default function Footer() {
   return (
     <footer className="w-full bg-paper-sunken border-t border-line py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex flex-col gap-2 max-w-lg">
           <div className="flex items-center gap-2">
             <span className="font-headline-md text-lg font-bold text-primary uppercase">

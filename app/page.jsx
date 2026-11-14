@@ -31,13 +31,13 @@ export default function HomePage() {
         {/* =========================================================================
             CHAPTER 00: HERO (Paper / Warm Tactile Surface)
             ========================================================================= */}
-        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 border-b border-line overflow-hidden min-h-[calc(100svh-64px)] flex flex-col justify-center">
+        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-10 border-b border-line overflow-hidden min-h-[calc(100svh-64px)] flex flex-col justify-center">
           {/* Viewfinder Background Guidelines (Desktop Only) */}
           <div className="hidden md:block absolute inset-0 pointer-events-none opacity-30">
-            <div className="max-w-7xl mx-auto h-full relative border-x border-dashed border-line"></div>
+            <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto h-full relative border-x border-dashed border-line"></div>
           </div>
 
-          <div className="max-w-7xl mx-auto relative z-10 w-full flex flex-col gap-6 sm:gap-8 my-auto">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto relative z-10 w-full flex flex-col gap-6 sm:gap-8 my-auto">
             {/* Top Availability Pill */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-paper-raised border border-line rounded-full shadow-sm text-xs font-label-timecode font-semibold tracking-wider text-primary uppercase">
@@ -133,8 +133,8 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: AT A GLANCE (6 Ruled Rows + Verified Career Facts)
             ========================================================================= */}
-        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto flex flex-col gap-10">
+        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
             <div className="flex flex-col gap-1 border-b border-line pb-4">
               <div className="flex items-center gap-3">
                 <span className="font-label-timecode text-xs text-secondary font-bold uppercase tracking-widest block">
@@ -156,8 +156,8 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: HOW IT WORKS (Plain-English 5 Steps)
             ========================================================================= */}
-        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto flex flex-col gap-10">
+        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
@@ -189,8 +189,8 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: PROJECTS (Interactive Ruled Rows)
             ========================================================================= */}
-        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20" id="projects">
-          <div className="max-w-7xl mx-auto flex flex-col gap-10">
+        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20" id="projects">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
@@ -217,8 +217,8 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: SKILLS (Plain-English Grouping)
             ========================================================================= */}
-        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto flex flex-col gap-10">
+        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
@@ -245,8 +245,8 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: CAREER PREVIEW
             ========================================================================= */}
-        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto flex flex-col gap-10">
+        <section className="w-full bg-paper-sunken border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
@@ -279,8 +279,8 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: CONTACT CTA
             ========================================================================= */}
-        <section className="w-full bg-primary text-on-primary px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto flex flex-col gap-8">
+        <section className="w-full bg-primary text-on-primary px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8">
             <div className="flex items-center justify-between border-b border-ink-muted/30 pb-3">
               <div className="flex items-center gap-2">
                 <AmbientDot color="bg-secondary" size="w-2 h-2" />

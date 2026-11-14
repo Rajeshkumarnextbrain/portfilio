@@ -208,7 +208,7 @@ export const EXPERIENCE_ROLES = [
     domain: "Radar Data Processing & Target Tracking",
     flagshipRole: "Systems Support Engineer",
     plainSummary:
-      "Engineered radar target trajectory tracking and spatial state estimation algorithms under strict mission-critical constraints for defense simulation.",
+      "I worked on radar data processing and target tracking.",
     outcomes: [
       "Calibrated multi-sensor spatial coordinates under strict real-time latency limits",
       "Implemented Kalman filtering to filter radar track noise and predict trajectories accurately",
@@ -229,10 +229,11 @@ export const EXPERIENCE_ROLES = [
     ],
     techStack: [
       "Radar Data Systems",
-      "Kalman Filtering",
+      "Kalman Filters",
       "KNN Classification",
       "Signal Analysis",
-      "Kinematic State Estimation",
+      "MATLAB",
+      "C++",
     ],
   },
 ];

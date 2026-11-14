@@ -9,6 +9,7 @@ import {
 import { ExperienceScrubber } from "@/components/experience/ExperienceScrubber";
 import { CameraGridDots } from "@/components/experience/CameraGridDots";
 import { BlueprintFlow } from "@/components/experience/BlueprintFlow";
+import DrdoRadarPanel from "@/components/experience/DrdoRadarPanel";
 import { CountUp } from "@/components/motion/CountUp";
 import { DrawLine } from "@/components/motion/DrawLine";
 import { GrowBar } from "@/components/motion/GrowBar";
@@ -28,7 +29,7 @@ export default function ExperiencePage() {
         {/* CHAPTER 0: HERO */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 border-b border-line" id="chapter-0">
-          <div className="max-w-[1200px] mx-auto px-6 flex flex-col gap-space-xl">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
             {/* Breadcrumb Header */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-4">
               <div className="flex items-center gap-3">
@@ -96,7 +97,7 @@ export default function ExperiencePage() {
         {/* CHAPTER 1: ROLE 1 · TEAM LEAD (Nextbrain Technologies) */}
         {/* ================================================================= */}
         <section className="w-full bg-paper-sunken py-10 md:py-16 lg:py-20 border-b border-line" id="chapter-1">
-          <div className="max-w-[1200px] mx-auto px-6 flex flex-col gap-space-xl">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
             {/* Header */}
             <div className="flex flex-col gap-space-sm">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -278,7 +279,7 @@ export default function ExperiencePage() {
         {/* CHAPTER 2: ROLE 2 · JUNIOR VISION ENGINEER (SS Automation) */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 border-b border-line" id="chapter-2">
-          <div className="max-w-[1200px] mx-auto px-6 flex flex-col gap-space-xl">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
             {/* Header */}
             <div className="flex flex-col gap-space-sm">
               <div className="flex items-center justify-between">
@@ -351,6 +352,64 @@ export default function ExperiencePage() {
               ))}
             </Stagger>
 
+            {/* Schematic Diagram: Edge Inspection Line */}
+            <div className="flex flex-col gap-3 my-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-label-sm text-xs text-ink-muted uppercase">
+                <span>INSPECTION TOPOLOGY // HIGH-SPEED CONVEYOR LINE</span>
+                <span className="font-label-timecode text-xs text-secondary font-medium">OPTO-TRIGGER: 24V PLC PULSE</span>
+              </div>
+              <div className="relative h-64 bg-paper-raised border border-line flex items-center justify-between px-8 overflow-hidden">
+                {/* Background Grid Lines */}
+                <div className="absolute inset-0 opacity-10 flex justify-between pointer-events-none">
+                  <div className="w-px h-full bg-primary"></div>
+                  <div className="w-px h-full bg-primary"></div>
+                  <div className="w-px h-full bg-primary"></div>
+                  <div className="w-px h-full bg-primary"></div>
+                  <div className="w-px h-full bg-primary"></div>
+                </div>
+                {/* Conveyor Belt Graphic */}
+                <div className="absolute bottom-6 left-0 right-0 h-4 bg-line flex items-center">
+                  <div className="w-full border-t border-dashed border-ink-muted"></div>
+                </div>
+                {/* Camera Setup */}
+                <div className="flex flex-col items-center gap-1 z-10">
+                  <div className="w-16 h-12 bg-primary text-on-primary flex items-center justify-center font-label-sm text-[10px] text-center uppercase p-1">
+                    GIGE CAM 5MP
+                  </div>
+                  <div className="w-1 h-12 bg-secondary"></div>
+                  <span className="font-label-timecode text-[10px] text-ink-muted">STROBE 10µs</span>
+                </div>
+                {/* Detected Workpiece with Bounding Box */}
+                <div className="relative w-48 h-36 bg-paper-sunken border-2 border-dashed border-line flex items-center justify-center z-10">
+                  <div className="absolute inset-4 border-2 border-secondary flex flex-col justify-between p-1">
+                    <span className="bg-secondary text-on-secondary font-label-sm text-[9px] px-1 py-0.5 w-max">
+                      DEFECT #08: CRACK DETECTED · CONF 82%
+                    </span>
+                    <div className="flex justify-between font-label-timecode text-[8px] text-secondary">
+                      <span>DIM: 1.2mm x 4.8mm</span>
+                      <span>LOC: [X:142, Y:89]</span>
+                    </div>
+                  </div>
+                  <span className="font-label-sm text-ink-faint text-center">BILLET SPECIMEN #304</span>
+                </div>
+                {/* Jetson + PLC Node */}
+                <div className="flex flex-col items-center gap-2 z-10">
+                  <div className="p-3 bg-primary text-on-primary font-label-sm text-center text-[11px] uppercase">
+                    JETSON XAVIER NX<br />
+                    <span className="text-secondary font-label-timecode">INFER: 18.2 ms</span>
+                  </div>
+                  <div className="w-0.5 h-6 bg-primary"></div>
+                  <div className="px-3 py-1 bg-paper-raised border border-primary font-label-sm text-[10px] uppercase">
+                    SIEMENS S7-1200 PLC
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center justify-between font-label-sm text-label-sm text-ink-muted">
+                <span>TRIGGER TO REJECT AIR-VALVE: <strong className="text-on-surface">&lt;20 ms TOTAL</strong></span>
+                <span>DATA INTERFACE: <strong className="text-on-surface">OPC-UA / SNAP7 DIRECT MEMORY</strong></span>
+              </div>
+            </div>
+
             {/* Tech Stack Chips */}
             <div className="flex flex-wrap gap-2 pt-2">
               {ssAutoRole.techStack.map((tech) => (
@@ -368,77 +427,18 @@ export default function ExperiencePage() {
         {/* ================================================================= */}
         {/* CHAPTER 3: ROLE 3 · TECHNICAL SUPPORT ENGINEER (Vedant / DRDO) */}
         {/* ================================================================= */}
-        <section className="w-full bg-primary text-on-primary py-10 md:py-16 lg:py-20 border-b border-surface-container-highest/20" id="chapter-3">
-          <div className="max-w-[1200px] mx-auto px-6 flex flex-col gap-space-xl">
-            {/* Header */}
-            <div className="flex flex-col gap-space-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="w-2.5 h-2.5 bg-secondary"></span>
-                  <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold">
-                    ROLE 03 · {vedantRole.period}
-                  </span>
-                </div>
-                <span className="font-label-timecode text-label-timecode text-ink-faint">DEFENSE RESEARCH VALIDATION</span>
-              </div>
-
-              <h2 className="font-display text-display text-surface uppercase tracking-tight">
-                {vedantRole.title}
-              </h2>
-
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-label-sm text-label-sm text-ink-faint">
-                <span className="font-semibold text-surface">{vedantRole.company}</span>
-                <span>·</span>
-                <span>{vedantRole.location}</span>
-                <span>·</span>
-                <span className="text-secondary font-medium">Domain: {vedantRole.domain}</span>
-              </div>
-
-              {/* Plain-English summary */}
-              <Reveal>
-                <div className="p-4 bg-surface/5 border border-surface-container-highest/20 mt-2">
-                  <p className="font-body-md text-body-md text-surface leading-relaxed">
-                    <strong className="text-secondary uppercase text-xs font-semibold mr-2 font-mono">In plain English:</strong>
-                    {vedantRole.plainSummary}
-                  </p>
-                </div>
-              </Reveal>
-            </div>
-
-            {/* Ruled Numbers Strip */}
-            <div className="grid grid-cols-1 md:grid-cols-2 border-y border-surface-container-highest/20 py-space-lg gap-6">
-              <div className="flex flex-col">
-                <span className="font-headline-lg text-headline-lg font-bold text-surface">REAL-TIME</span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">STREAM PROCESSING</span>
-                <span className="font-body-sm text-body-sm text-ink-faint">Synchronous telemetry ingest under defense protocols</span>
-              </div>
-              <div className="flex flex-col md:border-l md:border-surface-container-highest/20 md:pl-6">
-                <span className="font-headline-lg text-headline-lg font-bold text-surface">KALMAN FILTERING</span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">TRAJECTORY SMOOTHING</span>
-                <span className="font-body-sm text-body-sm text-ink-faint">Kinematic state estimation and false track termination</span>
-              </div>
-            </div>
-
-            {/* Plain-English Responsibility Rows */}
-            <Stagger className="flex flex-col border-t border-surface-container-highest/20">
-              {vedantRole.responsibilities.map((item, idx) => (
-                <StaggerItem key={idx}>
-                  <div className="py-space-lg border-b border-surface-container-highest/20 grid grid-cols-1 md:grid-cols-12 gap-4 hover:bg-surface/5 transition-colors p-4">
-                    <div className="md:col-span-4 font-headline-md text-body-md md:text-headline-md text-surface uppercase font-semibold">
-                      {item.area}
-                    </div>
-                    <div className="md:col-span-8 font-body-md text-body-md text-ink-faint leading-relaxed">
-                      {item.detail}
-                    </div>
-                  </div>
-                </StaggerItem>
-              ))}
-            </Stagger>
+        <section className="w-full bg-[#14130F] text-[#F5F2EC] py-10 md:py-16 lg:py-20 border-b border-surface-container-highest/20" id="chapter-3">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-6">
+            {/* DRDO Radar Panel */}
+            <DrdoRadarPanel />
 
             {/* Tech Stack Chips */}
             <div className="flex flex-wrap gap-2 pt-2">
               {vedantRole.techStack.map((tech) => (
-                <span key={tech} className="bg-surface/10 px-3 py-1 font-label-sm text-label-sm border border-surface-container-highest/30 text-surface">
+                <span
+                  key={tech}
+                  className="bg-surface/10 px-3 py-1 font-mono text-[13px] border border-surface-container-highest/30 text-[#F5F2EC]"
+                >
                   {tech}
                 </span>
               ))}
@@ -450,7 +450,7 @@ export default function ExperiencePage() {
         {/* CHAPTER 4: HOW I LEAD A TEAM */}
         {/* ================================================================= */}
         <section className="w-full bg-paper-sunken py-10 md:py-16 lg:py-20 border-b border-line" id="chapter-4">
-          <div className="max-w-[1200px] mx-auto px-6 flex flex-col gap-space-xl">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
             {/* Header */}
             <div className="flex flex-col gap-space-sm">
               <div className="flex items-center justify-between">
@@ -537,7 +537,7 @@ export default function ExperiencePage() {
         {/* CHAPTER 5: BLUEPRINT (Under "For engineers" divider) */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 border-b border-line" id="chapter-5">
-          <div className="max-w-[1200px] mx-auto px-6 flex flex-col gap-space-xl">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
             {/* Header */}
             <div className="flex flex-col gap-space-sm">
               <div className="flex items-center gap-4">
@@ -587,7 +587,7 @@ export default function ExperiencePage() {
         {/* CHAPTER 6: CALL TO ACTION */}
         {/* ================================================================= */}
         <section className="w-full bg-primary text-on-primary py-10 md:py-16 lg:py-20" id="chapter-6">
-          <div className="max-w-[1200px] mx-auto px-6 flex flex-col gap-space-xl">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
             <div className="flex flex-col gap-space-md">
               <div className="flex items-center justify-between border-b border-surface-container-highest/20 pb-4">
                 <div className="flex items-center gap-3">

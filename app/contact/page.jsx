@@ -29,7 +29,7 @@ export default function ContactPage() {
         {/* CHAPTER 0: HERO */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 flex justify-center border-b border-line">
-          <div className="w-full max-w-[1200px] flex flex-col gap-8 md:gap-12">
+          <div className="w-full max-w-screen-2xl 2xl:max-w-[1640px] flex flex-col gap-8 md:gap-12">
             {/* Breadcrumb Header */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-4">
               <div className="flex items-center gap-3">
@@ -166,7 +166,7 @@ export default function ContactPage() {
         {/* CHAPTER 1: WHAT I BRING (4 Plain-English Quadrants) */}
         {/* ================================================================= */}
         <section className="w-full bg-primary text-on-primary py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 flex justify-center border-b border-surface-container-highest/20">
-          <div className="w-full max-w-[1200px] flex flex-col gap-8 md:gap-12">
+          <div className="w-full max-w-screen-2xl 2xl:max-w-[1640px] flex flex-col gap-8 md:gap-12">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-3">
                 <span className="w-2.5 h-2.5 bg-secondary"></span>
@@ -344,7 +344,7 @@ export default function ContactPage() {
         {/* CHAPTER 2: FAQ ACCORDION (Animated Disclosure) */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 flex justify-center border-b border-line">
-          <div className="w-full max-w-[1200px] flex flex-col gap-6 md:gap-8">
+          <div className="w-full max-w-screen-2xl 2xl:max-w-[1640px] flex flex-col gap-6 md:gap-8">
             <div className="flex flex-col gap-1">
               <span className="font-label-sm text-xs text-secondary font-semibold uppercase tracking-wider">
                 COMMON QUESTIONS
@@ -398,7 +398,7 @@ export default function ContactPage() {
         {/* CHAPTER 3: DIRECT CONTACT STRIP */}
         {/* ================================================================= */}
         <section className="w-full bg-paper-sunken py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 flex justify-center">
-          <div className="w-full max-w-[1200px] flex flex-col gap-6 md:gap-8">
+          <div className="w-full max-w-screen-2xl 2xl:max-w-[1640px] flex flex-col gap-6 md:gap-8">
             <div className="flex flex-col gap-1">
               <span className="font-label-sm text-xs text-secondary font-semibold uppercase tracking-wider">
                 CHANNELS

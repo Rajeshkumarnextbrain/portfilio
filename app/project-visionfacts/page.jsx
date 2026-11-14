@@ -87,7 +87,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CHAPTER 0: HERO (Paper Surface) */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 border-b border-line" id="chapter-0">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8 md:gap-12">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8 md:gap-12">
             {/* Breadcrumb Header */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-4">
               <div className="flex items-center gap-2">
@@ -256,7 +256,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CHAPTER 1: THE PROBLEM & THE SOLUTION */}
         {/* ================================================================= */}
         <section className="w-full bg-paper-sunken py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 border-b border-line" id="overview">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8 md:gap-12">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8 md:gap-12">
             <Reveal>
               <div className="flex flex-col gap-2">
                 <span className="font-label-sm text-xs text-secondary font-semibold uppercase tracking-wider">
@@ -324,7 +324,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CHAPTER 2: FOR ENGINEERS: TECHNICAL DETAIL */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 border-b border-line" id="how-it-works">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8 md:gap-12">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8 md:gap-12">
             {/* Engineer Divider */}
             <div className="flex items-center gap-4">
               <span className="font-label-sm text-xs uppercase tracking-widest text-ink-faint font-semibold">
@@ -353,7 +353,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CHAPTER 3: CHALLENGES & FIXES */}
         {/* ================================================================= */}
         <section className="w-full bg-paper-sunken py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 border-b border-line" id="challenges">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8 md:gap-12">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8 md:gap-12">
             <div className="flex flex-col gap-2">
               <span className="font-label-sm text-xs text-secondary font-semibold uppercase tracking-wider">
                 03 / CHALLENGES AND FIXES
@@ -446,7 +446,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CHAPTER 4: PRODUCTION RESULTS */}
         {/* ================================================================= */}
         <section className="w-full bg-primary text-on-primary py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 border-b border-surface-container-highest/20" id="results">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8 md:gap-12">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8 md:gap-12">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-secondary"></span>
@@ -526,7 +526,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CHAPTER 5: MY CONTRIBUTION */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 border-b border-line" id="contribution">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8 md:gap-12">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8 md:gap-12">
             <div className="flex flex-col gap-2">
               <span className="font-label-sm text-xs text-secondary font-semibold uppercase tracking-wider">
                 05 / MY CONTRIBUTION
@@ -580,7 +580,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CHAPTER 6: TECH STACK */}
         {/* ================================================================= */}
         <section className="w-full bg-paper-sunken py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 border-b border-line" id="stack">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8 md:gap-12">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8 md:gap-12">
             <div className="flex flex-col gap-2">
               <span className="font-label-sm text-xs text-secondary font-semibold uppercase tracking-wider">
                 06 / TECH STACK
@@ -618,7 +618,7 @@ export default function VisionFactsFlagshipPage() {
         {/* CLOSING NAVIGATION & CTA */}
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12">
-          <div className="max-w-[1200px] mx-auto flex flex-col gap-8">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-2 border border-line divide-y md:divide-y-0 md:divide-x divide-line">
               <Link href="/" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">
                 <span className="text-xs font-label-sm text-ink-muted uppercase">NAVIGATION</span>

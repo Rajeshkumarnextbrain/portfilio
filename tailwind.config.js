@@ -88,6 +88,11 @@ module.exports = {
             "margin-tablet": "3rem"
       },
       "fontFamily": {
+            "mono": [
+                  '"Space Mono"',
+                  "ui-monospace",
+                  "monospace"
+            ],
             "metric-numeral-mobile": [
                   "Space Mono"
             ],

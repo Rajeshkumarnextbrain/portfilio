@@ -19,7 +19,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.03)] border-b border-line">
-      <div className="h-16 w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex items-center justify-between">
+      <div className="h-16 w-full px-4 sm:px-6 lg:px-8 xl:px-12 max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex items-center justify-between">
         {/* Left: Monogram + Identity */}
         <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0" suppressHydrationWarning>
           <span
