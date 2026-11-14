@@ -7,6 +7,7 @@ import {
 } from "@/content/facts";
 
 import { ExperienceScrubber } from "@/components/experience/ExperienceScrubber";
+import { SmpteTicker } from "@/components/experience/SmpteTicker";
 import { CameraGridDots } from "@/components/experience/CameraGridDots";
 import { BlueprintFlow } from "@/components/experience/BlueprintFlow";
 import DrdoRadarPanel from "@/components/experience/DrdoRadarPanel";
@@ -30,64 +31,61 @@ export default function ExperiencePage() {
         {/* ================================================================= */}
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 border-b border-line" id="chapter-0">
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
-            {/* Breadcrumb Header */}
+            {/* Chapter Metadata Header */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-4">
               <div className="flex items-center gap-3">
-                <span className="w-2.5 h-2.5 bg-secondary"></span>
-                <span className="font-label-sm text-label-sm text-on-surface uppercase tracking-widest font-semibold">
-                  CAREER &amp; LEADERSHIP · 4+ YEARS
+                <span className="w-2.5 h-2.5 bg-secondary shrink-0"></span>
+                <span className="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest font-semibold">
+                  EXPERIENCE // PLAYBACK · ARCHIVAL REEL 04
                 </span>
               </div>
-              <div className="flex items-center gap-2 font-label-timecode text-label-timecode text-ink-muted">
-                <span className="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
-                <span>STATUS: {IDENTITY.availabilityStatus}</span>
-              </div>
+              <SmpteTicker />
             </div>
 
-            {/* Mega Headline */}
-            <div className="flex flex-col gap-space-md">
-              <h1 className="font-mega-display text-[34px] xs:text-[44px] sm:text-[64px] md:text-[88px] lg:text-[104px] leading-[0.95] text-on-surface tracking-tighter uppercase select-none">
+            {/* Mega Headline & Subtitle */}
+            <div className="flex flex-col gap-space-lg">
+              <h1 className="font-serif text-[42px] xs:text-[54px] sm:text-[72px] md:text-[96px] lg:text-[112px] xl:text-[124px] leading-[0.92] text-on-surface tracking-tight uppercase select-none font-bold">
                 FOUR YEARS.<br />
                 ONE <span className="relative inline-block bg-signal-orange-tint px-3 py-1 text-secondary -rotate-1">PIPELINE</span><br />
                 AT A TIME.
               </h1>
               <p className="font-body-lg text-body-lg text-ink-muted max-w-3xl leading-relaxed">
-                A chronology of leading engineering teams, architecting real-time video analytics microservices across {VERIFIED_NUMBERS.camerasCount} live cameras, and deploying production AI systems that deliver measurable business savings.
+                A chronology of architecting real-time RTSP video inference microservices, fine-tuning Vision-Language Models, and deploying cost-optimized edge AI for high-throughput enterprise applications.
               </p>
             </div>
 
-            {/* Interactive Scrubber Bar */}
+            {/* Interactive Filmstrip Scrubber Bar */}
             <ExperienceScrubber />
 
             {/* Ruled Metric Register with CountUp */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border-t border-line pt-space-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border-y border-line py-space-lg">
               <div className="flex flex-col p-4 border-b sm:border-b-0 sm:border-r border-line">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
-                  <CountUp value={IDENTITY.yearsExperience} />
+                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
+                  <CountUp value="4+" />
                 </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-1">YEARS IN PRODUCTION AI</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-2">Computer vision, VLMs, and low-latency systems</span>
+                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">YEARS PROD AI</span>
+                <span className="font-body-sm text-body-sm text-ink-muted mt-1">End-to-end edge &amp; cloud execution</span>
               </div>
               <div className="flex flex-col p-4 border-b sm:border-b-0 lg:border-r border-line">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
-                  <CountUp value={VERIFIED_NUMBERS.camerasCount} />
+                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
+                  <CountUp value="150+" />
                 </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-1">CAMERAS ANALYSED LIVE</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-2">Zero-copy CUDA IPC &amp; centralized Triton serving</span>
+                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">CONCURRENT RTSP</span>
+                <span className="font-body-sm text-body-sm text-ink-muted mt-1">GStreamer / DeepStream scale</span>
               </div>
               <div className="flex flex-col p-4 border-b sm:border-b-0 sm:border-r border-line">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
+                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
                   <CountUp value="62%" />
                 </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-1">LOWER MONTHLY GPU COST</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-2">TensorRT FP32 &amp; dynamic request batching</span>
+                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">GPU TCO REDUCTION</span>
+                <span className="font-body-sm text-body-sm text-ink-muted mt-1">AWQ + TensorRT graph opt</span>
               </div>
               <div className="flex flex-col p-4">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
-                  <CountUp value={IDENTITY.teamSizeLed} />
+                <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
+                  <CountUp value="3–5" />
                 </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-1">ENGINEERS LED</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-2">Sprint delivery, code reviews, and Nsight profiling</span>
+                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">ENGINEERS LED</span>
+                <span className="font-body-sm text-body-sm text-ink-muted mt-1">Sprint delivery &amp; architecture</span>
               </div>
             </div>
           </div>

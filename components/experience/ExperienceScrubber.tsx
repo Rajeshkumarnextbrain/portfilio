@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
-import { EASING, TIMING } from '@/lib/motion';
+import { EASING } from '@/lib/motion';
 import { useMotionOK } from '@/lib/useMotionOK';
 
 export function ExperienceScrubber() {
@@ -19,83 +19,116 @@ export function ExperienceScrubber() {
   };
 
   return (
-    <div ref={ref} className="flex flex-col gap-3 pt-space-md">
-      <div className="flex flex-wrap items-center justify-between gap-2 font-label-sm text-xs text-ink-muted uppercase">
-        <span className="flex items-center gap-2 font-semibold">
-          <span className="material-symbols-outlined text-[16px] text-secondary">timeline</span>
-          CAREER TIMELINE · MAY 2022 — PRESENT
+    <div ref={ref} className="flex flex-col gap-3 pt-space-lg">
+      {/* Filmstrip Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-label-sm text-xs sm:text-label-sm text-ink-muted uppercase">
+        <span className="flex items-center gap-2 truncate">
+          <span className="material-symbols-outlined text-[14px] text-secondary shrink-0" aria-hidden="true">
+            movie
+          </span>
+          <span className="truncate">TIMELINE SCRUBBER // MAY 2022 — PRESENT</span>
         </span>
-        <span className="font-label-timecode text-secondary font-medium">BANGALORE, INDIA</span>
+        <span className="font-label-timecode text-label-timecode text-secondary font-medium shrink-0">
+          PLAYHEAD: 00:04:18:22
+        </span>
       </div>
 
-      {/* Scrubber Container */}
-      <div className="relative p-2 bg-paper-sunken border border-line overflow-hidden">
+      {/* Scrubber Track & Ticks */}
+      <div className="relative w-full bg-paper-sunken p-2 sm:p-3 select-none border border-line">
+        {/* Filmstrip Sprocket Holes (Top) */}
+        <div className="flex justify-between pb-2 border-b border-line opacity-60">
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+          <span className="w-2 h-1.5 bg-line"></span>
+        </div>
+
         {/* Playhead Sweep Animation (moves once from start to end) */}
         {motionOK && inView && (
           <m.div
-            className="absolute top-0 bottom-0 left-0 right-0 pointer-events-none z-20 border-r-2 border-secondary bg-secondary/5"
+            className="absolute top-0 bottom-0 left-0 right-0 pointer-events-none z-30 border-r-2 border-secondary bg-secondary/5"
             initial={{ scaleX: 0, originX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.6, ease: EASING.out }}
           />
         )}
 
-        {/* 3 Segments */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-2 relative z-10">
-          {/* Role 3 */}
+        {/* Segments */}
+        <div className="grid grid-cols-12 gap-1 sm:gap-1.5 my-2 sm:my-3 h-14 relative">
+          {/* Clip 3: Tech Support (May - Jul 2022) ~ 2 cols on mobile, 1 col on sm */}
           <a
             href="#chapter-3"
             onClick={(e) => handleScrollTo(e, 'chapter-3')}
-            className="md:col-span-3 p-3 bg-paper-raised hover:bg-surface-container-high border border-line transition-all duration-150 flex flex-col justify-between gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary group active:scale-[0.98]"
+            className="col-span-2 sm:col-span-1 bg-surface-container-highest hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1 sm:p-1.5 transition-colors group overflow-hidden border border-line/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
           >
-            <div className="flex items-center justify-between text-[11px] font-label-timecode text-ink-muted group-hover:text-primary">
-              <span>MAY 2022 – JUL 2022</span>
-              <span className="font-mono">03</span>
-            </div>
-            <div>
-              <div className="font-headline-md text-body-sm font-bold text-on-surface group-hover:text-secondary transition-colors">
-                Vedant Tech (DRDO)
-              </div>
-              <div className="text-[12px] text-ink-muted truncate">Technical Support Engineer</div>
-            </div>
+            <span className="font-label-sm text-[8px] sm:text-[10px] text-ink-muted group-hover:text-primary leading-tight">
+              CLIP 03
+            </span>
+            <span className="font-label-sm text-[8px] sm:text-[9px] truncate font-semibold">VEDANT</span>
           </a>
 
-          {/* Role 2 */}
+          {/* Clip 2: Junior Vision (Jul 2022 - Jul 2023) ~ 3 cols */}
           <a
             href="#chapter-2"
             onClick={(e) => handleScrollTo(e, 'chapter-2')}
-            className="md:col-span-4 p-3 bg-paper-raised hover:bg-surface-container-high border border-line transition-all duration-150 flex flex-col justify-between gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary group active:scale-[0.98]"
+            className="col-span-3 bg-surface-container-high hover:bg-primary-fixed text-on-surface flex flex-col justify-between p-1.5 sm:p-2 transition-colors group overflow-hidden border border-line/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
           >
-            <div className="flex items-center justify-between text-[11px] font-label-timecode text-ink-muted group-hover:text-primary">
-              <span>JUL 2022 – JUL 2023</span>
-              <span className="font-mono">02</span>
-            </div>
-            <div>
-              <div className="font-headline-md text-body-sm font-bold text-on-surface group-hover:text-secondary transition-colors">
-                SS Automation Solutions
-              </div>
-              <div className="text-[12px] text-ink-muted truncate">Junior Vision Engineer</div>
-            </div>
+            <span className="font-label-sm text-[8px] sm:text-label-sm text-ink-muted group-hover:text-primary leading-tight">
+              CLIP 02
+            </span>
+            <span className="font-headline-md text-[10px] sm:text-body-sm font-semibold truncate">
+              SS AUTOMATION
+            </span>
           </a>
 
-          {/* Role 1 */}
+          {/* Clip 1: Team Lead (Jul 2023 - Present) ~ 7 cols on mobile, 8 cols on sm */}
           <a
             href="#chapter-1"
             onClick={(e) => handleScrollTo(e, 'chapter-1')}
-            className="md:col-span-5 p-3 bg-secondary text-on-secondary transition-all duration-150 hover:bg-signal-orange-hover flex flex-col justify-between gap-2 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.98] group"
+            className="col-span-7 sm:col-span-8 bg-secondary text-on-secondary flex items-center justify-between px-2 sm:px-4 relative overflow-hidden group shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <div className="flex items-center justify-between text-[11px] font-label-timecode text-on-secondary/80">
-              <span className="flex items-center gap-1.5 font-bold uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                AUG 2023 – PRESENT · CURRENT
+            <div className="flex flex-col z-10 min-w-0 pr-4">
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-surface-bright animate-ping shrink-0"></span>
+                <span className="font-label-sm text-[8px] sm:text-label-sm tracking-wider uppercase truncate font-medium">
+                  ACTIVE CLIP 01 · TEAM LEAD
+                </span>
+              </div>
+              <span className="font-headline-md text-[11px] sm:text-body-md lg:text-headline-md font-bold tracking-tight truncate">
+                VISIONFACTS.AI // NEXTBRAIN
               </span>
-              <span className="font-mono">01</span>
             </div>
-            <div>
-              <div className="font-headline-md text-body-sm font-bold text-white">Nextbrain Technologies</div>
-              <div className="text-[12px] text-white/90 font-medium">Team Lead – AI &amp; Computer Vision</div>
+            <div className="hidden lg:flex flex-col items-end z-10 font-label-timecode text-label-timecode">
+              <span>REC // LIVE STREAM</span>
+              <span className="text-signal-orange-tint">150+ STREAMS</span>
+            </div>
+
+            {/* Playhead Needle */}
+            <div className="absolute right-4 sm:right-12 top-0 bottom-0 w-0.5 bg-surface-bright shadow-[0_0_8px_#ffffff] z-20 flex flex-col items-center">
+              <span className="w-2 h-2 -top-1 absolute rotate-45 bg-surface-bright"></span>
             </div>
           </a>
+        </div>
+
+        {/* Axis Ticks (Responsive frequency: 5 on mobile, 9 on desktop) */}
+        <div className="flex justify-between pt-2 border-t border-line font-label-timecode text-[9px] sm:text-[10px] text-ink-faint">
+          <span>Q2&apos;22</span>
+          <span className="hidden sm:inline">Q4&apos;22</span>
+          <span>Q2&apos;23</span>
+          <span className="hidden sm:inline">Q4&apos;23</span>
+          <span>Q2&apos;24</span>
+          <span className="hidden sm:inline">Q4&apos;24</span>
+          <span>Q2&apos;25</span>
+          <span className="hidden sm:inline">Q4&apos;25</span>
+          <span className="font-bold text-secondary">Q1&apos;26 [NOW]</span>
         </div>
       </div>
     </div>

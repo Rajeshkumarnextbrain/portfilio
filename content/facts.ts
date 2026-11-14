@@ -150,7 +150,7 @@ export const EXPERIENCE_ROLES = [
     techStack: [
       "TensorRT FP32",
       "NVIDIA Triton",
-      "DeepStream",
+      "Opencv",
       "CUDA IPC",
       "Gemma 3 E4B",
       "Python AsyncIO",
@@ -161,7 +161,7 @@ export const EXPERIENCE_ROLES = [
   {
     title: "Junior Vision Engineer",
     company: "SS Automation Solutions Pvt. Ltd.",
-    location: "Coimbatore, India",
+    location: "Bangalore, India",
     period: "Jul 2022 – Jul 2023",
     domain: "Industrial Machine Vision & Quality Inspection Automation",
     flagshipRole: "Lead Vision Engineer",
@@ -208,7 +208,7 @@ export const EXPERIENCE_ROLES = [
     domain: "Radar Data Processing & Target Tracking",
     flagshipRole: "Systems Support Engineer",
     plainSummary:
-      "I worked on radar data processing and target tracking.",
+      "Engineered radar target trajectory tracking and spatial state estimation algorithms under strict mission-critical constraints for defense simulation.",
     outcomes: [
       "Calibrated multi-sensor spatial coordinates under strict real-time latency limits",
       "Implemented Kalman filtering to filter radar track noise and predict trajectories accurately",

@@ -13,6 +13,7 @@ import {
 
 import { HeroHeadline } from "@/components/home/HeroHeadline";
 import { HeroIllustration } from "@/components/home/HeroIllustration";
+import { TelemetryRibbon } from "@/components/home/TelemetryRibbon";
 import { AtAGlanceSection } from "@/components/home/AtAGlanceSection";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { ProjectsSection } from "@/components/home/ProjectsSection";
@@ -26,30 +27,45 @@ import { DrawLine } from "@/components/motion/DrawLine";
 export default function HomePage() {
   return (
     <main className="w-full pt-16 bg-surface min-h-screen">
+      {/* Telemetry Status Ribbon directly beneath navbar */}
+      <TelemetryRibbon />
+
+      {/* Vertical Telemetry Rail (Desktop Margin) */}
+      <div className="hidden 2xl:flex fixed left-0 top-24 bottom-0 w-12 z-30 flex-col items-center justify-between py-8 pointer-events-none select-none">
+        <div className="font-label-timecode text-[11px] uppercase tracking-[0.25em] text-ink-muted/60 -rotate-90 origin-center whitespace-nowrap mt-16">
+          TELEMETRY RAIL
+        </div>
+        <div className="w-[1px] h-24 bg-line/80"></div>
+        <div className="font-label-sm text-xs text-ink-faint">+</div>
+      </div>
+
       <div className="flex flex-col w-full text-on-surface">
 
         {/* =========================================================================
             CHAPTER 00: HERO (Paper / Warm Tactile Surface)
             ========================================================================= */}
-        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-10 border-b border-line overflow-hidden min-h-[calc(100svh-64px)] flex flex-col justify-center">
-          {/* Viewfinder Background Guidelines (Desktop Only) */}
-          <div className="hidden md:block absolute inset-0 pointer-events-none opacity-30">
-            <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto h-full relative border-x border-dashed border-line"></div>
+        <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-10 border-b border-line overflow-hidden min-h-[calc(100svh-100px)] flex flex-col justify-center">
+          {/* Viewfinder Background Guidelines & Coordinates */}
+          <div className="absolute inset-0 pointer-events-none opacity-40">
+            <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto h-full relative border-x border-dashed border-line">
+              <div className="absolute left-4 top-3 text-ink-faint font-label-sm text-[11px] select-none">+ 00.00.00</div>
+              <div className="absolute right-4 top-3 text-ink-faint font-label-sm text-[11px] select-none">COORDINATE_REF: [12.9716, 77.5946]</div>
+            </div>
           </div>
 
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto relative z-10 w-full flex flex-col gap-6 sm:gap-8 my-auto">
-            {/* Top Availability Pill */}
+            {/* Top Availability Pill & Telemetry Targets */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-paper-raised border border-line rounded-full shadow-sm text-xs font-label-timecode font-semibold tracking-wider text-primary uppercase">
                 {/* Ambient Loop 1: Green Available Dot Pulse */}
                 <AmbientDot color="bg-status-success" size="w-2 h-2" />
-                <span>AVAILABLE FOR HIRE · {IDENTITY.noticePeriod} NOTICE · {IDENTITY.location}</span>
+                <span>AVAILABLE FOR HIRE · 30-DAY NOTICE</span>
               </div>
               <div className="font-label-timecode text-xs text-ink-muted flex items-center gap-2 flex-wrap">
                 <span className="text-secondary font-bold">●</span>
-                <span>{VERIFIED_NUMBERS.cameras} CAMERAS LIVE</span>
+                <span>LATENCY TARGET: &lt; 10ms</span>
                 <span className="text-ink-faint">/</span>
-                <span>{VERIFIED_NUMBERS.memoryReduction} GPU MEMORY</span>
+                <span>VRAM SAVINGS: 84%</span>
               </div>
             </div>
 
@@ -57,9 +73,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Left Column: Typography & Intent */}
               <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-5">
-                {/* Eyebrow: Headline Role */}
-                <div className="font-body-md text-[13px] sm:text-[14px] text-ink-muted font-medium">
-                  {IDENTITY.headlineRole}
+                {/* Eyebrow: Pipeline Dispatch */}
+                <div className="flex items-center gap-2 text-ink-muted font-label-sm uppercase tracking-widest font-semibold text-xs sm:text-[13px]">
+                  <span>PIPELINE DISPATCH</span>
+                  <span className="text-secondary font-bold">/</span>
+                  <span>SR. ARCHITECT</span>
                 </div>
 
                 {/* Animated Line-by-Line Hero Headline */}

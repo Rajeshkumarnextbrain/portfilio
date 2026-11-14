@@ -88,6 +88,12 @@ module.exports = {
             "margin-tablet": "3rem"
       },
       "fontFamily": {
+            "serif": [
+                  '"Playfair Display"',
+                  "ui-serif",
+                  "Georgia",
+                  "serif"
+            ],
             "mono": [
                   '"Space Mono"',
                   "ui-monospace",
