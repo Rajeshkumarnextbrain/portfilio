@@ -8,6 +8,7 @@ import {
 
 import { ExperienceScrubber } from "@/components/experience/ExperienceScrubber";
 import { SmpteTicker } from "@/components/experience/SmpteTicker";
+import { ArchivalReelPlayer } from "@/components/experience/ArchivalReelPlayer";
 import { CameraGridDots } from "@/components/experience/CameraGridDots";
 import { BlueprintFlow } from "@/components/experience/BlueprintFlow";
 import DrdoRadarPanel from "@/components/experience/DrdoRadarPanel";
@@ -42,16 +43,38 @@ export default function ExperiencePage() {
               <SmpteTicker />
             </div>
 
-            {/* Mega Headline & Subtitle */}
-            <div className="flex flex-col gap-space-lg">
-              <h1 className="font-serif text-[42px] xs:text-[54px] sm:text-[72px] md:text-[96px] lg:text-[112px] xl:text-[124px] leading-[0.92] text-on-surface tracking-tight uppercase select-none font-bold">
-                FOUR YEARS.<br />
-                ONE <span className="relative inline-block bg-signal-orange-tint px-3 py-1 text-secondary -rotate-1">PIPELINE</span><br />
-                AT A TIME.
-              </h1>
-              <p className="font-body-lg text-body-lg text-ink-muted max-w-3xl leading-relaxed">
-                A chronology of architecting real-time RTSP video inference microservices, fine-tuning Vision-Language Models, and deploying cost-optimized edge AI for high-throughput enterprise applications.
-              </p>
+            {/* Top Grid: 2-Column Hero on Desktop */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
+              {/* Left Column (7 cols): Mega Headline & Subtitle */}
+              <div className="lg:col-span-7 flex flex-col gap-6">
+                <Reveal>
+                  <div className="flex flex-col gap-4">
+                    <h1 className="font-serif text-[42px] xs:text-[54px] sm:text-[72px] md:text-[88px] lg:text-[96px] xl:text-[110px] leading-[0.92] text-on-surface tracking-tight uppercase select-none font-bold">
+                      FOUR YEARS.<br />
+                      ONE <span className="relative inline-block bg-signal-orange-tint px-3 py-1 text-secondary -rotate-1">PIPELINE</span><br />
+                      AT A TIME.
+                    </h1>
+                    <p className="font-body-lg text-sm sm:text-base md:text-lg text-ink-muted max-w-2xl leading-relaxed">
+                      A chronology of architecting real-time RTSP video inference microservices, deploying autonomous LangGraph &amp; FastMCP multi-agent systems, and optimizing high-throughput AI on edge and cloud GPUs.
+                    </p>
+                  </div>
+                </Reveal>
+
+                {/* Sub-strip: Quick Focus Indicators */}
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <span className="font-label-timecode text-xs px-3 py-1 bg-paper-sunken border border-line text-ink-muted uppercase">
+                    STAFF / LEAD AI SCOPE
+                  </span>
+                  <span className="font-label-timecode text-xs px-3 py-1 bg-paper-sunken border border-line text-secondary uppercase font-semibold">
+                    50% COMPUTER VISION · 50% GENAI &amp; AGENTS
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column (5 cols): 35mm SMPTE Archival Reel Mechanism */}
+              <Reveal className="lg:col-span-5 w-full">
+                <ArchivalReelPlayer />
+              </Reveal>
             </div>
 
             {/* Interactive Filmstrip Scrubber Bar */}
@@ -68,17 +91,17 @@ export default function ExperiencePage() {
               </div>
               <div className="flex flex-col p-4 border-b sm:border-b-0 lg:border-r border-line">
                 <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
-                  <CountUp value="150+" />
+                  <CountUp value="130+" />
                 </span>
                 <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">CONCURRENT RTSP</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-1">GStreamer / DeepStream scale</span>
+                <span className="font-body-sm text-body-sm text-ink-muted mt-1">Multi-model Triton &amp; CUDA IPC</span>
               </div>
               <div className="flex flex-col p-4 border-b sm:border-b-0 sm:border-r border-line">
                 <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
-                  <CountUp value="62%" />
+                  &lt; 3s
                 </span>
-                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">GPU TCO REDUCTION</span>
-                <span className="font-body-sm text-body-sm text-ink-muted mt-1">AWQ + TensorRT graph opt</span>
+                <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold mt-2">AGENT QUERY TURNAROUND</span>
+                <span className="font-body-sm text-body-sm text-ink-muted mt-1">LangGraph + FastMCP vs 24-hr DBA wait</span>
               </div>
               <div className="flex flex-col p-4">
                 <span className="font-serif text-[56px] sm:text-[68px] lg:text-[76px] font-bold text-on-surface leading-none">
@@ -136,28 +159,35 @@ export default function ExperiencePage() {
               </Reveal>
             </div>
 
-            {/* Ruled Numbers Strip with CountUp */}
-            <div className="grid grid-cols-1 md:grid-cols-3 border-y border-line py-space-lg gap-6">
+            {/* Ruled Numbers Strip (4 Metrics: 2 CV, 2 GenAI) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-y border-line py-space-lg gap-6">
               <div className="flex flex-col">
                 <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
                   <CountUp value={VERIFIED_NUMBERS.camerasCount} />
                 </span>
                 <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">CAMERAS LIVE</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">Multi-stream video analytics in production</span>
+                <span className="font-body-sm text-body-sm text-ink-muted">Multi-stream video analytics on 2x L4 GPUs</span>
               </div>
-              <div className="flex flex-col md:border-l md:border-line md:pl-6">
+              <div className="flex flex-col sm:border-l sm:border-line sm:pl-6">
+                <span className="font-metric-numeral text-headline-lg font-bold text-secondary">
+                  &lt; 3s
+                </span>
+                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">AGENT RESPONSE</span>
+                <span className="font-body-sm text-body-sm text-ink-muted">LangGraph + FastMCP vs 24-hr DBA queue</span>
+              </div>
+              <div className="flex flex-col lg:border-l lg:border-line lg:pl-6">
                 <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
                   <CountUp value="74%" />
                 </span>
                 <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">FEWER FALSE ALARMS</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">Via zero-shot Gemma 3 E4B Vision-Language Model reasoning</span>
+                <span className="font-body-sm text-body-sm text-ink-muted">Zero-shot Gemma 3 E4B VLM reasoning</span>
               </div>
-              <div className="flex flex-col md:border-l md:border-line md:pl-6">
-                <span className="font-metric-numeral text-headline-lg font-bold text-on-surface">
+              <div className="flex flex-col sm:border-l sm:border-line sm:pl-6">
+                <span className="font-metric-numeral text-headline-lg font-bold text-secondary">
                   <CountUp value="62%" />
                 </span>
-                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">LOWER MONTHLY GPU COST</span>
-                <span className="font-body-sm text-body-sm text-ink-muted">TensorRT FP32 graph compilation and centralized Triton serving</span>
+                <span className="font-label-sm text-label-sm uppercase text-secondary font-semibold">LOWER GPU COST</span>
+                <span className="font-body-sm text-body-sm text-ink-muted">$3,400/mo saved via centralized Triton serving</span>
               </div>
             </div>
 
@@ -259,16 +289,36 @@ export default function ExperiencePage() {
               </div>
             </div>
 
-            {/* Tech Stack Chips Stagger */}
+            {/* Tech Stack Chips with Highlights */}
             <div className="flex flex-wrap gap-2 pt-2">
-              {nextbrainRole.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="bg-paper-raised hover:border-secondary hover:text-secondary px-3 py-1 font-label-sm text-label-sm border border-line text-on-surface transition-colors duration-150 cursor-default"
-                >
-                  {tech}
-                </span>
-              ))}
+              {nextbrainRole.techStack.map((tech) => {
+                const isHighlight = [
+                  "LangGraph",
+                  "FastMCP / MCP",
+                  "Triton Inference Server",
+                  "TensorRT",
+                  "CUDA IPC",
+                  "YOLOv11 / YOLO26",
+                  "DINOv3",
+                  "Gemma 3 VLM",
+                  "Qdrant Vector DB",
+                ].includes(tech);
+                return (
+                  <span
+                    key={tech}
+                    className={`px-3 py-1 font-label-sm text-label-sm border transition-colors duration-150 cursor-default ${
+                      isHighlight
+                        ? "bg-paper-raised border-secondary/40 text-on-surface font-semibold shadow-xs"
+                        : "bg-paper-sunken border-line text-ink-muted"
+                    }`}
+                  >
+                    {isHighlight && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block mr-1.5 -translate-y-0.5"></span>
+                    )}
+                    {tech}
+                  </span>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -499,7 +549,7 @@ export default function ExperiencePage() {
                     Real-Time Prometheus &amp; Grafana Monitoring
                   </h3>
                   <p className="font-body-md text-body-md text-on-surface-variant group-hover:text-inverse-primary group-focus-visible:text-inverse-primary leading-relaxed transition-colors">
-                    Built real-time telemetry dashboards tracking dropped frames, decode latency, model inference execution, and queue depth across {VERIFIED_NUMBERS.camerasCount} camera feeds with automated anomaly alerting.
+                    Built real-time telemetry dashboards tracking dropped frames, decode latency, model inference execution, and queue depth across {VERIFIED_NUMBERS.camerasCount} camera feeds, alongside LangSmith traces and AST guardrail observability for autonomous agent pipelines.
                   </p>
                 </div>
                 <div className="shrink-0">

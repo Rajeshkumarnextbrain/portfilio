@@ -417,22 +417,28 @@ Designed as an editorial magazine spread that answers the hiring manager's quest
 Presents 4+ years of industrial engineering progression from defense radar tracking to industrial IoT and enterprise multi-camera AI clusters.
 
 #### Detailed Sections:
-1. **Chapter 0: Hero & Filmstrip Scrubber:**
+1. **Chapter 0: Hero & 35mm Archival Reel Deck (2-Column Desktop Grid):**
    - SMPTE live running timecode ticker (`SmpteTicker.tsx`).
-   - Massive editorial serif headline: *"FOUR YEARS. ONE PIPELINE AT A TIME."*
+   - **Left Column (7 cols):** Massive editorial serif headline: *"FOUR YEARS. ONE PIPELINE AT A TIME."*, subtitle balancing high-throughput 130+ camera video microservices with autonomous LangGraph & FastMCP multi-agent systems, and 50/50 scope indicators.
+   - **Right Column (5 cols) — 35mm SMPTE Archival Reel Deck (`ArchivalReelPlayer.tsx`):** Precision analog-digital playback animation featuring two rotating mechanical tape spools (Reel A: 130+ Concurrent RTSP Cameras / Triton / CUDA IPC; Reel B: Autonomous LangGraph & FastMCP Agents / < 3s turnaround), threaded tape ribbon with dynamic motion, a central dual playback sensor head with stereo bouncing VU meters (CV & AI channels), live frame-ticking SMPTE timecode, and interactive Play / Pause / 2X Boost transport controls.
    - Filmstrip scrubber bar (`ExperienceScrubber.tsx`): Allows quick jump between Role 01, Role 02, and Role 03 with progress indicators.
-   - 4-column metric register: `4+` Years Prod AI, `150+` Concurrent RTSP, `62%` GPU TCO Reduction, `3–5` Engineers Led.
-2. **Chapter 1: Role 01 — Nextbrain Technologies (Team Lead — AI & Computer Vision):**
+   - 4-column metric register balancing CV and GenAI: `4+` Years Prod AI, `130+` Concurrent RTSP, `< 3s` Agent Query Turnaround, `3–5` Engineers Led.
+2. **Chapter 1: Role 01 — Nextbrain Technologies (Team Lead – Computer Vision & Generative AI Systems):**
    - Current role banner with live green pulse.
-   - Plain-English 1-liner summary.
-   - 3 Ruled metrics: `130+` cameras live, `74%` fewer false alarms, `62%` lower monthly GPU cost.
-   - Plain-English responsibility rows across high-throughput pipelines, VLM autonomous reasoning, TensorRT optimization, and sprint mentorship.
+   - Plain-English summary highlighting both the 130+ camera vision clusters and autonomous LangGraph/FastMCP agent systems.
+   - 4 Ruled metrics (2 CV, 2 GenAI): `130+` cameras live, `< 3s` agent response, `74%` fewer false alarms, `62%` lower monthly GPU cost ($3,400/mo saved).
+   - Plain-English responsibility rows across:
+     - 01 // Autonomous Agents & FastMCP (LangGraph pipelines, AST security guardrails, < 3s queries)
+     - 02 // High-Throughput Vision Pipelines (130+ concurrent cameras, NVDEC hardware decode)
+     - 03 // Multimodal RAG & VLM Reasoning (Gemma 3 false alarm cut, Edubotix curriculum RAG with SymPy/RDKit/Pint tools)
+     - 04 // TensorRT & GPU Optimization (Triton multi-model serving, CUDA IPC shared memory, 6.5x memory reduction)
+     - 05 // Engineering Leadership & Cadence (mentoring 3–5 engineers, Nsight profiling cadences)
    - **For Engineers Technical Instrument Panel:**
      - Dual NVIDIA L4 GPU cluster snapshot (Grafana 30-min telemetry).
      - Camera dot grid sequence (`CameraGridDots.tsx`) showing NVDEC hardware decoding.
      - Cluster sustained load gauge (`GrowBar` at 88% capacity, 80.1% CPU / 87.7% RAM).
      - Latency readout: `141 ms` mean frame latency, `192 req/s` average primary throughput.
-     - Tech stack chips.
+     - Tech stack chips featuring permanently highlighted badges for `LangGraph`, `FastMCP`, `Triton`, `TensorRT`, `YOLOv11/26`, `DINOv3`, and `Qdrant`.
 3. **Chapter 2: Role 02 — SS Automation Solutions (Junior Vision Engineer):**
    - Context: Autodidactic leap into machine vision for industrial manufacturing lines.
    - Metrics: `70–85%` defect detection accuracy, `NVIDIA Jetson` (Nano, Xavier NX), `PLC` integration.
