@@ -522,7 +522,32 @@ Case study on a multimodal, curriculum-grounded academic tutor that avoids LLM c
 
 ---
 
-### 6.7 Contact & Hiring Page (`/contact`)
+### 6.7 Project Case Study 4: Drill Bit Inspection Machine (`/project-drill-bit-inspection`)
+*File: `app/project-drill-bit-inspection/page.jsx`*
+
+Case study on an automated inline industrial metrology and defect sorting machine deployed at SS Automation across three machine categories (2.5–3mm, 5–8mm, and 8–11mm).
+
+#### Detailed Sections:
+1. **Chapter 0: Hero & Inspection Station Visualizer:**
+   - Headline: *"Sub-millimeter metrology. Micron accuracy. Real-time PLC reject."*
+   - Plain-English explainer: Automated inspection using dual Hikrobot machine cameras to measure 7 geometric dimensions and reject damaged drill bits via PLC pneumatic actuation.
+   - 3 Key metrics: `±150–250 µm` scroll gauge tolerance, `70%` defect recall across 8 damage classes, `~20s` per-bit cycle time.
+   - **Interactive Station Visualizer (`DrillBitInspectionVisualizer.tsx`):** Tabbed interface with Front Camera tip reticle (point diameter, web thickness, chisel angle, live defect simulator), Top Camera 360° rotation profile with YOLOv7 defect bounding boxes, and 3 Machine Tier breakdown.
+2. **Chapter 1: Overview:**
+   - Replaces fatigue-prone manual micrometer checking with high-speed automated machine vision.
+3. **Chapter 2: How It Works:**
+   - 6-Stage Pipeline: Feeder ingest $\rightarrow$ Front Camera metrology $\rightarrow$ Immediate front reject pulse $\rightarrow$ Top Camera & 360° stepper rotation $\rightarrow$ YOLOv7 defect detection $\rightarrow$ Pneumatic sorting and audit log.
+   - 7 OpenCV Parameters: Overall length, flute length, front diameter, web thickness, point angle, chisel angle, and helix angle.
+4. **Chapter 3: Challenges & Fixes:**
+   - Specular reflections on cylindrical carbide flutes resolved via coaxial polarized lighting and adaptive Canny edge extraction.
+   - Optical magnification variance across 3 machine categories standardized using shift-start physical scroll gauge calibration.
+   - 360° rotation motion blur eliminated via hardware opto-coupler synchronized stop-and-shoot stepper indexing.
+5. **Chapter 4: Results & Tech Stack:**
+   - OpenCV, YOLOv7, Dual Hikrobot GigE Cameras, Industrial PC (IPC), Industrial PLC (24V Digital I/O), Pneumatic Reject Cylinders, Stepper Motor Indexing.
+
+---
+
+### 6.8 Contact & Hiring Page (`/contact`)
 *File: `app/contact/page.jsx`*
 
 High-efficiency, friction-free portal for recruiters, hiring managers, and founders.

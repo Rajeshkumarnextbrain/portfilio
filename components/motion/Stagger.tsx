@@ -73,7 +73,13 @@ export function StaggerItem({
   };
 
   return (
-    <m.div data-motion="stagger-item" variants={itemVariants} className={className}>
+    <m.div
+      data-motion="stagger-item"
+      variants={itemVariants}
+      whileInView="visible"
+      viewport={VIEWPORT_CONFIG}
+      className={className}
+    >
       {children}
     </m.div>
   );

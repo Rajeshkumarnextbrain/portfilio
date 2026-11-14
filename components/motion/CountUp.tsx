@@ -13,7 +13,7 @@ interface CountUpProps {
 export function CountUp({ value, className = '', duration = 0.8 }: CountUpProps) {
   const motionOK = useMotionOK();
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
+  const isInView = useInView(ref, { once: true, margin: '0px' });
   const [displayValue, setDisplayValue] = useState<string>(value);
 
   // Parse prefix, numeric target, decimals, commas, and suffix

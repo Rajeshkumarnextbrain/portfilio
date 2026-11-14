@@ -8,7 +8,7 @@ import { DRDO_RADAR_ROWS, EXPERIENCE_ROLES } from '@/content/facts';
 export default function DrdoRadarPanel() {
   const vedantRole = EXPERIENCE_ROLES[2];
   const panelRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(panelRef, { margin: '-10% 0px' });
+  const inView = useInView(panelRef, { margin: '0px' });
   const motionOK = useMotionOK();
   const isVisible = useDocumentVisible();
 

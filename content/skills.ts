@@ -34,7 +34,10 @@ export const SKILLS: SkillRow[] = [
       { value: "130+", label: "cameras analysed live" },
       { value: "25+", label: "AI features delivered" },
     ],
-    usedIn: [{ label: "VisionFacts.ai", href: "/project-visionfacts" }],
+    usedIn: [
+      { label: "VisionFacts.ai", href: "/project-visionfacts" },
+      { label: "Drill Bit Inspection", href: "/project-drill-bit-inspection" },
+    ],
     tools: [
       "PyTorch",
       "TensorFlow",

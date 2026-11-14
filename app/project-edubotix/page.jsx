@@ -376,10 +376,10 @@ export default function EdubotixPage() {
                 <span className="font-headline-md text-base sm:text-lg font-bold text-on-surface">← Analytics Agent</span>
                 <span className="text-xs text-ink-muted">Two pipelines (Ask &amp; Watch) across 5 data domains</span>
               </Link>
-              <Link href="/project-visionfacts" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">
-                <span className="text-xs font-label-sm text-secondary uppercase font-semibold">FLAGSHIP PROJECT</span>
-                <span className="font-headline-md text-base sm:text-lg font-bold text-on-surface">VisionFacts.ai Core →</span>
-                <span className="text-xs text-ink-muted">130+ camera live video analytics platform</span>
+              <Link href="/project-drill-bit-inspection" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">
+                <span className="text-xs font-label-sm text-secondary uppercase font-semibold">NEXT PROJECT</span>
+                <span className="font-headline-md text-base sm:text-lg font-bold text-on-surface">Drill Bit Inspection Machine →</span>
+                <span className="text-xs text-ink-muted">Dual Hikrobot cameras, ±150–250 µm metrology &amp; PLC reject</span>
               </Link>
             </div>
 

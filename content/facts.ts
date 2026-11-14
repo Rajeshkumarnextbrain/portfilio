@@ -275,6 +275,23 @@ export const PROJECTS: ProjectItem[] = [
     ],
     tech: ["Qdrant Vector DB", "Hybrid Search", "AWS Bedrock", "Claude (AWS Bedrock)", "Python", "FastAPI"],
   },
+  {
+    id: "drill-bit-inspection",
+    slug: "/project-drill-bit-inspection",
+    title: "Drill Bit Inspection Machine",
+    subtitle: "High-Precision Dual-Camera Metrology & Defect Sorting",
+    role: "Junior Vision Engineer",
+    companyDates: "SS Automation · Jul 2022 – Jul 2023",
+    technologies: "Python, OpenCV, YOLOv7, Hikrobot Dual Cameras, Industrial PC, PLC Actuation, GigE Vision",
+    plainEnglish:
+      "An automated inspection machine that checks industrial drill bits using two synchronized cameras, measuring 7 dimensions to micron precision and rejecting damaged bits with a pneumatic PLC signal.",
+    results: [
+      { value: "±150–250 µm", label: "metrology tolerance verified against scroll gauge" },
+      { value: "70%", label: "automated defect detection recall across 8 damage classes" },
+      { value: "3", label: "machine categories covering 2.5mm to 11mm drill bits" },
+    ],
+    tech: ["OpenCV (Metrology)", "YOLOv7 (Defects)", "Hikrobot GigE Cameras", "Industrial PC", "PLC Actuation", "Python"],
+  },
 ];
 
 export const HOW_IT_WORKS_STEPS = [

@@ -37,5 +37,6 @@ export const TRANSITIONS = {
 
 export const VIEWPORT_CONFIG = {
   once: true,
-  margin: "-10% 0px",
+  margin: "0px",
+  amount: 0 as const,
 };

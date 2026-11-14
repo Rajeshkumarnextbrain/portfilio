@@ -505,3 +505,255 @@ export const EDUBOTIX_TECH_PILLARS: TechPillar[] = [
     items: 'FastAPI, Python 3.11, MongoDB, Redis, Docker',
   },
 ];
+
+// =============================================================================
+// DRILL BIT INSPECTION CASE STUDY DATA
+// =============================================================================
+export const DRILL_BIT_OVERVIEW: CaseStudyOverview = {
+  tagline: 'INDUSTRIAL METROLOGY & DEFECT SORTING',
+  headlinePre: 'Sub-millimeter metrology.',
+  headlineHighlight: 'Micron accuracy.',
+  headlinePost: 'Real-time PLC reject.',
+  leadParagraph: 'An automated inline industrial inspection system deployed across three machine lines (2.5–3mm, 5–8mm, and 8–11mm), combining dual Hikrobot machine vision cameras, OpenCV sub-pixel edge metrology, and YOLOv7 deep learning to measure 7 geometric parameters and reject defective drill bits via PLC actuation.',
+  plainEnglish: 'In precision manufacturing, drill bits must meet strict tolerances down to fractions of a millimeter. This machine picks up drill bits one by one from a feeder onto a conveyor belt. Two high-resolution industrial cameras inspect each bit: a front camera checks the point diameter, chisel angle, and web thickness, while a top camera rotates the bit 360° to measure overall length, flute length, and helix angle. If cracks, rust, or broken shanks are detected, the system immediately signals a PLC to fire a pneumatic ejector into a reject bin.',
+  stripMetrics: [
+    {
+      value: '±150–250 µm',
+      label: 'Metrology Tolerance',
+      detail: 'Calibrated against physical scroll gauge',
+    },
+    {
+      value: '70%',
+      label: 'Defect Recall',
+      detail: '8 structural defect categories flagged',
+      highlight: true,
+    },
+    {
+      value: '~20s',
+      label: 'Per-Part Cycle Time',
+      detail: 'Dual capture + 360° rotation + pneumatic sort',
+    },
+  ],
+  problem: 'Manual inspection of drill bits using optical comparators and hand micrometers was slow, prone to human eye fatigue, and inconsistent across shifts. Subtle defects like land cracks, chisel blend errors, and rust were regularly missed, leading to broken bits and expensive downtime in customer CNC machining lines.',
+  solution: 'Engineered a dual-camera automated inspection station powered by an Industrial PC. Implemented OpenCV edge and contour detection for 7 geometric metrology parameters achieving ±150–250 µm scroll gauge tolerance, paired with a custom YOLOv7 model for 360° surface defect classification and instantaneous PLC pneumatic reject signaling.',
+  traceCalculation: 'Scroll Gauge: 8.000 mm · Measured: 8.082 mm (Δ +82 µm — PASS within ±150 µm)',
+  traceCitation: 'Machine Category B · Drill Shank: 5–8 mm · Station #02 (Conveyor Inline)',
+};
+
+export const DRILL_BIT_STAGES: PipelineStep[] = [
+  {
+    number: '01',
+    plainTitle: 'Mechanical Feed & Conveyor Ingest',
+    plainDesc: 'Inspection machine fetches drill bits one-by-one from the staging feeder onto the inline conveyor belt.',
+    techDesc: 'Singulated mechanical track with optical proximity trigger.',
+  },
+  {
+    number: '02',
+    plainTitle: 'Front Hikrobot Camera Metrology',
+    plainDesc: 'Captures the drill tip face to measure front diameter, web thickness, and chisel angle under coaxial lighting.',
+    techDesc: 'Sub-pixel contour detection with adaptive Canny thresholding.',
+  },
+  {
+    number: '03',
+    plainTitle: 'Immediate Front Defect PLC Reject',
+    plainDesc: 'If the front face has broken blends or undersized web, the IPC signals the PLC immediately to reject the bit without wasting rotation time.',
+    techDesc: '24V digital I/O trigger pulse to pneumatic ejector cylinder.',
+  },
+  {
+    number: '04',
+    plainTitle: 'Top Camera & 360° Indexing Rotation',
+    plainDesc: 'Top camera measures overall length and flute length, then the bit rotates 360° to measure helix angle and audit the full circumference.',
+    techDesc: 'Stepper motor indexing fixture synchronized with camera strobe.',
+  },
+  {
+    number: '05',
+    plainTitle: 'YOLOv7 Defect Classification',
+    plainDesc: 'Deep learning model inspects the rotating surface for land cracks, damage, land merging, rust, and broken shanks.',
+    techDesc: 'YOLOv7 PyTorch inference on IPC GPU detecting 8 defect classes.',
+  },
+  {
+    number: '06',
+    plainTitle: 'Sorting & Metrology Audit Log',
+    plainDesc: 'Passing bits route to accepted bins; rejected bits divert to quarantine bins with full measurement telemetry recorded.',
+    techDesc: 'CSV/SQLite telemetry logging with scroll gauge tolerance delta.',
+  },
+];
+
+export interface DrillBitMeasurement {
+  id: string;
+  name: string;
+  view: 'Front Camera' | 'Top Camera';
+  description: string;
+  tolerance: string;
+}
+
+export const DRILL_BIT_MEASUREMENTS: DrillBitMeasurement[] = [
+  {
+    id: 'overall-length',
+    name: 'Overall Length',
+    view: 'Top Camera',
+    description: 'Total tip-to-shank axial length measured via sub-pixel top edge contour.',
+    tolerance: '±150–250 µm',
+  },
+  {
+    id: 'flute-length',
+    name: 'Flute Length',
+    view: 'Top Camera',
+    description: 'Axial distance from the cutting corner to the flute runout.',
+    tolerance: '±150–250 µm',
+  },
+  {
+    id: 'front-diameter',
+    name: 'Front Diameter',
+    view: 'Front Camera',
+    description: 'Major cutting edge diameter measured across the primary drill tip.',
+    tolerance: '±150 µm',
+  },
+  {
+    id: 'web-thickness',
+    name: 'Web Thickness',
+    view: 'Front Camera',
+    description: 'Central core thickness separating cutting flutes; critical for drill strength.',
+    tolerance: '±150 µm',
+  },
+  {
+    id: 'point-angle',
+    name: 'Point Angle',
+    view: 'Top Camera',
+    description: 'Included angle between primary cutting lips (typically 118° or 135°).',
+    tolerance: '±0.5°',
+  },
+  {
+    id: 'chisel-angle',
+    name: 'Chisel Angle',
+    view: 'Front Camera',
+    description: 'Angle between the chisel edge and the main cutting lip.',
+    tolerance: '±1.0°',
+  },
+  {
+    id: 'helix-angle',
+    name: 'Helix Angle',
+    view: 'Top Camera',
+    description: 'Spiral angle formed by cutting flutes relative to drill centerline (audited during 360° spin).',
+    tolerance: '±1.0°',
+  },
+];
+
+export interface DefectClass {
+  code: string;
+  name: string;
+  impact: string;
+  action: string;
+}
+
+export const DRILL_BIT_DEFECT_CLASSES: DefectClass[] = [
+  { code: 'DEF-01', name: 'Broken Blend', impact: 'Chipped or fractured transition between cutting lip and margin', action: 'Immediate Reject' },
+  { code: 'DEF-02', name: 'Land Crack', impact: 'Micro-fractures along the spiral drill margin', action: 'Immediate Reject' },
+  { code: 'DEF-03', name: 'Surface Damage', impact: 'Physical gouges, dents, or tool scoring on cutting surfaces', action: 'Immediate Reject' },
+  { code: 'DEF-04', name: 'Land Merge', impact: 'Manufacturing defect where margin lands improperly blur or fuse', action: 'Immediate Reject' },
+  { code: 'DEF-05', name: 'Rust & Oxidation', impact: 'Surface corrosion from coolant exposure or humidity', action: 'Immediate Reject' },
+  { code: 'DEF-06', name: 'Shank Broken / Deformed', impact: 'Clamping end fractures or dimensional runout', action: 'Immediate Reject' },
+  { code: 'DEF-07', name: 'Web Undersize', impact: 'Core web thickness below tolerance, risking structural snap', action: 'Immediate Reject' },
+  { code: 'DEF-08', name: 'Chisel Chipped', impact: 'Tip piercing edge damage preventing clean pilot penetration', action: 'Immediate Reject' },
+];
+
+export const DRILL_BIT_MACHINE_TIERS = [
+  {
+    tier: 'MACHINE A',
+    range: '2.5 mm – 3.0 mm',
+    focus: 'Micro-Drill Inspection',
+    detail: 'High-magnification telecentric optics tuned for delicate miniature drill geometry.',
+  },
+  {
+    tier: 'MACHINE B',
+    range: '5.0 mm – 8.0 mm',
+    focus: 'Mainstream Tooling',
+    detail: 'Standard industrial production drill bits; high-volume CNC manufacturing.',
+  },
+  {
+    tier: 'MACHINE C',
+    range: '8.0 mm – 11.0 mm',
+    focus: 'Heavy Industrial',
+    detail: 'Large shank heavy-duty drills requiring expanded field-of-view lenses.',
+  },
+];
+
+export const DRILL_BIT_CHALLENGES: ChallengeFixItem[] = [
+  {
+    number: '1',
+    title: 'Specular Reflections on Cylindrical Carbide',
+    problem: 'Polished carbide drill flutes created harsh bright streaks under standard factory lighting, blowing out OpenCV edge detection and distorting sub-pixel diameter measurements.',
+    fixResult: 'Configured polarized coaxial illumination for the front camera and diffuse dome lighting for the top camera. Implemented adaptive Otsu thresholding with sub-pixel Sobel edge gradients, isolating true geometric boundaries regardless of glare.',
+  },
+  {
+    number: '2',
+    title: 'Scroll Gauge Calibration Across 3 Machine Tiers',
+    problem: 'Inspecting drill sizes from 2.5mm up to 11mm across three separate machines caused optical magnification variance and pixel-to-millimeter calibration drift between shifts.',
+    fixResult: 'Instituted a physical scroll gauge calibration routine at shift start. Built per-machine lookup matrices mapping pixel coordinates to physical dimensions, reliably hitting ±150–250 µm tolerance.',
+  },
+  {
+    number: '3',
+    title: '360° Rotation Synchronization & Defect Tagging',
+    problem: 'Continuous rotation of the drill bit blurred micro-cracks on the spiral flutes during camera exposure.',
+    fixResult: 'Synchronized an indexed stepper rotation fixture with hardware camera opto-coupler triggers, executing indexed stop-and-shoot bursts across 360° to feed sharp frames to YOLOv7.',
+  },
+];
+
+export const DRILL_BIT_CONTRIBUTIONS: ContributionItem[] = [
+  {
+    area: 'OpenCV Sub-Pixel Metrology Pipeline',
+    detail: 'Authored edge detection and contour metrology algorithms in Python/OpenCV to extract 7 geometric parameters with ±150–250 µm tolerance.',
+  },
+  {
+    area: 'Dual-Camera Hardware & Lighting Setup',
+    detail: 'Integrated two Hikrobot industrial cameras, configured coaxial and polarized illumination, and calibrated optical focus across 3 machine categories.',
+  },
+  {
+    area: 'YOLOv7 Defect Model & PLC Actuation',
+    detail: 'Trained YOLOv7 on custom drill damage classes (~70% recall) and implemented IPC-to-PLC communication to trigger pneumatic reject cylinders.',
+  },
+];
+
+export const DRILL_BIT_RESULTS = [
+  {
+    label: 'METROLOGY TOLERANCE',
+    value: '±150–250 µm',
+    detail: 'Scroll gauge verified precision',
+    highlight: true,
+  },
+  {
+    label: 'CYCLE TIME',
+    value: '~20s',
+    detail: 'Dual capture + 360° rotation + sort',
+  },
+  {
+    label: 'DEFECT RECALL',
+    value: '70%',
+    detail: 'Catches all major structural breaks',
+    success: true,
+  },
+  {
+    label: 'MACHINE CATEGORIES',
+    value: '3',
+    detail: '2.5–3mm, 5–8mm, and 8–11mm lines',
+  },
+];
+
+export const DRILL_BIT_TECH_PILLARS: TechPillar[] = [
+  {
+    category: 'VISION METROLOGY',
+    items: 'OpenCV, Canny Edge Detection, Contour Metrology, Sub-Pixel Corner Refinement, NumPy',
+  },
+  {
+    category: 'DEEP LEARNING DEFECTS',
+    items: 'YOLOv7, PyTorch, CUDA, Transfer Learning on Industrial Carbide Dataset',
+  },
+  {
+    category: 'OPTICS & CAMERAS',
+    items: 'Dual Hikrobot Machine Vision Cameras, Coaxial & Polarized Dome Lighting, Telecentric Optics',
+  },
+  {
+    category: 'INDUSTRIAL AUTOMATION',
+    items: 'Industrial PC (IPC), Siemens/Omron PLC, 24V Digital I/O, Pneumatic Reject Valves, Stepper Indexing',
+  },
+];

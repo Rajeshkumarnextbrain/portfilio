@@ -174,7 +174,7 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION: PROJECTS (Interactive Ruled Rows)
             ========================================================================= */}
-        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20" id="projects">
+        <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20 scroll-mt-16" id="projects">
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
               <div className="flex flex-col gap-1">
@@ -187,7 +187,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <h2 className="font-headline-lg text-2xl sm:text-4xl font-bold text-primary tracking-tight">
-                  Three systems shipped to real users.
+                  Four systems shipped to real users.
                 </h2>
               </div>
               <p className="font-body-md text-sm sm:text-base text-ink-muted max-w-md">

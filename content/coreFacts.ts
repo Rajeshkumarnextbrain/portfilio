@@ -81,4 +81,10 @@ export const VERIFIED_NUMBERS = {
   precisionDetection: "TensorRT FP32",
   precisionVlm: "Gemma 3 E4B Vision-Language Model",
   vlmPrecisionGain: "74%",
+  drillBitCycleTime: "~20s",
+  drillBitTolerance: "±150–250 µm",
+  drillBitDamageRecall: "70%",
+  drillBitMachineCategories: "3 machine categories (2.5–3mm, 5–8mm, 8–11mm)",
+  drillBitMeasurementCount: "7 geometric dimensions",
+  drillBitDefectCount: "8 defect classes",
 };
