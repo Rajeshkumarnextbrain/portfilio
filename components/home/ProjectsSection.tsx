@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Stagger, StaggerItem } from '@/components/motion/Stagger';
 import { CountUp } from '@/components/motion/CountUp';
+import { ProjectResult } from '@/content/facts';
 
 interface ProjectItem {
   id: string;
@@ -12,7 +13,7 @@ interface ProjectItem {
   subtitle: string;
   role: string;
   plainEnglish: string;
-  results: string[];
+  results: ProjectResult[];
   tech: string[];
 }
 
@@ -49,24 +50,33 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                 {proj.plainEnglish}
               </p>
 
-              {/* Three Result Numbers */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+              {/* Three Result Numbers - CountUp strictly on numeric values */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                 {proj.results.map((res, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs font-mono text-ink-muted group-hover:text-line group-focus-visible:text-line">
-                    <span className="text-secondary group-hover:text-secondary-fixed font-bold">✓</span>
+                  <div key={i} className="flex items-start gap-2 text-[13px] font-mono text-ink-muted group-hover:text-line group-focus-visible:text-line">
+                    <span className="text-secondary group-hover:text-secondary-fixed font-bold shrink-0">✓</span>
                     <span>
-                      <CountUp value={res} />
+                      {res.value ? (
+                        <>
+                          <span className="font-bold">
+                            <CountUp value={res.value} />
+                          </span>{' '}
+                          <span>{res.label}</span>
+                        </>
+                      ) : (
+                        <span>{res.label}</span>
+                      )}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* Tech Chips */}
+              {/* Tech Chips (Raised to 13px) */}
               <div className="flex flex-wrap gap-1.5 pt-2">
                 {proj.tech.map((t) => (
                   <span
                     key={t}
-                    className="px-2.5 py-1 bg-paper-sunken group-hover:bg-primary-container border border-line group-hover:border-primary-container text-[11px] font-mono text-ink-muted group-hover:text-on-primary transition-colors"
+                    className="px-2.5 py-1 bg-paper-sunken group-hover:bg-primary-container border border-line group-hover:border-primary-container text-[13px] font-mono text-ink-muted group-hover:text-on-primary transition-colors"
                   >
                     {t}
                   </span>

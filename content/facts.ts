@@ -161,25 +161,25 @@ export const EXPERIENCE_ROLES = [
   {
     title: "Junior Vision Engineer",
     company: "SS Automation Solutions Pvt. Ltd.",
-    location: "Bangalore, India",
+    location: "India",
     period: "Jul 2022 – Jul 2023",
     domain: "Industrial Machine Vision & Quality Inspection Automation",
-    flagshipRole: "Lead Vision Engineer",
+    flagshipRole: "Junior Vision Engineer",
     plainSummary:
-      "Built real-time edge computer vision defect detection systems deployed on industrial factory floors, interfacing directly with manufacturing PLCs.",
+      "Taught myself machine vision on the job and built defect-detection systems on NVIDIA Jetson devices connected to factory controllers (70–85% accuracy).",
     outcomes: [
       "Deployed automated surface inspection on embedded NVIDIA Jetson edge systems",
-      "Integrated vision inferences directly with industrial factory PLCs via Modbus and serial protocols",
-      "Achieved sub-second automated sorting and rejection on manufacturing lines",
+      "Integrated vision inferences with factory controllers for line inspection",
+      "Delivered real-time automated defect classification on manufacturing lines",
     ],
     responsibilities: [
       {
         area: "Rapid Autodidactic Ramp",
-        detail: "Joined with no prior computer vision background and self-taught the field on the job, becoming the lead engineer responsible for delivering customer inspection systems.",
+        detail: "Joined with no prior computer vision background and self-taught the field on the job, becoming the engineer responsible for delivering customer inspection systems.",
       },
       {
         area: "Surface Defect Systems",
-        detail: "Built bespoke machine vision solutions for sub-millimeter dimensional measurement and surface defect classification on metal stamping and plastic lines.",
+        detail: "Built bespoke machine vision solutions for dimensional measurement and surface defect classification on production lines.",
       },
       {
         area: "Custom Model Training",
@@ -187,7 +187,7 @@ export const EXPERIENCE_ROLES = [
       },
       {
         area: "Embedded Edge Deployments",
-        detail: "Packaged vision pipelines onto NVIDIA Jetson hardware (Nano, Xavier NX), directly triggering factory PLCs for pneumatic line rejection within a 20 ms window.",
+        detail: "Packaged vision pipelines onto NVIDIA Jetson hardware (Nano, Xavier NX), directly triggering factory controllers for automated line rejection.",
       },
     ],
     techStack: [
@@ -203,28 +203,28 @@ export const EXPERIENCE_ROLES = [
   {
     title: "Technical Support Engineer",
     company: "Vedant Tech Solutions Pvt. Ltd. (DRDO project)",
-    location: "Bangalore, India",
+    location: "India",
     period: "May 2022 – Jul 2022",
     domain: "Radar Data Processing & Target Tracking",
-    flagshipRole: "Systems Support Engineer",
+    flagshipRole: "Technical Support Engineer",
     plainSummary:
-      "Engineered radar target trajectory tracking and spatial state estimation algorithms under strict mission-critical constraints for defense simulation.",
+      "Worked on radar target tracking and signal analysis using Kalman filtering and KNN.",
     outcomes: [
-      "Calibrated multi-sensor spatial coordinates under strict real-time latency limits",
       "Implemented Kalman filtering to filter radar track noise and predict trajectories accurately",
+      "Applied KNN classification algorithms for target state estimation",
     ],
     responsibilities: [
       {
         area: "Radar Telemetry Processing",
-        detail: "Worked on high-volume radar telemetry data processing, kinematic target tracking, and multi-channel RF signal analysis under defense research protocols.",
+        detail: "Worked on high-volume radar telemetry data processing, kinematic target tracking, and signal analysis.",
       },
       {
         area: "Kinematic State Estimation",
-        detail: "Applied Kalman filtering state covariance matrices and K-Nearest Neighbors (KNN) algorithms for kinematic state estimation and trajectory smoothing.",
+        detail: "Applied Kalman filtering and K-Nearest Neighbors (KNN) algorithms for kinematic state estimation and trajectory smoothing.",
       },
       {
         area: "Defense Empirical Validation",
-        detail: "Supported rigorous testing, telemetry capture, and empirical validation of mission-critical radar signal processing algorithms under defense laboratory conditions.",
+        detail: "Supported testing, telemetry capture, and empirical validation of radar signal processing algorithms under defense research protocols.",
       },
     ],
     techStack: [
@@ -232,13 +232,30 @@ export const EXPERIENCE_ROLES = [
       "Kalman Filters",
       "KNN Classification",
       "Signal Analysis",
-      "MATLAB",
-      "C++",
+      "Python",
     ],
   },
 ];
 
-export const PROJECTS = [
+export interface ProjectResult {
+  value?: string;
+  label: string;
+}
+
+export interface ProjectItem {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  role: string;
+  companyDates: string;
+  technologies: string;
+  plainEnglish: string;
+  results: ProjectResult[];
+  tech: string[];
+}
+
+export const PROJECTS: ProjectItem[] = [
   {
     id: "visionfacts",
     slug: "/project-visionfacts",
@@ -250,9 +267,9 @@ export const PROJECTS = [
     plainEnglish:
       "Software that watches 130+ security cameras automatically and alerts staff to safety problems, like missing helmets or forklifts near workers, so nobody has to watch screens all day.",
     results: [
-      "130+ cameras analysed live on 2x NVIDIA L4 GPUs",
-      "~6.5x less GPU memory (~32.5 GB down to ~5 GB)",
-      "74% fewer false safety alarms via VLM verification",
+      { value: "130+", label: "cameras analysed live on 2x NVIDIA L4 GPUs" },
+      { value: "~6.5x", label: "less GPU memory (~32.5 GB down to ~5 GB)" },
+      { value: "74%", label: "fewer false safety alarms via VLM verification" },
     ],
     tech: ["Python", "TensorRT FP32", "Triton Inference Server", "CUDA IPC", "YOLO26", "Gemma 3 E4B", "FastAPI"],
   },
@@ -267,11 +284,11 @@ export const PROJECTS = [
     plainEnglish:
       "A chat assistant that lets managers ask questions about security and attendance data in plain English, and emails them a shift report automatically.",
     results: [
-      "2 pipelines: Ask (Q&A assistant) and Watch (shift monitor)",
-      "2 MCP servers connecting tools to LangGraph agents",
-      "5 data domains with strict SELECT-only database access",
+      { value: "2", label: "pipelines (Ask and Watch)" },
+      { value: "2", label: "MCP servers connecting tools to LangGraph agents" },
+      { value: "5", label: "data domains with strict SELECT-only database access" },
     ],
-    tech: ["LangGraph", "Model Context Protocol (MCP)", "Gemma 3 E4B", "PostgreSQL", "FastAPI", "Python"],
+    tech: ["LangGraph", "Model Context Protocol (MCP)", "Google Gemini · OpenAI", "PostgreSQL", "FastAPI", "Python"],
   },
   {
     id: "edubotix",
@@ -284,11 +301,11 @@ export const PROJECTS = [
     plainEnglish:
       "An AI tutor that answers students' science and maths questions straight from their textbooks, and uses real calculation tools so it does not guess.",
     results: [
-      ">70% faster textbook ingestion with structured parser",
-      "9 built-in scientific tools for verified calculations",
-      "Answers cite verified textbook page and section numbers",
+      { value: ">70%", label: "faster textbook ingestion with structured parser" },
+      { value: "9", label: "built-in scientific tools for verified calculations" },
+      { label: "Answers cite verified textbook page and section numbers" },
     ],
-    tech: ["Qdrant Vector DB", "Hybrid Search", "AWS Bedrock", "Claude 3.5 Sonnet", "Python", "FastAPI"],
+    tech: ["Qdrant Vector DB", "Hybrid Search", "AWS Bedrock", "Claude (AWS Bedrock)", "Python", "FastAPI"],
   },
 ];
 
@@ -297,13 +314,13 @@ export const HOW_IT_WORKS_STEPS = [
     number: "01",
     plainTitle: "Capture",
     plainDesc: "Cameras send video feeds over the local network into isolated worker processes.",
-    techDesc: "RTSP H.264/H.265 demuxing with dedicated NVDEC hardware decoding per stream.",
+    techDesc: "RTSP H.264/H.265 streams read by one isolated worker process per camera.",
   },
   {
     number: "02",
     plainTitle: "Share",
     plainDesc: "Frames are placed in shared computer memory so models access them without copying data.",
-    techDesc: "Zero-copy POSIX shared memory ring buffers with CUDA IPC GPU pointer handoffs.",
+    techDesc: "Zero-copy CUDA shared memory (IPC): frames go to the GPU without copying.",
   },
   {
     number: "03",
@@ -322,28 +339,5 @@ export const HOW_IT_WORKS_STEPS = [
     plainTitle: "Alert",
     plainDesc: "Safety managers receive verified instant notifications and an automated shift summary.",
     techDesc: "FastAPI WebSockets push live events to dashboards while LangGraph agents dispatch reports.",
-  },
-];
-
-export const SKILL_GROUPS = [
-  {
-    title: "Computer Vision & Detection",
-    plainSentence: "Detecting, tracking, and recognizing objects, people, and equipment in high-speed video feeds.",
-    skills: ["YOLO26 / YOLOv11 / YOLOv7", "TensorRT FP32 Engines", "Pose Estimation (YOLO-Pose)", "RetinaFace & ArcFace", "ByteTrack & DeepSORT", "OpenCV CUDA Acceleration"],
-  },
-  {
-    title: "Model Serving & Acceleration",
-    plainSentence: "Running AI models efficiently on GPUs without memory waste, crashes, or PCIe transfer bottlenecks.",
-    skills: ["NVIDIA Triton Inference Server", "CUDA IPC Zero-Copy Buffers", "POSIX Shared Memory Rings", "NVIDIA L4 / A100 / Jetson", "Dynamic Request Batching", "NVIDIA Nsight Profiling"],
-  },
-  {
-    title: "Generative AI & Agentic Systems",
-    plainSentence: "Building multimodal systems that reason over images, run tools safely, and explain findings.",
-    skills: ["Gemma 3 E4B Vision-Language Model", "LangGraph Agent Workflows", "Model Context Protocol (MCP)", "Qdrant & ChromaDB Vector Stores", "Hybrid Dense/Sparse RAG", "AWS Bedrock & Local LLMs"],
-  },
-  {
-    title: "Backend & Systems Engineering",
-    plainSentence: "Delivering reliable, production-hardened microservices that run 24/7 in real facilities.",
-    skills: ["FastAPI & Async Python", "PostgreSQL & MongoDB", "Docker & Kubernetes Deployment", "Prometheus & Grafana Telemetry", "gRPC & WebSockets", "CI/CD & Zero-Downtime Rollouts"],
   },
 ];

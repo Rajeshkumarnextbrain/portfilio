@@ -5,7 +5,7 @@ import { m } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 
-const ROTATING_WORDS = ['[see]', '[reason]', '[scale]'];
+const ROTATING_WORDS = ['see', 'reason', 'scale'];
 
 export function HeroHeadline() {
   const motionOK = useMotionOK();
@@ -24,12 +24,14 @@ export function HeroHeadline() {
 
   return (
     <h1
-      className="font-headline-lg font-semibold tracking-[-0.04em] leading-[0.95] text-[#1c1c18] select-none"
+      aria-label="I build production AI systems that see, reason and scale."
+      className="font-headline-lg font-semibold tracking-[-0.04em] leading-[0.95] text-[#1c1c18]"
       style={{ fontSize: 'clamp(2.5rem, 5.5vw, 4.75rem)' }}
     >
       {/* Transform-only reveal on initial mount, text stays 100% visible */}
       <m.span
         data-motion="hero-headline"
+        aria-hidden="true"
         className="block"
         initial={motionOK ? { y: 20 } : { y: 0 }}
         animate={{ y: 0 }}
@@ -39,7 +41,7 @@ export function HeroHeadline() {
       </m.span>
 
       {/* Rotating Verb Slot: see -> reason -> scale (strictly left-aligned, no jumping) */}
-      <span className="block relative h-[1.18em] overflow-hidden text-secondary mt-1.5 sm:mt-2">
+      <span aria-hidden="true" className="block relative h-[1.18em] overflow-hidden text-secondary mt-1.5 sm:mt-2">
         <span
           className={`flex flex-col items-start ${
             motionOK ? 'transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]' : ''

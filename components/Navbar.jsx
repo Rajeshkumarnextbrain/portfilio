@@ -32,14 +32,14 @@ export default function Navbar() {
             {IDENTITY.name}
           </span>
           <span className="hidden sm:inline-block text-outline-variant font-label-timecode text-xs">|</span>
-          <span className="hidden sm:inline-block font-label-sm text-[11px] sm:text-[12px] uppercase text-ink-muted tracking-wider">
+          <span className="hidden sm:inline-block font-label-sm text-[13px] uppercase text-ink-muted tracking-wider">
             AI ENGINEER &amp; TEAM LEAD
           </span>
         </Link>
 
         {/* Right: Nav Links + Resume + Email Me (Matching user requested design) */}
         <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
-          <nav className="hidden sm:flex items-center gap-4 md:gap-6 font-label-timecode text-[12px] sm:text-[13px] uppercase tracking-wider">
+          <nav className="hidden sm:flex items-center gap-4 md:gap-6 font-label-timecode text-[13px] sm:text-sm uppercase tracking-wider">
             {navLinks.map((link) => {
               const isActive =
                 link.href === '/'
@@ -77,7 +77,7 @@ export default function Navbar() {
             href={CONTACT_INFO.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 border border-primary hover:bg-paper-raised text-primary font-label-timecode text-[12px] uppercase tracking-wider rounded-full transition-all duration-150 active:scale-[0.97] group"
+            className="hidden sm:inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 border border-primary hover:bg-paper-raised text-primary font-label-timecode text-[13px] uppercase tracking-wider rounded-full transition-all duration-150 active:scale-[0.97] group"
           >
             <span>RESUME</span>
             <span className="material-symbols-outlined text-[15px] transition-transform duration-150 group-hover:translate-y-[2px]">
@@ -88,7 +88,7 @@ export default function Navbar() {
           {/* Email Me Solid Orange Pill Button */}
           <a
             href={`mailto:${CONTACT_INFO.email}`}
-            className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-1.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-[12px] uppercase font-bold tracking-wider rounded-full transition-all duration-150 shadow-sm shrink-0 active:scale-[0.97] group"
+            className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-1.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-[13px] uppercase font-bold tracking-wider rounded-full transition-all duration-150 shadow-sm shrink-0 active:scale-[0.97] group"
           >
             <span>EMAIL ME</span>
             <span className="material-symbols-outlined text-[15px] transition-transform duration-150 group-hover:translate-x-[2px]">

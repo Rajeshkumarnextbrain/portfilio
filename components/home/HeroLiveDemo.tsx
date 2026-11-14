@@ -188,7 +188,7 @@ export function HeroLiveDemo() {
                   tabIndex={isActive ? 0 : -1}
                   onClick={() => handleSelectTab(idx)}
                   onKeyDown={(e) => handleKeyDown(e, idx)}
-                  className={`relative px-2 sm:px-2.5 py-1 text-left font-mono text-[11px] sm:text-xs font-semibold rounded-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-secondary ${
+                  className={`relative px-2.5 sm:px-3 py-1.5 text-left font-mono text-[13px] sm:text-sm font-semibold rounded-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-secondary ${
                     isActive
                       ? 'text-primary bg-paper-raised'
                       : 'text-ink-muted hover:text-primary hover:bg-paper-raised/60'
@@ -219,7 +219,7 @@ export function HeroLiveDemo() {
               <span className="absolute inset-0 rounded-full bg-status-success animate-ping opacity-75" />
               <span className="relative w-2 h-2 rounded-full bg-status-success" />
             </span>
-            <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-primary uppercase tracking-wider whitespace-nowrap">
+            <span className="font-mono text-[13px] font-semibold text-primary uppercase tracking-wider whitespace-nowrap">
               LIVE EXAMPLE
             </span>
           </div>
@@ -269,7 +269,7 @@ export function HeroLiveDemo() {
       {/* =========================================================================
           BOTTOM ROW: Caption
           ========================================================================= */}
-      <p className="mt-2 text-[11px] sm:text-xs text-ink-muted text-center font-mono">
+      <p className="mt-2 text-[13px] text-ink-muted text-center font-mono">
         {HERO_SCENE_CAPTION}
       </p>
     </div>

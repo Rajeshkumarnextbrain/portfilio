@@ -70,17 +70,7 @@ export function FlowToken({ steps, className = '' }: FlowTokenProps) {
                   : 'border-line'
               }`}
             >
-              {/* Traveling Token Indicator on Current Active Step */}
-              {motionOK && isCurrentToken && (
-                <m.div
-                  layoutId="flow-token-indicator"
-                  className="absolute -top-2.5 right-3 px-1.5 py-0.5 bg-secondary text-white font-mono text-[9px] uppercase tracking-wider rounded-sm shadow-sm"
-                  transition={{ duration: TIMING.micro, ease: EASING.out }}
-                >
-                  ⌜⌟ ACTIVE
-                </m.div>
-              )}
-
+              {/* Step Title & Description */}
               <div className="flex flex-col gap-2">
                 <span
                   className={`font-label-sm text-xs font-bold transition-colors ${
@@ -99,7 +89,7 @@ export function FlowToken({ steps, className = '' }: FlowTokenProps) {
 
               <div className="pt-2 border-t border-line/60">
                 <span
-                  className={`font-mono text-[11px] leading-tight block transition-colors ${
+                  className={`font-mono text-[13px] leading-tight block transition-colors ${
                     isHovered ? 'text-secondary font-semibold' : 'text-ink-faint'
                   }`}
                 >

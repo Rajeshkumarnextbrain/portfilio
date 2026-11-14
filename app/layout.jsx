@@ -2,16 +2,43 @@ import './globals.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MotionProvider from '../components/motion/MotionProvider';
+import { IDENTITY } from '../content/facts';
+
+const pageTitle = `${IDENTITY.name} · ${IDENTITY.headlineRole}`;
+const pageDescription = `${IDENTITY.name} · ${IDENTITY.shortSummary}`;
 
 export const metadata = {
-  title: 'Rajesh Kumar S · AI Engineer & Team Lead',
-  description:
-    'Rajesh Kumar S · AI Engineer & Team Lead. I build AI that watches cameras, answers questions about data and tutors students.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://rajeshkumar.dev'),
+  title: pageTitle,
+  description: pageDescription,
+  alternates: {
+    canonical: '/',
+  },
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   openGraph: {
-    title: 'Rajesh Kumar S · AI Engineer & Team Lead',
-    description:
-      'Rajesh Kumar S · AI Engineer & Team Lead. I build AI that watches cameras, answers questions about data and tutors students.',
+    title: pageTitle,
+    description: pageDescription,
+    url: '/',
+    siteName: `${IDENTITY.name} Portfolio`,
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: pageTitle,
+      },
+    ],
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: pageTitle,
+    description: pageDescription,
+    images: ['/og-image.png'],
   },
 };
 

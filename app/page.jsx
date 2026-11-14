@@ -7,13 +7,11 @@ import {
   AT_A_GLANCE_METRICS,
   PROJECTS,
   HOW_IT_WORKS_STEPS,
-  SKILL_GROUPS,
   EXPERIENCE_ROLES,
 } from "../content/facts";
 
 import { HeroHeadline } from "@/components/home/HeroHeadline";
 import { HeroLiveDemo } from "@/components/home/HeroLiveDemo";
-import { TelemetryRibbon } from "@/components/home/TelemetryRibbon";
 import { AtAGlanceSection } from "@/components/home/AtAGlanceSection";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { ProjectsSection } from "@/components/home/ProjectsSection";
@@ -27,32 +25,12 @@ import { DrawLine } from "@/components/motion/DrawLine";
 export default function HomePage() {
   return (
     <main className="w-full pt-16 bg-surface min-h-screen">
-      {/* Telemetry Status Ribbon directly beneath navbar */}
-      <TelemetryRibbon />
-
-      {/* Vertical Telemetry Rail (Desktop Margin) */}
-      <div className="hidden 2xl:flex fixed left-0 top-24 bottom-0 w-12 z-30 flex-col items-center justify-between py-8 pointer-events-none select-none">
-        <div className="font-label-timecode text-[11px] uppercase tracking-[0.25em] text-ink-muted/60 -rotate-90 origin-center whitespace-nowrap mt-16">
-          TELEMETRY RAIL
-        </div>
-        <div className="w-[1px] h-24 bg-line/80"></div>
-        <div className="font-label-sm text-xs text-ink-faint">+</div>
-      </div>
-
       <div className="flex flex-col w-full text-on-surface">
 
         {/* =========================================================================
             CHAPTER 00: HERO (Paper / Warm Tactile Surface)
             ========================================================================= */}
         <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-10 border-b border-line overflow-hidden min-h-[calc(100svh-100px)] flex flex-col justify-center">
-          {/* Viewfinder Background Guidelines & Coordinates */}
-          <div className="absolute inset-0 pointer-events-none opacity-40">
-            <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto h-full relative border-x border-dashed border-line">
-              <div className="absolute left-4 top-3 text-ink-faint font-label-sm text-[11px] select-none">+ 00.00.00</div>
-              <div className="absolute right-4 top-3 text-ink-faint font-label-sm text-[11px] select-none">COORDINATE_REF: [12.9716, 77.5946]</div>
-            </div>
-          </div>
-
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto relative z-10 w-full flex flex-col gap-6 sm:gap-8 my-auto">
             {/* Top Availability Pill */}
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -60,12 +38,6 @@ export default function HomePage() {
                 {/* Ambient Loop 1: Green Available Dot Pulse */}
                 <AmbientDot color="bg-status-success" size="w-2 h-2" />
                 <span>AVAILABLE FOR HIRE · {IDENTITY.noticePeriod}{!IDENTITY.noticePeriod.toLowerCase().includes('notice') ? ' NOTICE' : ''} · {IDENTITY.location}</span>
-              </div>
-              <div className="font-label-timecode text-xs text-ink-muted flex items-center gap-2 flex-wrap">
-                <span className="text-secondary font-bold">●</span>
-                <span>{VERIFIED_NUMBERS.cameras} CAMERAS LIVE</span>
-                <span className="text-ink-faint">/</span>
-                <span>{VERIFIED_NUMBERS.memoryReduction} GPU MEMORY</span>
               </div>
             </div>
 
@@ -239,22 +211,22 @@ export default function HomePage() {
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
                   <span className="font-label-timecode text-xs text-secondary font-bold uppercase tracking-widest block">
-                    04 / TECHNICAL CAPABILITIES
+                    04 / SKILLS
                   </span>
                   <div className="w-24">
                     <DrawLine className="h-[1px] w-full bg-secondary" />
                   </div>
                 </div>
                 <h2 className="font-headline-lg text-2xl sm:text-4xl font-bold text-primary tracking-tight">
-                  What I work with.
+                  What I can do for your team.
                 </h2>
               </div>
               <p className="font-body-md text-sm sm:text-base text-ink-muted max-w-md">
-                Four core engineering competencies backed by 4+ years of real-world production deployments.
+                Skills explained in plain English. Tools are in small text for engineers.
               </p>
             </div>
 
-            <SkillsSection skillGroups={SKILL_GROUPS} />
+            <SkillsSection />
           </div>
         </section>
 
@@ -279,9 +251,9 @@ export default function HomePage() {
               </div>
               <Link
                 href="/experience"
-                className="inline-flex items-center gap-1.5 text-secondary font-label-timecode text-xs uppercase font-bold hover:underline group"
+                className="inline-flex items-center gap-1.5 text-secondary font-label-timecode text-[13px] uppercase font-bold hover:underline group"
               >
-                <span>Read detailed technical playback</span>
+                <span>See full experience</span>
                 <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-x-1">
                   arrow_forward
                 </span>
@@ -370,7 +342,7 @@ export default function HomePage() {
               </a>
             </div>
 
-            <div className="pt-6 border-t border-ink-muted/30 flex flex-wrap items-center justify-between gap-4 text-xs font-label-timecode text-ink-faint">
+            <div className="pt-6 border-t border-ink-muted/30 flex flex-wrap items-center justify-between gap-4 text-[13px] font-label-timecode text-ink-faint">
               <div>
                 © 2026 {IDENTITY.name} · {IDENTITY.location}
               </div>

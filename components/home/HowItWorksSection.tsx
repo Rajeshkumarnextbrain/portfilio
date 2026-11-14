@@ -59,7 +59,7 @@ export function HowItWorksSection({
           {/* Bar 2: Central Triton (15.4%) */}
           <div className="flex flex-col gap-1">
             <div className="flex justify-between text-xs font-mono text-secondary font-bold">
-              <span>Central Triton server (Rajesh design)</span>
+              <span>One central Triton server</span>
               <span>
                 <CountUp value={modelMemoryCentralized} />
               </span>

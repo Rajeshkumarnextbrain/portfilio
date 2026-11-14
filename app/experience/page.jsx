@@ -403,8 +403,8 @@ export default function ExperiencePage() {
                 </div>
               </div>
               <div className="flex flex-wrap items-center justify-between font-label-sm text-label-sm text-ink-muted">
-                <span>TRIGGER TO REJECT AIR-VALVE: <strong className="text-on-surface">&lt;20 ms TOTAL</strong></span>
-                <span>DATA INTERFACE: <strong className="text-on-surface">OPC-UA / SNAP7 DIRECT MEMORY</strong></span>
+                <span>TRIGGER TO REJECT: <strong className="text-on-surface">PNEUMATIC LINE SIGNAL</strong></span>
+                <span>DATA INTERFACE: <strong className="text-on-surface">PLC CONTROLLER SIGNAL</strong></span>
               </div>
             </div>
 

@@ -20,7 +20,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="flex flex-col md:items-end gap-2 font-label-timecode text-xs text-ink-muted">
+        <div className="flex flex-col md:items-end gap-2 font-label-timecode text-[13px] text-ink-muted">
           <div className="flex items-center gap-4">
             <a
               href={`mailto:${CONTACT_INFO.email}`}
@@ -53,7 +53,7 @@ export default function Footer() {
               Resume (PDF)
             </a>
           </div>
-          <div className="text-ink-faint text-[12px]">
+          <div className="text-ink-faint text-[13px]">
             © {new Date().getFullYear()} {IDENTITY.name} · {IDENTITY.location} · {IDENTITY.timezone}
           </div>
         </div>
