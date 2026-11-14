@@ -50,7 +50,7 @@ export function HeroHeadline() {
         >
           {ROTATING_WORDS.map((word) => (
             <span key={word} className="h-[1.18em] flex items-center justify-start text-left">
-              <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary border-b-2 border-secondary leading-none rounded-sm inline-flex items-center">
+              <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary leading-none rounded-sm inline-flex items-center">
                 {word}
               </span>
             </span>
