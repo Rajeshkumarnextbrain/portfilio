@@ -12,7 +12,7 @@ import {
 } from "../content/facts";
 
 import { HeroHeadline } from "@/components/home/HeroHeadline";
-import { HeroIllustration } from "@/components/home/HeroIllustration";
+import { HeroLiveDemo } from "@/components/home/HeroLiveDemo";
 import { TelemetryRibbon } from "@/components/home/TelemetryRibbon";
 import { AtAGlanceSection } from "@/components/home/AtAGlanceSection";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
@@ -54,18 +54,18 @@ export default function HomePage() {
           </div>
 
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto relative z-10 w-full flex flex-col gap-6 sm:gap-8 my-auto">
-            {/* Top Availability Pill & Telemetry Targets */}
+            {/* Top Availability Pill */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-paper-raised border border-line rounded-full shadow-sm text-xs font-label-timecode font-semibold tracking-wider text-primary uppercase">
                 {/* Ambient Loop 1: Green Available Dot Pulse */}
                 <AmbientDot color="bg-status-success" size="w-2 h-2" />
-                <span>AVAILABLE FOR HIRE · 30-DAY NOTICE</span>
+                <span>AVAILABLE FOR HIRE · {IDENTITY.noticePeriod}{!IDENTITY.noticePeriod.toLowerCase().includes('notice') ? ' NOTICE' : ''} · {IDENTITY.location}</span>
               </div>
               <div className="font-label-timecode text-xs text-ink-muted flex items-center gap-2 flex-wrap">
                 <span className="text-secondary font-bold">●</span>
-                <span>LATENCY TARGET: &lt; 10ms</span>
+                <span>{VERIFIED_NUMBERS.cameras} CAMERAS LIVE</span>
                 <span className="text-ink-faint">/</span>
-                <span>VRAM SAVINGS: 84%</span>
+                <span>{VERIFIED_NUMBERS.memoryReduction} GPU MEMORY</span>
               </div>
             </div>
 
@@ -73,11 +73,9 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Left Column: Typography & Intent */}
               <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-5">
-                {/* Eyebrow: Pipeline Dispatch */}
-                <div className="flex items-center gap-2 text-ink-muted font-label-sm uppercase tracking-widest font-semibold text-xs sm:text-[13px]">
-                  <span>PIPELINE DISPATCH</span>
-                  <span className="text-secondary font-bold">/</span>
-                  <span>SR. ARCHITECT</span>
+                {/* Eyebrow: Headline Role */}
+                <div className="font-body-md text-[13px] sm:text-[14px] text-ink-muted font-medium">
+                  {IDENTITY.headlineRole}
                 </div>
 
                 {/* Animated Line-by-Line Hero Headline */}
@@ -140,9 +138,9 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Right Column: Precision Viewfinder Screen Simulation */}
+              {/* Right Column: Interactive Live Demo Simulation */}
               <div className="lg:col-span-5 relative flex items-center justify-center">
-                <HeroIllustration />
+                <HeroLiveDemo />
               </div>
             </div>
           </div>
