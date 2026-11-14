@@ -396,9 +396,9 @@ Designed as an editorial magazine spread that answers the hiring manager's quest
    - Candidate verification sidebar: location flexibility, team size led (`3–5 engineers`), and notice period.
 3. **Section 02: Business Impact & Costing (`BusinessImpactSection.tsx`):**
    - 3 Dedicated Enterprise Problem-Solution-ROI Cards:
-     1. **Cloud GPU Cost & Multi-Model Architecture ($3,400/mo saved, 62% lower GPU cost):** Running full multi-model suites (YOLO26, YOLO-Pose, PPE, Fall, RetinaFace, ArcFace) naively required ~3 GB per camera (~390 GB across 130+ cameras). Centralized Triton serving with zero-copy CUDA IPC lets all 130+ streams fit on just 2x NVIDIA L4 GPUs (48 GB total VRAM).
-     2. **Operational Noise & Fatigue (74% fewer false alarms):** Replaced alert fatigue with Gemma 3 E4B VLM zero-shot verification before alerting.
-     3. **Operational Speed & Decision Making (< 3s response vs 48-hr wait):** Replaced 2-day DBA ticket delays with LangGraph multi-agent pipelines and SELECT-only AST security (85% fewer tickets).
+     1. **Cloud GPU Cost & Multi-Model Architecture ($3,400/mo saved):** Analyzing 130+ cameras with a 6-model suite (YOLO26, Pose, PPE, Fall, Face) naively consumed ~3 GB VRAM per stream (~390 GB total). Centralized Triton serving with zero-copy CUDA IPC lets all 130+ streams fit on just 2x NVIDIA L4 GPUs (48 GB total VRAM), cutting monthly GPU spend by 62%.
+     2. **Operational Fatigue (74% fewer false alarms):** Replaced alert fatigue with Gemma 3 E4B VLM zero-shot verification before alerting.
+     3. **Data Turnaround & Speed (< 3s response vs 48-hr wait):** Replaced 2-day DBA ticket delays with LangGraph multi-agent pipelines and SELECT-only AST security (85% fewer tickets).
 4. **Section 03: Production Case Studies:**
    - Interactive preview rows for VisionFacts.ai, Analytics Agent, and Edubotix.
    - Shows role, dates, plain-English summary, key outcome metrics, tech chips, and arrow links to full case-study pages.
