@@ -17,6 +17,16 @@ export default function Navbar() {
     { href: '/contact', label: 'CONTACT' },
   ];
 
+  const handleNavClick = (e, href) => {
+    if (href === '/#projects' && pathname === '/') {
+      e.preventDefault();
+      const el = document.getElementById('projects');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.03)] border-b border-line">
       <div className="h-16 w-full px-4 sm:px-6 lg:px-8 xl:px-12 max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex items-center justify-between">
@@ -52,6 +62,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className={`relative py-1 transition-colors group flex items-center gap-1.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-secondary ${
                     isActive ? 'text-primary font-bold' : 'text-ink-muted hover:text-primary'
                   }`}
@@ -118,7 +129,10 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => {
+                setMobileMenuOpen(false);
+                handleNavClick(e, link.href);
+              }}
               className="py-2 border-b border-line/40 text-primary font-medium hover:text-secondary flex items-center justify-between"
             >
               <span>{link.label}</span>

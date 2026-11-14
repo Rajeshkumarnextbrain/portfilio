@@ -6,7 +6,7 @@ export const CONTACT_INFO = {
   email: process.env.NEXT_PUBLIC_EMAIL || "rajesh.ai.engineer@outlook.com",
   linkedin: process.env.NEXT_PUBLIC_LINKEDIN || "https://linkedin.com/in/rajesh-kumar-ai",
   github: process.env.NEXT_PUBLIC_GITHUB || "https://github.com/rajesh-kumar-s",
-  resumeUrl: process.env.NEXT_PUBLIC_RESUME_URL || "/resume.pdf",
+  resumeUrl: process.env.NEXT_PUBLIC_RESUME_URL || "/RajeshKumarS_AI_Engineer_Resume.pdf",
 };
 
 export const IDENTITY = {
