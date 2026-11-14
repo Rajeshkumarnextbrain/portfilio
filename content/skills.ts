@@ -12,14 +12,13 @@ export type SkillLink = { label: string; href: string };
 
 export interface SkillRow {
   id: string;
-  /** Material Symbols Outlined icon name (already loaded in your layout) */
+  /** Material Symbols Outlined icon name (already loaded in layout) */
   icon: string;
   category: string;
   headline: string;
   sentence: string;
   proof: SkillProof[];
   usedIn: SkillLink[];
-  /** max 5-6 short names, shown as one plain text line */
   tools: string[];
 }
 
@@ -37,11 +36,20 @@ export const SKILLS: SkillRow[] = [
     ],
     usedIn: [{ label: "VisionFacts.ai", href: "/project-visionfacts" }],
     tools: [
-      "YOLO",
+      "PyTorch",
+      "TensorFlow",
+      "ONNX",
+      "YOLOv11",
+      "YOLO26",
+      "DINOv3",
+      "RetinaFace",
+      "ArcFace",
       "ByteTrack",
-      "Pose estimation",
-      "RetinaFace + ArcFace",
       "OpenCV",
+      "Object detection",
+      "Pose estimation",
+      "Face recognition",
+      "Multi-object tracking",
     ],
   },
   {
@@ -58,10 +66,15 @@ export const SKILLS: SkillRow[] = [
       { label: "VisionFacts.ai", href: "/project-visionfacts" },
     ],
     tools: [
-      "Gemma 3 E4B",
+      "LangChain",
       "LangGraph",
-      "MCP",
-      "RAG (Qdrant, ChromaDB)",
+      "MCP (FastMCP)",
+      "RAG",
+      "Deep Agents",
+      "Vision-Language Models (Gemma)",
+      "OpenAI",
+      "Gemini",
+      "Ollama",
       "AWS Bedrock",
     ],
   },
@@ -78,11 +91,14 @@ export const SKILLS: SkillRow[] = [
     ],
     usedIn: [{ label: "VisionFacts.ai", href: "/project-visionfacts" }],
     tools: [
-      "NVIDIA Triton",
+      "Triton Inference Server",
       "TensorRT",
-      "CUDA shared memory",
-      "Nsight profiling",
-      "Jetson edge devices",
+      "ONNX Runtime",
+      "CUDA",
+      "NVIDIA Nsight Compute",
+      "NVIDIA NGC",
+      "gRPC",
+      "NVIDIA Jetson",
     ],
   },
   {
@@ -99,11 +115,20 @@ export const SKILLS: SkillRow[] = [
       { label: "Edubotix", href: "/project-edubotix" },
     ],
     tools: [
+      "Python",
+      "Multiprocessing systems",
+      "Event-driven pipelines",
+      "Distributed inference",
       "FastAPI",
-      "PostgreSQL + MongoDB",
-      "Redis",
+      "PostgreSQL",
+      "MongoDB",
+      "Qdrant",
+      "ChromaDB",
       "Docker",
-      "Prometheus + Grafana",
+      "Git & GitHub",
+      "LangSmith",
+      "Guardrails",
+      "Prometheus & Grafana",
     ],
   },
 ];

@@ -315,11 +315,11 @@ export const VERIFIED_NUMBERS = {
 ```
 
 ### 5.2 `content/skills.ts`
-Defines the 4 primary skill domains:
-1. **Computer Vision:** `130+ cameras analysed live`, `25+ AI features delivered` (YOLO, ByteTrack, Pose estimation, RetinaFace + ArcFace, OpenCV).
-2. **Generative AI & Agents:** `3 AI systems built` (Gemma 3 E4B, LangGraph, FastMCP, RAG Qdrant, AWS Bedrock).
-3. **Fast, Efficient AI:** `~6.5x less GPU memory`, `62% lower cloud GPU cost` (NVIDIA Triton, TensorRT, CUDA IPC, Nsight, Jetson).
-4. **Reliable Systems & Leadership:** `3–5 engineers led` (FastAPI, PostgreSQL, MongoDB, Redis, Docker, Prometheus + Grafana).
+Defines the 4 primary skill domains with scannable, highlighted tool/algorithm badges:
+1. **Computer Vision:** `130+ cameras analysed live`, `25+ AI features delivered` (PyTorch, TensorFlow, ONNX, YOLOv11, YOLO26, DINOv3, RetinaFace, ArcFace, ByteTrack, OpenCV, Object detection, Pose estimation, Face recognition, Multi-object tracking).
+2. **Generative AI & Agents:** `3 AI systems built` (LangChain, LangGraph, MCP/FastMCP, RAG, Deep Agents, Vision-Language Models/Gemma, OpenAI, Gemini, Ollama, AWS Bedrock).
+3. **Fast, Efficient AI:** `~6.5x less GPU memory`, `62% lower cloud GPU cost` (Triton Inference Server, TensorRT, ONNX Runtime, CUDA, NVIDIA Nsight Compute, NVIDIA NGC, gRPC, NVIDIA Jetson).
+4. **Reliable Systems & Leadership:** `3–5 engineers led` (Python, Multiprocessing systems, Event-driven pipelines, Distributed inference, FastAPI, PostgreSQL, MongoDB, Qdrant, ChromaDB, Docker, Git & GitHub, LangSmith, Guardrails, Prometheus & Grafana).
 
 ### 5.3 `content/heroScenes.ts`
 Contains simulation dialogues and step sequences for the interactive Hero demo:

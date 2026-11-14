@@ -173,8 +173,8 @@ export default function HomePage() {
             SECTION: PROJECTS (Interactive Ruled Rows)
             ========================================================================= */}
         <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20" id="projects">
-          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
                   <span className="font-label-timecode text-xs text-secondary font-bold uppercase tracking-widest block">
@@ -198,11 +198,11 @@ export default function HomePage() {
         </section>
 
         {/* =========================================================================
-            SECTION: SKILLS (Plain-English Grouping)
+            SECTION: SKILLS (Plain-English Grouping with Highlighted Tools)
             ========================================================================= */}
         <section className="w-full bg-surface border-b border-line px-4 sm:px-6 lg:px-8 xl:px-12 py-10 md:py-16 lg:py-20">
-          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-4">
+          <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
                   <span className="font-label-timecode text-xs text-secondary font-bold uppercase tracking-widest block">
@@ -217,7 +217,7 @@ export default function HomePage() {
                 </h2>
               </div>
               <p className="font-body-md text-sm sm:text-base text-ink-muted max-w-md">
-                Skills explained in plain English. Tools are in small text for engineers.
+                Skills explained in plain English with highlighted production tools and algorithms.
               </p>
             </div>
 

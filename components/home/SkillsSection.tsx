@@ -27,8 +27,8 @@ export function SkillsSection({ rows = SKILLS }: { rows?: SkillRow[] }) {
               </span>
             </div>
 
-            {/* plain-English text, tools last */}
-            <div className="flex flex-col gap-2 lg:col-span-7">
+            {/* plain-English text, with permanently highlighted scannable tools */}
+            <div className="flex flex-col gap-2.5 lg:col-span-7">
               <p className="font-label-timecode text-[13px] uppercase tracking-wider text-ink-muted">
                 {row.category}
               </p>
@@ -38,10 +38,23 @@ export function SkillsSection({ rows = SKILLS }: { rows?: SkillRow[] }) {
               <p className="max-w-2xl font-body-md text-base leading-relaxed text-ink-muted sm:text-lg">
                 {row.sentence}
               </p>
-              <p className="mt-1 text-sm leading-relaxed text-ink-muted sm:text-[15px]">
-                <span className="font-semibold text-primary">Tools: </span>
-                {row.tools.join(" · ")}
-              </p>
+
+              {/* Permanently Highlighted Badges (Active by default + Hover Pop) */}
+              <div className="mt-3 flex flex-col gap-2">
+                <span className="font-label-timecode text-xs font-bold uppercase text-secondary tracking-wider">
+                  TOOLS &amp; ALGORITHMS:
+                </span>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  {row.tools.map((tool) => (
+                    <span
+                      key={tool}
+                      className="px-2.5 py-1 bg-signal-orange-tint/50 hover:bg-secondary border border-secondary/35 hover:border-secondary font-mono text-[12px] sm:text-xs font-bold text-on-surface hover:text-on-secondary rounded transition-all duration-150 shadow-2xs cursor-default"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* proof + where it was used */}
