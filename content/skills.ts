@@ -37,6 +37,7 @@ export const SKILLS: SkillRow[] = [
     usedIn: [
       { label: "VisionFacts.ai", href: "/project-visionfacts" },
       { label: "Drill Bit Inspection", href: "/project-drill-bit-inspection" },
+      { label: "LED Inspection", href: "/project-led-inspection" },
     ],
     tools: [
       "PyTorch",

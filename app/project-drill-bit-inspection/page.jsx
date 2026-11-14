@@ -377,9 +377,9 @@ export default function DrillBitInspectionPage() {
                 <span className="font-label-sm text-xs text-ink-muted uppercase">PREVIOUS CASE STUDY</span>
                 <span className="font-headline-md text-lg font-bold text-on-surface">EDUBOTIX · MULTIMODAL STEM TUTOR</span>
               </Link>
-              <Link href="/project-visionfacts" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1 md:text-right">
+              <Link href="/project-led-inspection" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1 md:text-right">
                 <span className="font-label-sm text-xs text-ink-muted uppercase">NEXT CASE STUDY</span>
-                <span className="font-headline-md text-lg font-bold text-on-surface">VISIONFACTS.AI · 130+ CAMERAS</span>
+                <span className="font-headline-md text-lg font-bold text-on-surface">LED LEAD BENDING &amp; POLARITY</span>
               </Link>
             </div>
 

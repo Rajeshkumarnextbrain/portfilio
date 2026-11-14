@@ -187,7 +187,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <h2 className="font-headline-lg text-2xl sm:text-4xl font-bold text-primary tracking-tight">
-                  Four systems shipped to real users.
+                  Five systems shipped to real users.
                 </h2>
               </div>
               <p className="font-body-md text-sm sm:text-base text-ink-muted max-w-md">

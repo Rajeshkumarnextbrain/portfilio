@@ -435,10 +435,10 @@ export default function VisionFactsFlagshipPage() {
         <section className="w-full bg-surface py-10 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-12">
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-2 border border-line divide-y md:divide-y-0 md:divide-x divide-line">
-              <Link href="/project-drill-bit-inspection" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">
+              <Link href="/project-led-inspection" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">
                 <span className="text-xs font-label-sm text-ink-muted uppercase">PREVIOUS PROJECT</span>
-                <span className="font-headline-md text-base sm:text-lg font-bold text-on-surface">← Drill Bit Inspection</span>
-                <span className="text-xs text-ink-muted">Dual Hikrobot cameras, ±150–250 µm metrology &amp; PLC reject</span>
+                <span className="font-headline-md text-base sm:text-lg font-bold text-on-surface">← LED Lead Bending &amp; Polarity</span>
+                <span className="text-xs text-ink-muted">Basler cameras, 50–250ms polarity sort &amp; 90° lead metrology</span>
               </Link>
               <Link href="/project-analytics-agent" className="p-6 hover:bg-paper-sunken transition-colors flex flex-col gap-1">
                 <span className="text-xs font-label-sm text-secondary uppercase font-semibold">NEXT PROJECT</span>

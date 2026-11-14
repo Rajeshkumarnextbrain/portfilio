@@ -757,3 +757,211 @@ export const DRILL_BIT_TECH_PILLARS: TechPillar[] = [
     items: 'Industrial PC (IPC), Siemens/Omron PLC, 24V Digital I/O, Pneumatic Reject Valves, Stepper Indexing',
   },
 ];
+
+// =============================================================================
+// LED LEAD BENDING & POLARITY INSPECTION CASE STUDY DATA
+// =============================================================================
+export const LED_INSPECTION_OVERVIEW: CaseStudyOverview = {
+  tagline: 'HIGH-SPEED POLARITY & 90° BEND METROLOGY',
+  headlinePre: 'Sub-millimeter lead metrology.',
+  headlineHighlight: '50ms polarity sort.',
+  headlinePost: 'Pneumatic reject actuation.',
+  leadParagraph: 'A dual-station industrial machine vision platform engineered for automated high-volume LED lead forming. Integrates Basler machine vision cameras, pure OpenCV edge and contour geometry, and high-speed digital I/O to identify lead polarity in 50–250 ms and audit post-bend 90° angles, radius, and pin lengths against tight micrometer specifications.',
+  plainEnglish: 'In automated electronics assembly, LEDs must be oriented correctly and their wire leads bent to an exact 90° right angle before being inserted into circuit boards. This custom machine performs two vision jobs: First, in the vibration alignment tray, a high-speed camera detects the LED\'s positive (anode) and negative (cathode) polarity within 50–250 ms so a robotic arm can grab and place it in the correct orientation. Second, after the mechanical die bends the leads, another camera audits the bend to ensure it is exactly 90 degrees (between 89° and 91°), inspects the corner radius, and measures both lead lengths. Any LED that fails even one measurement is immediately shot into a reject bin by a pneumatic blast.',
+  stripMetrics: [
+    {
+      value: '50–250 ms',
+      label: 'Polarity Latency',
+      detail: 'Station 1 Anode vs. Cathode orientation',
+    },
+    {
+      value: '89° – 91°',
+      label: 'Bend Angle Window',
+      detail: 'SPEC: 90.0° (±1.0° tolerance window)',
+      highlight: true,
+    },
+    {
+      value: '1–3s',
+      label: 'Bend Metrology Cycle',
+      detail: 'Station 2 sub-pixel contour & pin length audit',
+    },
+    {
+      value: '100%',
+      label: 'Pneumatic Defect Rejection',
+      detail: 'Zero out-of-spec components pass downstream',
+    },
+  ],
+  problem: 'In mass electronic component assembly, manual inspection of bent LED leads with calipers or shadowgraphs was impossible at factory speeds. Incorrect polarity insertion burned out components on downstream PCB lines, while improper bend angles (e.g. 88° or 93°) or incorrect pin lengths caused leads to miss through-hole PCB vias, jamming automated insertion machinery and halting production.',
+  solution: 'Architected a dual-camera machine vision pipeline using Basler industrial cameras and pure OpenCV algorithms. Station 1 isolates the LED lead frame and epoxy flat notch in 50–250 ms to instruct pick-and-place robotics on polarity orientation. Station 2 captures high-contrast backlit silhouettes of the formed leads, computing sub-pixel edge boundaries, Hough line angle vectors, corner arc radius, and pin lengths against four engineering tolerance thresholds, triggering instantaneous pneumatic reject cylinder actuation for any non-conforming part.',
+  traceCalculation: 'Angle: 90.18° (SPEC 90° ±1.0°) · Radius: 1.034 mm (SPEC 1.016 mm) · Top: 2.392 mm (SPEC 2.3876 mm) · Bottom: 15.731 mm (SPEC 15.748 mm) — ALL PASS',
+  traceCitation: 'Station #02 · Basler GigE Camera · Telecentric Backlight · PLC Digital Output #04',
+};
+
+export const LED_STAGES: PipelineStep[] = [
+  {
+    number: '01',
+    plainTitle: 'Bowl Feeder Ingest & Alignment Staging',
+    plainDesc: 'Raw LEDs are vibrated into a singulated mechanical track so they arrive flat and ready for visual polarity inspection.',
+    techDesc: 'Vibratory bowl feeder with linear singulation track and optical parts-present photo-sensor.',
+  },
+  {
+    number: '02',
+    plainTitle: 'Camera 1: Polarity & Orientation Detection (50–250 ms)',
+    plainDesc: 'A Basler machine vision camera captures the LED in the alignment zone. OpenCV contour analysis detects whether the anode (+) or cathode (-) lead is on the left or right.',
+    techDesc: 'Sub-millisecond global shutter capture with morphological lead-frame flag/anvil contour segmentation in 50–250 ms.',
+  },
+  {
+    number: '03',
+    plainTitle: 'Robotic Pick-and-Place Positioning',
+    plainDesc: 'Armed with the polarity signal from the vision PC, the robotic picker grasps the LED and loads it into the bending die in the exact intended orientation.',
+    techDesc: 'Digital I/O handshake between Industrial PC and 2-axis pneumatic pick-and-place arm.',
+  },
+  {
+    number: '04',
+    plainTitle: 'Precision 90° Mechanical Lead Bending',
+    plainDesc: 'Mechanical tooling folds both wire leads against a precision hardened steel anvil to form the 90-degree right-angle bend.',
+    techDesc: 'Cam-driven bending punch with fixed radius die tooling.',
+  },
+  {
+    number: '05',
+    plainTitle: 'Camera 2: Multi-Parameter Lead Metrology (1–3s)',
+    plainDesc: 'Second Basler camera captures a backlit silhouette of the bent leads. OpenCV measures 4 key dimensions: bend angle, corner radius, top distance, and bottom pin length.',
+    techDesc: 'Telecentric backlight imaging with sub-pixel Canny edge gradients and Hough line angle fitting in 1–3s.',
+  },
+  {
+    number: '06',
+    plainTitle: 'Pneumatic Defect Rejection & Audit Log',
+    plainDesc: 'If any single dimension is outside the allowable tolerance, a pneumatic blast blows the part into the reject bin; passing LEDs proceed to tape-and-reel packaging.',
+    techDesc: 'Industrial PC fires 24V PLC solenoid valve pulse; telemetry recorded to per-shift quality logs.',
+  },
+];
+
+export interface LedToleranceSpec {
+  parameter: string;
+  unit: string;
+  upperLimit: number;
+  spec: number;
+  lowerLimit: number;
+  toleranceLabel: string;
+  description: string;
+}
+
+export const LED_TOLERANCE_SPECS: LedToleranceSpec[] = [
+  {
+    parameter: 'Corner Radius',
+    unit: 'MM',
+    upperLimit: 1.27,
+    spec: 1.016,
+    lowerLimit: 0.762,
+    toleranceLabel: '±0.254 mm',
+    description: 'Fillet bend radius around the die corner; ensures wire ductility without stress fractures.',
+  },
+  {
+    parameter: 'Bend Angle',
+    unit: 'Degrees',
+    upperLimit: 91,
+    spec: 90,
+    lowerLimit: 89,
+    toleranceLabel: '±1.0°',
+    description: 'Included right angle between horizontal shoulder and vertical PCB insertion pin.',
+  },
+  {
+    parameter: 'Top Distance',
+    unit: 'MM',
+    upperLimit: 2.5146,
+    spec: 2.3876,
+    lowerLimit: 2.2606,
+    toleranceLabel: '±0.127 mm',
+    description: 'Horizontal lead shoulder extension from epoxy package face to outer bend vertex.',
+  },
+  {
+    parameter: 'Bottom Distance',
+    unit: 'MM',
+    upperLimit: 16.002,
+    spec: 15.748,
+    lowerLimit: 15.494,
+    toleranceLabel: '±0.254 mm',
+    description: 'Vertical pin insertion length measured from bottom bend vertex to lead tips.',
+  },
+];
+
+export const LED_CHALLENGES: ChallengeFixItem[] = [
+  {
+    number: '1',
+    title: 'Eliminating Motion Blur & Shutter Latency in Station 1 (50–250 ms)',
+    problem: 'In the vibratory feeder, LEDs were subject to continuous micro-vibrations. Standard camera exposure times produced blurred lead edges, slowing down the cycle and confusing lead frame polarity identification.',
+    fixResult: 'Configured ultra-short microsecond hardware strobe lighting coupled with Basler global shutter GigE sensors. Optimized pure C++ / NumPy OpenCV contour bounding boxes to process within 50–250 ms without blocking the pick robot.',
+  },
+  {
+    number: '2',
+    title: 'Sub-Pixel Angle Calculation on Rounded Bends',
+    problem: 'The lead bend is not a sharp knife-edge corner; it has a 1.016 mm radius. Fitting straight lines across the curved vertex distorted the true 90° angle measurement.',
+    fixResult: 'Segmented the lead into two linear regions separated by the fillet curve. Applied Hough Line transforms and sub-pixel edge gradients exclusively on the straight segments to calculate the intersection angle, while fitting a circle arc to measure the corner bend radius independently.',
+  },
+  {
+    number: '3',
+    title: 'Optical Parallax & Perspective Distortion Prevention',
+    problem: 'Standard industrial lenses introduce barrel and parallax distortion, causing lead pins closer to the lens edge to appear artificially longer than pins in the center.',
+    fixResult: 'Installed a telecentric lens paired with a collimated LED backlight panel. Calibrated pixel-to-millimeter ratios using high-precision optical dot grids, achieving sub-millimeter measurement accuracy across the entire field of view.',
+  },
+];
+
+export const LED_CONTRIBUTIONS: ContributionItem[] = [
+  {
+    area: 'Pure OpenCV Metrology Pipeline',
+    detail: 'Developed high-precision edge detection, contour filtering, line intersection, and arc-fitting algorithms without deep learning overhead to achieve microsecond-fast deterministic execution.',
+  },
+  {
+    area: 'Dual Basler Camera & Telecentric Optics Setup',
+    detail: 'Configured dual Basler machine vision cameras with hardware strobe triggers, collimated backlight panels, and telecentric optics to eliminate optical parallax.',
+  },
+  {
+    area: 'High-Speed Polarity & PLC Reject Interface',
+    detail: 'Programmed digital I/O handshakes with industrial PLCs: sending 50–250 ms polarity orientation signals to the pick-and-place robot and millisecond pneumatic reject triggers.',
+  },
+];
+
+export const LED_RESULTS = [
+  {
+    label: 'POLARITY DETECTION SPEED',
+    value: '50–250 ms',
+    detail: 'Station 1 alignment and pick guidance',
+    highlight: true,
+  },
+  {
+    label: 'BEND ANGLE TOLERANCE',
+    value: '89° – 91°',
+    detail: 'SPEC: 90.0° audited via sub-pixel Hough lines',
+    success: true,
+  },
+  {
+    label: 'METROLOGY PARAMETERS',
+    value: '4 Dimensions',
+    detail: 'Angle, radius, top distance, bottom distance',
+  },
+  {
+    label: 'DEFECT REJECTION',
+    value: '100%',
+    detail: 'Automated pneumatic ejection for out-of-spec parts',
+    success: true,
+  },
+];
+
+export const LED_TECH_PILLARS: TechPillar[] = [
+  {
+    category: 'VISION METROLOGY',
+    items: 'OpenCV, Canny Edge Detection, Sub-Pixel Edge Extraction, Hough Line Transform, Contour Curvature Fitting, NumPy',
+  },
+  {
+    category: 'CAMERAS & OPTICS',
+    items: 'Dual Basler Machine Vision Cameras (GigE / USB3), Telecentric Lenses, Collimated Backlight Panel, Hardware Strobe',
+  },
+  {
+    category: 'INDUSTRIAL AUTOMATION',
+    items: 'Industrial PC (IPC), SS Automation Bending Machine, Siemens/Omron PLC, 24V Digital I/O, Pneumatic Blow-Off Reject Cylinder',
+  },
+  {
+    category: 'METROLOGY SPECS',
+    items: 'Bend Angle (89°–91°), Corner Radius (0.762–1.27mm), Top Distance (2.26–2.51mm), Bottom Pin Length (15.49–16.00mm)',
+  },
+];

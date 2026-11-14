@@ -216,6 +216,7 @@ export interface ProjectItem {
   title: string;
   subtitle: string;
   role: string;
+  category: 'Computer Vision' | 'Generative AI & Agents';
   companyDates: string;
   technologies: string;
   plainEnglish: string;
@@ -230,6 +231,7 @@ export const PROJECTS: ProjectItem[] = [
     title: "VisionFacts.ai",
     subtitle: "Real-Time Intelligent Video Analytics Platform",
     role: "Lead AI & Systems Architect",
+    category: "Computer Vision",
     companyDates: "Nextbrain Technologies Pvt. Ltd. · Aug 2023 – Present",
     technologies: "Python, OpenCV, YOLO26, Triton, TensorRT FP32, CUDA IPC, MongoDB, FastAPI, Docker",
     plainEnglish:
@@ -247,6 +249,7 @@ export const PROJECTS: ProjectItem[] = [
     title: "Visionfacts Analytics Agent",
     subtitle: "Autonomous CCTV Intelligence & Natural Language Reporting",
     role: "Lead AI & Systems Architect",
+    category: "Generative AI & Agents",
     companyDates: "Nextbrain Technologies Pvt. Ltd. · Aug 2023 – Present",
     technologies: "LangChain, LangGraph, Model Context Protocol (FastMCP), FastAPI, PostgreSQL, SSE",
     plainEnglish:
@@ -264,6 +267,7 @@ export const PROJECTS: ProjectItem[] = [
     title: "Edubotix",
     subtitle: "Curriculum-Grounded Multimodal Academic Tutor",
     role: "Lead AI & Systems Architect",
+    category: "Generative AI & Agents",
     companyDates: "Nextbrain Technologies Pvt. Ltd. · Aug 2023 – Present",
     technologies: "AWS Bedrock, Claude, Qdrant, FastMCP, SymPy, RDKit, Pint, FastAPI",
     plainEnglish:
@@ -281,6 +285,7 @@ export const PROJECTS: ProjectItem[] = [
     title: "Drill Bit Inspection Machine",
     subtitle: "High-Precision Dual-Camera Metrology & Defect Sorting",
     role: "Junior Vision Engineer",
+    category: "Computer Vision",
     companyDates: "SS Automation · Jul 2022 – Jul 2023",
     technologies: "Python, OpenCV, YOLOv7, Hikrobot Dual Cameras, Industrial PC, PLC Actuation, GigE Vision",
     plainEnglish:
@@ -291,6 +296,24 @@ export const PROJECTS: ProjectItem[] = [
       { value: "3", label: "machine categories covering 2.5mm to 11mm drill bits" },
     ],
     tech: ["OpenCV (Metrology)", "YOLOv7 (Defects)", "Hikrobot GigE Cameras", "Industrial PC", "PLC Actuation", "Python"],
+  },
+  {
+    id: "led-inspection",
+    slug: "/project-led-inspection",
+    title: "LED Lead Bending & Polarity Inspection",
+    subtitle: "High-Speed Dual-Station Machine Vision & Lead Metrology",
+    role: "Junior Vision Engineer",
+    category: "Computer Vision",
+    companyDates: "SS Automation · Jul 2022 – Jul 2023",
+    technologies: "Python, OpenCV, Basler Machine Vision Cameras, Edge & Contour Metrology, Sub-Pixel Analysis, Industrial PC, PLC Rejection",
+    plainEnglish:
+      "A dual-station factory vision system that checks LED anode/cathode polarity in 50–250 ms for automated pick-and-place, then inspects post-bend 90° lead geometry and pin lengths with 100% pneumatic defect rejection.",
+    results: [
+      { value: "50–250 ms", label: "polarity detection speed for robotic pick-and-place" },
+      { value: "89°–91°", label: "bend angle tolerance audited via sub-pixel contours" },
+      { value: "100%", label: "automated pneumatic reject for out-of-spec leads" },
+    ],
+    tech: ["OpenCV (Contours & Edges)", "Basler GigE Cameras", "Sub-Pixel Metrology", "Industrial PC", "PLC Actuation", "Python"],
   },
 ];
 
