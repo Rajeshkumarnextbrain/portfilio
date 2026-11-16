@@ -17,6 +17,7 @@ import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { Disclosure } from "@/components/motion/Disclosure";
 import { CopyButton } from "@/components/motion/CopyButton";
 import { AmbientDot } from "@/components/motion/AmbientDot";
+import Icon from "@/components/Icon";
 
 export default function ContactPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
@@ -79,7 +80,7 @@ export default function ContactPage() {
                       download
                       className="inline-flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
                     >
-                      <span className="material-symbols-outlined text-[18px]">download</span>
+                      <Icon name="download" className="text-[18px]" />
                       <span>Download Resume (PDF)</span>
                     </a>
                   </StaggerItem>
@@ -92,7 +93,7 @@ export default function ContactPage() {
                       className="inline-flex items-center gap-1.5 px-4 sm:px-6 py-3 sm:py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
                     >
                       <span>LinkedIn</span>
-                      <span className="material-symbols-outlined text-[16px]">north_east</span>
+                      <Icon name="north_east" className="text-[16px]" />
                     </a>
                   </StaggerItem>
 
@@ -104,7 +105,7 @@ export default function ContactPage() {
                       className="inline-flex items-center gap-1.5 px-4 sm:px-6 py-3 sm:py-3.5 bg-paper-raised hover:bg-surface-container-high text-on-surface border border-line rounded-full font-label-sm text-xs uppercase tracking-wider font-medium transition-colors active:scale-[0.97]"
                     >
                       <span>GitHub</span>
-                      <span className="material-symbols-outlined text-[16px]">north_east</span>
+                      <Icon name="north_east" className="text-[16px]" />
                     </a>
                   </StaggerItem>
                 </Stagger>
@@ -163,7 +164,7 @@ export default function ContactPage() {
 
                   {/* Mobility Pill */}
                   <div className="flex items-center gap-2 p-2.5 bg-paper-sunken border border-line text-[11px] text-ink-muted">
-                    <span className="material-symbols-outlined text-[16px] text-secondary">travel_explore</span>
+                    <Icon name="travel_explore" className="text-[16px] text-secondary" />
                     <span><strong>Mobility:</strong> Bangalore onsite/hybrid &bull; Open to sponsored relocation worldwide</span>
                   </div>
 
@@ -332,9 +333,7 @@ export default function ContactPage() {
                 </div>
                 <div className="flex items-center justify-between text-secondary font-label-sm text-xs uppercase font-semibold pt-2">
                   <span>Connect on LinkedIn</span>
-                  <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
-                    north_east
-                  </span>
+                  <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </div>
               </a>
 
@@ -356,9 +355,7 @@ export default function ContactPage() {
                 </div>
                 <div className="flex items-center justify-between text-secondary font-label-sm text-xs uppercase font-semibold pt-2">
                   <span>View GitHub repos</span>
-                  <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
-                    north_east
-                  </span>
+                  <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </div>
               </a>
             </div>

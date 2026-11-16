@@ -22,6 +22,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { StickyJumpBar } from "@/components/project/StickyJumpBar";
 import { ProblemSolutionRow } from "@/components/project/ProblemSolutionRow";
+import Icon from "@/components/Icon";
 import { DrillBitInspectionVisualizer } from "@/components/project/DrillBitInspectionVisualizer";
 
 const JUMP_SECTIONS = [
@@ -125,9 +126,7 @@ export default function DrillBitInspectionPage() {
                     className="inline-flex items-center gap-2 px-6 py-3 bg-secondary hover:bg-signal-orange-hover text-on-secondary rounded-full font-label-sm text-xs uppercase tracking-wider font-semibold transition-colors group active:scale-[0.97]"
                   >
                     <span>Read technical deep dive</span>
-                    <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-y-1">
-                      arrow_downward
-                    </span>
+                    <Icon name="arrow_downward" className="text-[16px] transition-transform duration-150 group-hover:translate-y-1" />
                   </a>
 
                   <StickyJumpBar sections={JUMP_SECTIONS} />

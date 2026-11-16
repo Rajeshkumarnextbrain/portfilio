@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IDENTITY, CONTACT_INFO } from '../content/facts';
 import { ScrollProgress } from './motion/ScrollProgress';
+import Icon from './Icon';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -91,9 +92,7 @@ export default function Navbar() {
             className="hidden sm:inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 border border-primary hover:bg-paper-raised text-primary font-label-timecode text-[13px] uppercase tracking-wider rounded-full transition-all duration-150 active:scale-[0.97] group"
           >
             <span>RESUME</span>
-            <span className="material-symbols-outlined text-[15px] transition-transform duration-150 group-hover:translate-y-[2px]">
-              download
-            </span>
+            <Icon name="download" className="text-[15px] transition-transform duration-150 group-hover:translate-y-[2px]" />
           </a>
 
           {/* Email Me Solid Orange Pill Button */}
@@ -102,9 +101,7 @@ export default function Navbar() {
             className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 py-1 sm:px-5 sm:py-1.5 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-xs sm:text-[13px] uppercase font-bold tracking-wider rounded-full transition-all duration-150 shadow-sm shrink-0 active:scale-[0.97] group"
           >
             <span>EMAIL ME</span>
-            <span className="material-symbols-outlined text-[14px] sm:text-[15px] transition-transform duration-150 group-hover:translate-x-[2px]">
-              arrow_forward
-            </span>
+            <Icon name="arrow_forward" className="text-[14px] sm:text-[15px] transition-transform duration-150 group-hover:translate-x-[2px]" />
           </a>
 
           {/* Mobile Menu Toggle Button */}
@@ -115,9 +112,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="sm:hidden p-1.5 text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary rounded"
           >
-            <span className="material-symbols-outlined text-[22px]">
-              {mobileMenuOpen ? 'close' : 'menu'}
-            </span>
+            <Icon name={mobileMenuOpen ? 'close' : 'menu'} className="text-[22px]" />
           </button>
         </div>
       </div>
@@ -136,7 +131,7 @@ export default function Navbar() {
               className="py-2 border-b border-line/40 text-primary font-medium hover:text-secondary flex items-center justify-between"
             >
               <span>{link.label}</span>
-              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+              <Icon name="arrow_forward" className="text-[14px]" />
             </Link>
           ))}
           <a
@@ -146,7 +141,7 @@ export default function Navbar() {
             className="py-2 border-b border-line/40 text-primary font-semibold flex items-center justify-between"
           >
             <span>RESUME (PDF)</span>
-            <span className="material-symbols-outlined text-[14px]">download</span>
+            <Icon name="download" className="text-[14px]" />
           </a>
         </div>
       )}

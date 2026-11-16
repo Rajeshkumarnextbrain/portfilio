@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { CountUp } from "@/components/motion/CountUp";
 import { SKILLS, type SkillRow } from "@/content/skills";
+import Icon from "@/components/Icon";
 
 export function SkillsSection({ rows = SKILLS }: { rows?: SkillRow[] }) {
   return (
@@ -21,9 +22,7 @@ export function SkillsSection({ rows = SKILLS }: { rows?: SkillRow[] }) {
                 aria-hidden="true"
                 className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-line bg-paper-raised text-primary"
               >
-                <span className="material-symbols-outlined text-[26px]">
-                  {row.icon}
-                </span>
+                <Icon name={row.icon} className="text-[26px]" />
               </span>
             </div>
 

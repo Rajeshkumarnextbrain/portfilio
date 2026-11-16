@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { EASING } from '@/lib/motion';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
+import Icon from '@/components/Icon';
 import {
   HERO_SCENES,
   HERO_SCENE_CAPTION,
@@ -419,7 +420,7 @@ function WatchScene({
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-2 text-status-success font-semibold"
           >
-            <span className="material-symbols-outlined text-[16px]">check_circle</span>
+            <Icon name="check_circle" className="text-[16px]" />
             <span>{data.finalStatus}</span>
           </m.div>
         ) : (
@@ -489,9 +490,7 @@ function AskScene({
         {showStep1 && (
           <div className="flex items-center gap-2">
             {checkStep1 ? (
-              <span className="material-symbols-outlined text-[15px] text-status-success font-bold">
-                check
-              </span>
+              <Icon name="check" className="text-[15px] text-status-success font-bold" />
             ) : (
               <span className="w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin shrink-0" />
             )}
@@ -504,9 +503,7 @@ function AskScene({
         {showStep2 && (
           <div className="flex items-center gap-2">
             {checkStep2 ? (
-              <span className="material-symbols-outlined text-[15px] text-status-success font-bold">
-                check
-              </span>
+              <Icon name="check" className="text-[15px] text-status-success font-bold" />
             ) : (
               <span className="w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin shrink-0" />
             )}
@@ -519,9 +516,7 @@ function AskScene({
         {showStep3 && (
           <div className="flex items-center gap-2">
             {checkStep3 ? (
-              <span className="material-symbols-outlined text-[15px] text-status-success font-bold">
-                check
-              </span>
+              <Icon name="check" className="text-[15px] text-status-success font-bold" />
             ) : (
               <span className="w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin shrink-0" />
             )}
@@ -549,9 +544,7 @@ function AskScene({
 
           {/* Small Snapshot Thumbnail Placeholder */}
           <div className="w-10 h-10 bg-line/80 border border-line rounded-sm flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[18px] text-ink-muted">
-              monitoring
-            </span>
+            <Icon name="monitoring" className="text-[18px] text-ink-muted" />
           </div>
 
           {/* Status Chip */}
@@ -623,9 +616,7 @@ function LearnScene({
         {showStep1 && (
           <div className="flex items-center gap-2">
             {checkStep1 ? (
-              <span className="material-symbols-outlined text-[15px] text-status-success font-bold">
-                check
-              </span>
+              <Icon name="check" className="text-[15px] text-status-success font-bold" />
             ) : (
               <span className="w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin shrink-0" />
             )}
@@ -638,9 +629,7 @@ function LearnScene({
         {showStep2 && (
           <div className="flex items-center gap-2">
             {checkStep2 ? (
-              <span className="material-symbols-outlined text-[15px] text-status-success font-bold">
-                check
-              </span>
+              <Icon name="check" className="text-[15px] text-status-success font-bold" />
             ) : (
               <span className="w-3 h-3 border-2 border-secondary border-t-transparent rounded-full animate-spin shrink-0" />
             )}
@@ -662,9 +651,7 @@ function LearnScene({
           <span className="font-mono text-xs sm:text-sm font-bold text-secondary">
             {data.calcResult}
           </span>
-          <span className="material-symbols-outlined text-[18px] text-secondary">
-            calculate
-          </span>
+          <Icon name="calculate" className="text-[18px] text-secondary" />
         </m.div>
       )}
 
@@ -676,9 +663,7 @@ function LearnScene({
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-1.5 text-primary font-medium"
           >
-            <span className="material-symbols-outlined text-[15px] text-secondary">
-              menu_book
-            </span>
+            <Icon name="menu_book" className="text-[15px] text-secondary" />
             <span>{data.source}</span>
           </m.div>
         ) : (

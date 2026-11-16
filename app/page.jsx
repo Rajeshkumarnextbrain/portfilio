@@ -21,6 +21,7 @@ import { CountUp } from "@/components/motion/CountUp";
 import { AmbientDot } from "@/components/motion/AmbientDot";
 import { Reveal } from "@/components/motion/Reveal";
 import { DrawLine } from "@/components/motion/DrawLine";
+import Icon from "@/components/Icon";
 
 export default function HomePage() {
   return (
@@ -76,9 +77,7 @@ export default function HomePage() {
                     className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-primary hover:bg-neutral-800 text-on-primary font-body-md text-[15px] sm:text-base font-semibold rounded-full transition-all duration-150 shadow-sm text-center active:scale-[0.97] group"
                   >
                     <span>Download resume (PDF)</span>
-                    <span className="material-symbols-outlined text-[18px] transition-transform duration-150 group-hover:translate-y-[2px]">
-                      download
-                    </span>
+                    <Icon name="download" className="text-[18px] transition-transform duration-150 group-hover:translate-y-[2px]" />
                   </a>
                   <a
                     href="#projects"
@@ -91,9 +90,7 @@ export default function HomePage() {
                     className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-body-md text-[15px] sm:text-base font-semibold rounded-full transition-colors duration-150 text-center active:scale-[0.97] group"
                   >
                     <span>Email me</span>
-                    <span className="material-symbols-outlined text-[18px] transition-transform duration-150 group-hover:translate-x-[2px]">
-                      mail
-                    </span>
+                    <Icon name="mail" className="text-[18px] transition-transform duration-150 group-hover:translate-x-[2px]" />
                   </a>
                 </div>
 
@@ -251,9 +248,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-1.5 text-secondary font-label-timecode text-[13px] uppercase font-bold hover:underline group"
               >
                 <span>See full experience</span>
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-x-1">
-                  arrow_forward
-                </span>
+                <Icon name="arrow_forward" className="text-[16px] transition-transform duration-150 group-hover:translate-x-1" />
               </Link>
             </div>
 
@@ -295,11 +290,9 @@ export default function HomePage() {
                 href={`mailto:${CONTACT_INFO.email}`}
                 className="inline-flex items-center gap-2 px-8 py-4 bg-secondary-container hover:bg-signal-orange-hover text-on-secondary font-label-timecode text-xs uppercase font-bold tracking-wider rounded-full transition-all duration-150 shadow-sm active:scale-[0.97] group"
               >
-                <span className="material-symbols-outlined text-[18px]">mail</span>
+                <Icon name="mail" className="text-[18px]" />
                 <span>Email Rajesh</span>
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-x-1">
-                  arrow_forward
-                </span>
+                <Icon name="arrow_forward" className="text-[16px] transition-transform duration-150 group-hover:translate-x-1" />
               </a>
 
               <a
@@ -308,9 +301,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-4 border border-surface-dim/40 hover:border-surface text-surface font-label-timecode text-xs uppercase tracking-wider rounded-full transition-all duration-150 active:scale-[0.97] group"
               >
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-y-[2px]">
-                  download
-                </span>
+                <Icon name="download" className="text-[16px] transition-transform duration-150 group-hover:translate-y-[2px]" />
                 <span>Download Resume (PDF)</span>
               </a>
 
@@ -321,9 +312,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-1.5 px-6 py-4 border border-surface-dim/40 hover:border-surface text-surface font-label-timecode text-xs uppercase tracking-wider rounded-full transition-all duration-150 active:scale-[0.97] group"
               >
                 <span>LinkedIn</span>
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
-                  north_east
-                </span>
+                <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
               </a>
 
               <a
@@ -333,9 +322,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-1.5 px-6 py-4 border border-surface-dim/40 hover:border-surface text-surface font-label-timecode text-xs uppercase tracking-wider rounded-full transition-all duration-150 active:scale-[0.97] group"
               >
                 <span>GitHub</span>
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
-                  north_east
-                </span>
+                <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
               </a>
             </div>
 

@@ -1,8 +1,38 @@
 import './globals.css';
+import { Manrope, Space_Grotesk, Space_Mono, Playfair_Display } from 'next/font/google';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MotionProvider from '../components/motion/MotionProvider';
 import { IDENTITY } from '../content/facts';
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-manrope',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+  variable: '--font-space-grotesk',
+});
+
+const spaceMono = Space_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-space-mono',
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-playfair',
+});
 
 const pageTitle = `${IDENTITY.name} · ${IDENTITY.headlineRole}`;
 const pageDescription = `${IDENTITY.name} · ${IDENTITY.shortSummary}`;
@@ -44,7 +74,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${manrope.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${playfairDisplay.variable}`}
+    >
       <head>
         <noscript>
           <style>{`[data-motion]{opacity:1!important;transform:none!important;clip-path:none!important;}`}</style>

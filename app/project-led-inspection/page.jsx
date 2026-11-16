@@ -23,6 +23,7 @@ import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { StickyJumpBar } from "@/components/project/StickyJumpBar";
 import { ProblemSolutionRow } from "@/components/project/ProblemSolutionRow";
 import { LedInspectionVisualizer } from "@/components/project/LedInspectionVisualizer";
+import Icon from "@/components/Icon";
 
 const JUMP_SECTIONS = [
   { id: 'overview', label: 'Overview' },
@@ -125,9 +126,7 @@ export default function LedInspectionPage() {
                     className="inline-flex items-center gap-2 px-6 py-3 bg-secondary hover:bg-signal-orange-hover text-on-secondary rounded-full font-label-sm text-xs uppercase tracking-wider font-semibold transition-colors group active:scale-[0.97]"
                   >
                     <span>Read technical deep dive</span>
-                    <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-y-1">
-                      arrow_downward
-                    </span>
+                    <Icon name="arrow_downward" className="text-[16px] transition-transform duration-150 group-hover:translate-y-1" />
                   </a>
 
                   <StickyJumpBar sections={JUMP_SECTIONS} />
@@ -402,7 +401,7 @@ export default function LedInspectionPage() {
                 href="/project-drill-bit-inspection"
                 className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-ink-muted hover:text-secondary transition-colors"
               >
-                <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+                <Icon name="arrow_back" className="text-[16px]" />
                 <span>Previous: Drill Bit Inspection</span>
               </Link>
 
@@ -418,7 +417,7 @@ export default function LedInspectionPage() {
                 className="flex items-center justify-end gap-2 text-xs font-mono font-bold uppercase text-ink-muted hover:text-secondary transition-colors"
               >
                 <span>Next: VisionFacts.ai</span>
-                <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                <Icon name="arrow_forward" className="text-[16px]" />
               </Link>
             </div>
           </div>

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
 import { useMotionOK } from '@/lib/useMotionOK';
+import Icon from '@/components/Icon';
 
 export function ProxyPacketDiagram() {
   const motionOK = useMotionOK();
@@ -54,7 +55,7 @@ export function ProxyPacketDiagram() {
         }`}>
           <div className="flex justify-between items-center text-[10px] font-mono text-ink-muted">
             <span>ORIGIN</span>
-            <span className="material-symbols-outlined text-[14px]">laptop</span>
+            <Icon name="laptop" className="text-[14px]" />
           </div>
           <div>
             <div className="text-xs font-bold text-primary font-mono uppercase">Client Web Browser</div>
@@ -94,7 +95,7 @@ export function ProxyPacketDiagram() {
         }`}>
           <div className="flex justify-between items-center text-[10px] font-mono text-ink-muted">
             <span>INTERNAL</span>
-            <span className="material-symbols-outlined text-[14px]">videocam</span>
+            <Icon name="videocam" className="text-[14px]" />
           </div>
           <div>
             <div className="text-xs font-bold text-primary font-mono uppercase">Internal LAN Camera</div>

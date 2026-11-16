@@ -5,6 +5,7 @@ import { m, useInView } from 'framer-motion';
 import { EASING } from '@/lib/motion';
 import { useMotionOK } from '@/lib/useMotionOK';
 import { TIMELINE_SCRUBBER_CLIPS } from '@/content/facts';
+import Icon from '@/components/Icon';
 
 export function ExperienceScrubber() {
   const motionOK = useMotionOK();
@@ -24,9 +25,7 @@ export function ExperienceScrubber() {
       {/* Filmstrip Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 font-label-sm text-xs sm:text-label-sm text-ink-muted uppercase">
         <span className="flex items-center gap-2 truncate">
-          <span className="material-symbols-outlined text-[14px] text-secondary shrink-0" aria-hidden="true">
-            movie
-          </span>
+          <Icon name="movie" className="text-[14px] text-secondary shrink-0" />
           <span className="truncate">TIMELINE SCRUBBER // MAY 2022 — PRESENT</span>
         </span>
         <span className="font-label-timecode text-label-timecode text-secondary font-medium shrink-0">

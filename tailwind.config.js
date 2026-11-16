@@ -89,60 +89,107 @@ module.exports = {
       },
       "fontFamily": {
             "serif": [
-                  '"Playfair Display"',
+                  "var(--font-playfair)",
+                  "Playfair Display",
                   "ui-serif",
                   "Georgia",
                   "serif"
             ],
             "mono": [
-                  '"Space Mono"',
+                  "var(--font-space-mono)",
+                  "Space Mono",
                   "ui-monospace",
                   "monospace"
             ],
             "metric-numeral-mobile": [
-                  "Space Mono"
+                  "var(--font-space-mono)",
+                  "Space Mono",
+                  "ui-monospace",
+                  "monospace"
             ],
             "body-md": [
-                  "Manrope"
+                  "var(--font-manrope)",
+                  "Manrope",
+                  "system-ui",
+                  "sans-serif"
             ],
             "headline-lg-mobile": [
-                  "Space Grotesk"
+                  "var(--font-space-grotesk)",
+                  "Space Grotesk",
+                  "system-ui",
+                  "sans-serif"
             ],
             "mega-display": [
-                  "Space Grotesk"
+                  "var(--font-space-grotesk)",
+                  "Space Grotesk",
+                  "system-ui",
+                  "sans-serif"
             ],
             "headline-md": [
-                  "Space Grotesk"
+                  "var(--font-space-grotesk)",
+                  "Space Grotesk",
+                  "system-ui",
+                  "sans-serif"
             ],
             "label-timecode": [
-                  "Space Mono"
+                  "var(--font-space-mono)",
+                  "Space Mono",
+                  "ui-monospace",
+                  "monospace"
             ],
             "metric-numeral": [
-                  "Space Mono"
+                  "var(--font-space-mono)",
+                  "Space Mono",
+                  "ui-monospace",
+                  "monospace"
             ],
             "mega-display-mobile": [
-                  "Space Grotesk"
+                  "var(--font-space-grotesk)",
+                  "Space Grotesk",
+                  "system-ui",
+                  "sans-serif"
             ],
             "label-sm": [
-                  "Space Mono"
+                  "var(--font-space-mono)",
+                  "Space Mono",
+                  "ui-monospace",
+                  "monospace"
             ],
             "display": [
-                  "Space Grotesk"
+                  "var(--font-space-grotesk)",
+                  "Space Grotesk",
+                  "system-ui",
+                  "sans-serif"
             ],
             "body-lg-mobile": [
-                  "Manrope"
+                  "var(--font-manrope)",
+                  "Manrope",
+                  "system-ui",
+                  "sans-serif"
             ],
             "display-mobile": [
-                  "Space Grotesk"
+                  "var(--font-space-grotesk)",
+                  "Space Grotesk",
+                  "system-ui",
+                  "sans-serif"
             ],
             "headline-lg": [
-                  "Space Grotesk"
+                  "var(--font-space-grotesk)",
+                  "Space Grotesk",
+                  "system-ui",
+                  "sans-serif"
             ],
             "body-lg": [
-                  "Manrope"
+                  "var(--font-manrope)",
+                  "Manrope",
+                  "system-ui",
+                  "sans-serif"
             ],
             "body-sm": [
-                  "Manrope"
+                  "var(--font-manrope)",
+                  "Manrope",
+                  "system-ui",
+                  "sans-serif"
             ]
       },
       "fontSize": {

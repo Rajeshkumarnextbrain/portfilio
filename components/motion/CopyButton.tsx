@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { m } from 'framer-motion';
 import { useMotionOK } from '@/lib/useMotionOK';
+import Icon from '@/components/Icon';
 
 interface CopyButtonProps {
   textToCopy: string;
@@ -27,14 +28,12 @@ export function CopyButton({
 
   const buttonContent = (
     <>
-      <span
-        className={`material-symbols-outlined text-[18px] transition-transform duration-150 ${
+      <Icon
+        name={copied ? 'check' : 'content_copy'}
+        className={`text-[18px] transition-transform duration-150 ${
           copied ? 'scale-110 text-status-success' : ''
         }`}
-        aria-hidden="true"
-      >
-        {copied ? 'check' : 'content_copy'}
-      </span>
+      />
       <span className="truncate max-w-[220px] xs:max-w-none">
         {copied ? 'Copied ✓' : label || `Email: ${textToCopy}`}
       </span>

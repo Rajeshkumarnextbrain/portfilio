@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ProjectItem } from '@/content/facts';
+import Icon from '@/components/Icon';
 
 interface ProjectsSectionProps {
   projects: ProjectItem[];
@@ -84,9 +85,10 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               {/* Action Link / Arrow */}
               <div className="flex items-center gap-1 sm:gap-2 text-secondary group-hover:text-secondary-fixed font-label-timecode text-xs uppercase font-bold shrink-0">
                 <span className="hidden sm:inline">Case Study</span>
-                <span className="material-symbols-outlined text-[16px] sm:text-[18px] transition-transform duration-150 group-hover:translate-x-1.5">
-                  arrow_forward
-                </span>
+                <Icon
+                  name="arrow_forward"
+                  className="text-[16px] sm:text-[18px] transition-transform duration-150 group-hover:translate-x-1.5"
+                />
               </div>
             </Link>
           );

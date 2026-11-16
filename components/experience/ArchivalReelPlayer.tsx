@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
+import Icon from '@/components/Icon';
 
 export function ArchivalReelPlayer() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -141,7 +142,7 @@ export function ArchivalReelPlayer() {
             {/* The Physical Playback Sensor Block */}
             <div className="relative px-3 py-2 bg-paper-raised border border-line flex flex-col items-center gap-1.5 shadow-sm">
               <div className="flex items-center gap-1 font-label-timecode text-[9px] uppercase font-bold text-secondary">
-                <span className="material-symbols-outlined text-[13px] animate-pulse">sensors</span>
+                <Icon name="sensors" className="text-[13px] animate-pulse" />
                 <span>DUAL HEAD</span>
               </div>
 
@@ -264,9 +265,10 @@ export function ArchivalReelPlayer() {
             onClick={() => setIsPlaying(!isPlaying)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-paper-sunken hover:bg-surface-container-high border border-line text-on-surface font-label-timecode text-xs uppercase font-semibold transition-colors active:scale-95"
           >
-            <span className="material-symbols-outlined text-[15px] text-secondary">
-              {isPlaying ? 'pause' : 'play_arrow'}
-            </span>
+            <Icon
+              name={isPlaying ? 'pause' : 'play_arrow'}
+              className="text-[15px] text-secondary"
+            />
             <span>{isPlaying ? 'Pause' : 'Play'}</span>
           </button>
 

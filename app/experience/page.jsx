@@ -21,6 +21,7 @@ import { DrawLine } from "@/components/motion/DrawLine";
 import { GrowBar } from "@/components/motion/GrowBar";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import Icon from "@/components/Icon";
 
 export default function ExperiencePage() {
   const nextbrainRole = EXPERIENCE_ROLES[0];
@@ -581,7 +582,7 @@ export default function ExperiencePage() {
             {/* Telemetry Notice */}
             <div className="bg-paper-sunken p-4 border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-label-sm text-label-sm">
               <span className="text-on-surface font-semibold flex items-center gap-2">
-                <span className="material-symbols-outlined text-secondary text-[16px]">verified</span>
+                <Icon name="verified" className="text-secondary text-[16px]" />
                 VERIFIED SNAPSHOT: {VERIFIED_NUMBERS.latencyEndToEnd} mean frame latency · {VERIFIED_NUMBERS.throughputPrimaryMean}
               </span>
               <span className="font-label-timecode text-label-timecode text-ink-muted">
@@ -622,20 +623,16 @@ export default function ExperiencePage() {
                 href={`mailto:${CONTACT_INFO.email}`}
                 className="inline-flex items-center gap-3 px-8 py-4 bg-secondary text-on-secondary font-label-sm text-label-sm uppercase tracking-wider rounded-full hover:bg-signal-orange-hover transition-colors font-semibold active:scale-[0.97] group"
               >
-                <span className="material-symbols-outlined text-[18px]">mail</span>
+                <Icon name="mail" className="text-[18px]" />
                 <span>Email Rajesh</span>
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-x-1">
-                  arrow_forward
-                </span>
+                <Icon name="arrow_forward" className="text-[16px] transition-transform duration-150 group-hover:translate-x-1" />
               </a>
               <a
                 href={CONTACT_INFO.resumeUrl}
                 download
                 className="inline-flex items-center gap-2 px-6 py-4 border border-surface-container-highest/40 text-surface hover:bg-surface/10 font-label-sm text-label-sm uppercase tracking-wider rounded-full transition-colors font-medium active:scale-[0.97] group"
               >
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:translate-y-[2px]">
-                  download
-                </span>
+                <Icon name="download" className="text-[16px] transition-transform duration-150 group-hover:translate-y-[2px]" />
                 <span>Download Resume (PDF)</span>
               </a>
               <a
@@ -645,9 +642,7 @@ export default function ExperiencePage() {
                 className="inline-flex items-center gap-2 px-6 py-4 border border-surface-container-highest/40 text-surface hover:bg-surface/10 font-label-sm text-label-sm uppercase tracking-wider rounded-full transition-colors active:scale-[0.97] group"
               >
                 <span>LinkedIn</span>
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
-                  north_east
-                </span>
+                <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
               </a>
               <a
                 href={CONTACT_INFO.github}
@@ -656,9 +651,7 @@ export default function ExperiencePage() {
                 className="inline-flex items-center gap-2 px-6 py-4 border border-surface-container-highest/40 text-surface hover:bg-surface/10 font-label-sm text-label-sm uppercase tracking-wider rounded-full transition-colors active:scale-[0.97] group"
               >
                 <span>GitHub</span>
-                <span className="material-symbols-outlined text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
-                  north_east
-                </span>
+                <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
               </a>
             </div>
 
