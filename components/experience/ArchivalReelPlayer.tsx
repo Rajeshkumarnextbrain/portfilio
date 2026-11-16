@@ -9,32 +9,49 @@ export function ArchivalReelPlayer() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [speed, setSpeed] = useState<number>(1); // 1 = normal, 2 = 2x
   const [activeTab, setActiveTab] = useState<'both' | 'cv' | 'genai'>('both');
-  const [frameTick, setFrameTick] = useState<number>(18);
-  const [vuLeft, setVuLeft] = useState<number>(78);
-  const [vuRight, setVuRight] = useState<number>(84);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const timecodeRef = useRef<HTMLSpanElement>(null);
+  const vuLeftRef = useRef<HTMLDivElement>(null);
+  const vuRightRef = useRef<HTMLDivElement>(null);
+  const frameTickRef = useRef<number>(18);
+
   const inView = useInView(containerRef, { margin: '0px' });
   const motionOK = useMotionOK();
   const isDocVisible = useDocumentVisible();
 
   const isAnimated = motionOK && isDocVisible && inView && isPlaying;
 
-  // Frame tick animation for SMPTE counter and dynamic VU meters
+  // Frame tick animation for SMPTE counter and dynamic VU meters written directly to DOM
   useEffect(() => {
-    if (!isAnimated) return;
+    if (!isAnimated) {
+      if (vuLeftRef.current) vuLeftRef.current.style.height = isPlaying ? '70%' : '15%';
+      if (vuRightRef.current) vuRightRef.current.style.height = isPlaying ? '75%' : '15%';
+      return;
+    }
 
     const intervalTime = (1000 / 24) / speed;
     const interval = setInterval(() => {
-      setFrameTick((prev) => (prev + 1) % 100);
+      frameTickRef.current = (frameTickRef.current + 1) % 100;
+      if (timecodeRef.current) {
+        const tick = frameTickRef.current;
+        const tickStr = tick < 10 ? `0${tick}` : `${tick}`;
+        timecodeRef.current.textContent = `04:02:26:${tickStr}`;
+      }
 
-      // Subtle organic jitter on VU meters
-      setVuLeft(Math.floor(70 + Math.sin(Date.now() / 200) * 15 + Math.random() * 8));
-      setVuRight(Math.floor(75 + Math.cos(Date.now() / 220) * 14 + Math.random() * 8));
+      // Subtle organic jitter on VU meters directly on DOM
+      if (vuLeftRef.current) {
+        const vl = Math.floor(70 + Math.sin(Date.now() / 200) * 15 + Math.random() * 8);
+        vuLeftRef.current.style.height = `${vl}%`;
+      }
+      if (vuRightRef.current) {
+        const vr = Math.floor(75 + Math.cos(Date.now() / 220) * 14 + Math.random() * 8);
+        vuRightRef.current.style.height = `${vr}%`;
+      }
     }, intervalTime);
 
     return () => clearInterval(interval);
-  }, [isAnimated, speed]);
+  }, [isAnimated, speed, isPlaying]);
 
   const rotationDuration = speed === 2 ? 3 : 6;
 
@@ -152,8 +169,9 @@ export function ArchivalReelPlayer() {
                 <div className="flex flex-col items-center gap-0.5">
                   <div className="w-2 h-14 bg-surface border border-line/60 p-0.5 flex flex-col-reverse">
                     <div
+                      ref={vuLeftRef}
                       className="w-full bg-secondary transition-all duration-75"
-                      style={{ height: isPlaying ? `${vuLeft}%` : '15%' }}
+                      style={{ height: isPlaying ? '78%' : '15%' }}
                     ></div>
                   </div>
                   <span className="font-label-timecode text-[8px] text-ink-muted">CV</span>
@@ -163,8 +181,9 @@ export function ArchivalReelPlayer() {
                 <div className="flex flex-col items-center gap-0.5">
                   <div className="w-2 h-14 bg-surface border border-line/60 p-0.5 flex flex-col-reverse">
                     <div
+                      ref={vuRightRef}
                       className="w-full bg-status-success transition-all duration-75"
-                      style={{ height: isPlaying ? `${vuRight}%` : '15%' }}
+                      style={{ height: isPlaying ? '84%' : '15%' }}
                     ></div>
                   </div>
                   <span className="font-label-timecode text-[8px] text-ink-muted">AI</span>
@@ -249,8 +268,8 @@ export function ArchivalReelPlayer() {
           </div>
           <div className="flex items-center gap-2 text-ink-muted">
             <span>TIMECODE:</span>
-            <span className="text-on-surface font-mono font-bold">
-              04:02:26:{frameTick < 10 ? `0${frameTick}` : frameTick}
+            <span ref={timecodeRef} className="text-on-surface font-mono font-bold">
+              04:02:26:18
             </span>
           </div>
         </div>

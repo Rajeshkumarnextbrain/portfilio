@@ -1,17 +1,20 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { m } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { m, useInView } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
-import { useMotionOK } from '@/lib/useMotionOK';
+import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 
 export function AnimatedChatTrace() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(containerRef, { margin: '0px', once: true });
   const motionOK = useMotionOK();
+  const isVisible = useDocumentVisible();
   const [stepIndex, setStepIndex] = useState(motionOK ? 0 : 3);
 
   useEffect(() => {
-    if (!motionOK) {
-      setStepIndex(3);
+    if (!motionOK || !inView || !isVisible) {
+      if (!motionOK) setStepIndex(3);
       return;
     }
 
@@ -24,10 +27,10 @@ export function AnimatedChatTrace() {
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, [motionOK]);
+  }, [motionOK, inView, isVisible]);
 
   return (
-    <div className="relative bg-paper-raised p-6 border border-line flex flex-col gap-4">
+    <div ref={containerRef} className="relative bg-paper-raised p-6 border border-line flex flex-col gap-4">
       {/* Viewfinders */}
       <span className="absolute -top-1.5 -left-1.5 text-primary text-[18px] leading-none">⌜</span>
       <span className="absolute -top-1.5 -right-1.5 text-primary text-[18px] leading-none">⌝</span>

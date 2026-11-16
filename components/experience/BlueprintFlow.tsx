@@ -3,19 +3,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
-import { useMotionOK } from '@/lib/useMotionOK';
+import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 import { BLUEPRINT_NODES } from '@/content/facts';
 
 export function BlueprintFlow() {
   const motionOK = useMotionOK();
+  const isVisible = useDocumentVisible();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '0px' });
   const [activeNodeIndex, setActiveNodeIndex] = useState<number>(motionOK ? -1 : 3);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!inView || !motionOK) {
-      setActiveNodeIndex(3);
+    if (!inView || !motionOK || !isVisible) {
+      if (!motionOK) setActiveNodeIndex(3);
       return;
     }
 

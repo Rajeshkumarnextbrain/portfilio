@@ -14,7 +14,6 @@ import {
 } from '@/content/heroScenes';
 
 const SCENE_DURATION_MS = 7000;
-const TICK_INTERVAL_MS = 50;
 
 // Indices in the 130-tile grid (13 cols x 10 rows) that highlight
 const HIGHLIGHT_TILES = [28, 54, 82, 108];
@@ -27,12 +26,8 @@ export function HeroLiveDemo() {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [progress, setProgress] = useState<number>(0);
   const [userInteracted, setUserInteracted] = useState<boolean>(false);
   const [inView, setInView] = useState<boolean>(true);
-
-  // Scene sub-step state for animations
-  const [sceneElapsed, setSceneElapsed] = useState<number>(0);
 
   // Allow URL query param to select a specific scene for preview/testing (?scene=watch|ask|learn)
   useEffect(() => {
@@ -42,18 +37,12 @@ export function HeroLiveDemo() {
     if (sceneParam === 'watch') {
       setActiveTab(0);
       setUserInteracted(true);
-      setProgress(1);
-      setSceneElapsed(SCENE_DURATION_MS);
     } else if (sceneParam === 'ask') {
       setActiveTab(1);
       setUserInteracted(true);
-      setProgress(1);
-      setSceneElapsed(SCENE_DURATION_MS);
     } else if (sceneParam === 'learn') {
       setActiveTab(2);
       setUserInteracted(true);
-      setProgress(1);
-      setSceneElapsed(SCENE_DURATION_MS);
     }
   }, []);
 
@@ -76,14 +65,10 @@ export function HeroLiveDemo() {
   const handleSelectTab = useCallback((index: number) => {
     setUserInteracted(true);
     setActiveTab(index);
-    setProgress(1);
-    setSceneElapsed(SCENE_DURATION_MS);
   }, []);
 
   const handleContainerFocus = useCallback(() => {
     setUserInteracted(true);
-    setProgress(1);
-    setSceneElapsed(SCENE_DURATION_MS);
   }, []);
 
   // Keyboard navigation for tablist (WAI-ARIA)
@@ -105,43 +90,24 @@ export function HeroLiveDemo() {
     tabRefs.current[nextIndex]?.focus();
   };
 
-  // Main Auto-Play Timer
+  // Main 7-second Auto-Play Timer: single timeout per scene
   useEffect(() => {
     // If reduced motion or user interacted, stay on current scene
-    if (!motionOK || userInteracted) {
-      setProgress(1);
-      setSceneElapsed(SCENE_DURATION_MS);
-      return;
-    }
+    if (!motionOK || userInteracted) return;
 
     // Pause when off-screen or tab hidden
     if (!isVisible || !inView) return;
 
-    const interval = setInterval(() => {
-      setSceneElapsed((prev) => {
-        const next = prev + TICK_INTERVAL_MS;
-        if (next >= SCENE_DURATION_MS) {
-          setActiveTab((cur) => (cur + 1) % HERO_SCENES.length);
-          setProgress(0);
-          return 0;
-        }
-        setProgress(next / SCENE_DURATION_MS);
-        return next;
-      });
-    }, TICK_INTERVAL_MS);
+    const timer = setTimeout(() => {
+      setActiveTab((cur) => (cur + 1) % HERO_SCENES.length);
+    }, SCENE_DURATION_MS);
 
-    return () => clearInterval(interval);
-  }, [motionOK, userInteracted, isVisible, inView]);
-
-  // When active tab changes manually or automatically, reset elapsed if auto-playing
-  useEffect(() => {
-    if (!userInteracted && motionOK) {
-      setSceneElapsed(0);
-      setProgress(0);
-    }
-  }, [activeTab, userInteracted, motionOK]);
+    return () => clearTimeout(timer);
+  }, [activeTab, motionOK, userInteracted, isVisible, inView]);
 
   const currentScene = HERO_SCENES[activeTab];
+  const isReducedMotion = !motionOK || userInteracted;
+  const isPaused = !isVisible || !inView;
 
   return (
     <div className="relative w-full max-w-lg mx-auto lg:max-w-none">
@@ -201,10 +167,14 @@ export function HeroLiveDemo() {
                   {isActive && (
                     <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-secondary/30 overflow-hidden">
                       <span
-                        className="block h-full bg-secondary transition-all"
+                        key={activeTab}
+                        className="block h-full w-full bg-secondary origin-left"
                         style={{
-                          width: userInteracted || !motionOK ? '100%' : `${progress * 100}%`,
-                          transitionDuration: TICK_INTERVAL_MS + 'ms',
+                          transform: isReducedMotion ? 'scaleX(1)' : undefined,
+                          animation: !isReducedMotion && !isPaused
+                            ? `heroProgress ${SCENE_DURATION_MS}ms linear forwards`
+                            : undefined,
+                          animationPlayState: isPaused ? 'paused' : 'running',
                         }}
                       />
                     </span>
@@ -243,24 +213,24 @@ export function HeroLiveDemo() {
               <WatchScene
                 key="watch"
                 data={currentScene as WatchSceneData}
-                elapsed={sceneElapsed}
-                isReducedMotion={!motionOK}
+                isReducedMotion={isReducedMotion}
+                isPaused={isPaused}
               />
             )}
             {currentScene.id === 'ask' && (
               <AskScene
                 key="ask"
                 data={currentScene as AskSceneData}
-                elapsed={sceneElapsed}
-                isReducedMotion={!motionOK}
+                isReducedMotion={isReducedMotion}
+                isPaused={isPaused}
               />
             )}
             {currentScene.id === 'learn' && (
               <LearnScene
                 key="learn"
                 data={currentScene as LearnSceneData}
-                elapsed={sceneElapsed}
-                isReducedMotion={!motionOK}
+                isReducedMotion={isReducedMotion}
+                isPaused={isPaused}
               />
             )}
           </AnimatePresence>
@@ -283,34 +253,58 @@ export function HeroLiveDemo() {
 // =============================================================================
 function WatchScene({
   data,
-  elapsed,
   isReducedMotion,
+  isPaused,
 }: {
   data: WatchSceneData;
-  elapsed: number;
   isReducedMotion: boolean;
+  isPaused: boolean;
 }) {
-  // Tile flicker state
+  const [step, setStep] = useState<number>(isReducedMotion ? 6 : 0);
   const [flickerIndex, setFlickerIndex] = useState<number>(-1);
 
   useEffect(() => {
-    if (isReducedMotion) return;
+    if (isReducedMotion) {
+      setStep(6);
+      return;
+    }
+    if (isPaused) return;
+
+    const t1 = setTimeout(() => setStep((s) => Math.max(s, 1)), 400);
+    const t2 = setTimeout(() => setStep((s) => Math.max(s, 2)), 1600);
+    const t3 = setTimeout(() => setStep((s) => Math.max(s, 3)), 2800);
+    const t4 = setTimeout(() => setStep((s) => Math.max(s, 4)), 4000);
+    const t5 = setTimeout(() => setStep((s) => Math.max(s, 5)), 5200);
+    const t6 = setTimeout(() => setStep((s) => Math.max(s, 6)), 6000);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+      clearTimeout(t6);
+    };
+  }, [isReducedMotion, isPaused]);
+
+  useEffect(() => {
+    if (isReducedMotion || isPaused) return;
     const interval = setInterval(() => {
       setFlickerIndex(Math.floor(Math.random() * 130));
-    }, 150);
+    }, 250);
     return () => clearInterval(interval);
-  }, [isReducedMotion]);
+  }, [isReducedMotion, isPaused]);
 
   // Timed progression of alerts (~1.2s apart)
-  const showTile1 = isReducedMotion || elapsed >= 400;
-  const showTile2 = isReducedMotion || elapsed >= 1600;
-  const showAlert1 = isReducedMotion || elapsed >= 1600;
-  const showTile3 = isReducedMotion || elapsed >= 2800;
-  const showAlert2 = isReducedMotion || elapsed >= 2800;
-  const showTile4 = isReducedMotion || elapsed >= 4000;
-  const showAlert3 = isReducedMotion || elapsed >= 4000;
-  const showAlert4 = isReducedMotion || elapsed >= 5200;
-  const showFinal = isReducedMotion || elapsed >= 6000;
+  const showTile1 = isReducedMotion || step >= 1;
+  const showTile2 = isReducedMotion || step >= 2;
+  const showAlert1 = isReducedMotion || step >= 2;
+  const showTile3 = isReducedMotion || step >= 3;
+  const showAlert2 = isReducedMotion || step >= 3;
+  const showTile4 = isReducedMotion || step >= 4;
+  const showAlert3 = isReducedMotion || step >= 4;
+  const showAlert4 = isReducedMotion || step >= 5;
+  const showFinal = isReducedMotion || step >= 6;
 
   return (
     <m.div
@@ -437,28 +431,68 @@ function WatchScene({
 // =============================================================================
 function AskScene({
   data,
-  elapsed,
   isReducedMotion,
+  isPaused,
 }: {
   data: AskSceneData;
-  elapsed: number;
   isReducedMotion: boolean;
+  isPaused: boolean;
 }) {
-  // Typewriter timing (approx 20ms per char, max 2s)
-  const queryChars = isReducedMotion
-    ? data.query.length
-    : Math.min(data.query.length, Math.floor(elapsed / 20));
-  const queryText = data.query.slice(0, queryChars);
-  const typingFinished = queryChars >= data.query.length;
+  const [charCount, setCharCount] = useState<number>(isReducedMotion ? data.query.length : 0);
+  const [step, setStep] = useState<number>(isReducedMotion ? 4 : 0);
+
+  // Typewriter: ticks only until full length reached, then stops
+  useEffect(() => {
+    if (isReducedMotion) {
+      setCharCount(data.query.length);
+      return;
+    }
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      setCharCount((prev) => {
+        if (prev >= data.query.length) {
+          clearInterval(interval);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 25);
+
+    return () => clearInterval(interval);
+  }, [data.query.length, isReducedMotion, isPaused]);
+
+  useEffect(() => {
+    if (isReducedMotion) {
+      setStep(4);
+      return;
+    }
+    if (isPaused) return;
+
+    const t1 = setTimeout(() => setStep((s) => Math.max(s, 1)), 2000);
+    const t2 = setTimeout(() => setStep((s) => Math.max(s, 2)), 3100);
+    const t3 = setTimeout(() => setStep((s) => Math.max(s, 3)), 4200);
+    const t4 = setTimeout(() => setStep((s) => Math.max(s, 4)), 5200);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
+  }, [isReducedMotion, isPaused]);
+
+  const queryText = data.query.slice(0, charCount);
+  const typingFinished = charCount >= data.query.length;
 
   // Step timing
-  const showStep1 = isReducedMotion || elapsed >= 2000;
-  const checkStep1 = isReducedMotion || elapsed >= 3100;
-  const showStep2 = isReducedMotion || elapsed >= 3100;
-  const checkStep2 = isReducedMotion || elapsed >= 4200;
-  const showStep3 = isReducedMotion || elapsed >= 4200;
-  const checkStep3 = isReducedMotion || elapsed >= 5200;
-  const showAnswerCard = isReducedMotion || elapsed >= 5200;
+  const showStep1 = isReducedMotion || step >= 1;
+  const checkStep1 = isReducedMotion || step >= 2;
+  const showStep2 = isReducedMotion || step >= 2;
+  const checkStep2 = isReducedMotion || step >= 3;
+  const showStep3 = isReducedMotion || step >= 3;
+  const checkStep3 = isReducedMotion || step >= 4;
+  const showAnswerCard = isReducedMotion || step >= 4;
 
   return (
     <m.div
@@ -564,27 +598,69 @@ function AskScene({
 // =============================================================================
 function LearnScene({
   data,
-  elapsed,
   isReducedMotion,
+  isPaused,
 }: {
   data: LearnSceneData;
-  elapsed: number;
   isReducedMotion: boolean;
+  isPaused: boolean;
 }) {
-  // Typewriter timing (approx 25ms per char, max 2s)
-  const queryChars = isReducedMotion
-    ? data.query.length
-    : Math.min(data.query.length, Math.floor(elapsed / 25));
-  const queryText = data.query.slice(0, queryChars);
-  const typingFinished = queryChars >= data.query.length;
+  const [charCount, setCharCount] = useState<number>(isReducedMotion ? data.query.length : 0);
+  const [step, setStep] = useState<number>(isReducedMotion ? 5 : 0);
+
+  // Typewriter timing (approx 25ms per char, stops when done)
+  useEffect(() => {
+    if (isReducedMotion) {
+      setCharCount(data.query.length);
+      return;
+    }
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      setCharCount((prev) => {
+        if (prev >= data.query.length) {
+          clearInterval(interval);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 25);
+
+    return () => clearInterval(interval);
+  }, [data.query.length, isReducedMotion, isPaused]);
+
+  useEffect(() => {
+    if (isReducedMotion) {
+      setStep(5);
+      return;
+    }
+    if (isPaused) return;
+
+    const t1 = setTimeout(() => setStep((s) => Math.max(s, 1)), 1400);
+    const t2 = setTimeout(() => setStep((s) => Math.max(s, 2)), 2600);
+    const t3 = setTimeout(() => setStep((s) => Math.max(s, 3)), 3800);
+    const t4 = setTimeout(() => setStep((s) => Math.max(s, 4)), 4400);
+    const t5 = setTimeout(() => setStep((s) => Math.max(s, 5)), 5400);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isReducedMotion, isPaused]);
+
+  const queryText = data.query.slice(0, charCount);
+  const typingFinished = charCount >= data.query.length;
 
   // Step timing
-  const showStep1 = isReducedMotion || elapsed >= 1400;
-  const checkStep1 = isReducedMotion || elapsed >= 2600;
-  const showStep2 = isReducedMotion || elapsed >= 2600;
-  const checkStep2 = isReducedMotion || elapsed >= 3800;
-  const showCalc = isReducedMotion || elapsed >= 4400;
-  const showSource = isReducedMotion || elapsed >= 5400;
+  const showStep1 = isReducedMotion || step >= 1;
+  const checkStep1 = isReducedMotion || step >= 2;
+  const showStep2 = isReducedMotion || step >= 2;
+  const checkStep2 = isReducedMotion || step >= 3;
+  const showCalc = isReducedMotion || step >= 4;
+  const showSource = isReducedMotion || step >= 5;
 
   return (
     <m.div

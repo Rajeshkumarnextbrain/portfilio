@@ -1,19 +1,24 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { m } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { m, useInView } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
-import { useMotionOK } from '@/lib/useMotionOK';
+import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 
 export function MemoryProgressionDiagram() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(containerRef, { margin: '0px', once: true });
   const motionOK = useMotionOK();
+  const isVisible = useDocumentVisible();
   const [activeDotCount, setActiveDotCount] = useState(motionOK ? 0 : 6);
   const [showSummary, setShowSummary] = useState(!motionOK);
 
   useEffect(() => {
-    if (!motionOK) {
-      setActiveDotCount(6);
-      setShowSummary(true);
+    if (!motionOK || !inView || !isVisible) {
+      if (!motionOK) {
+        setActiveDotCount(6);
+        setShowSummary(true);
+      }
       return;
     }
 
@@ -27,10 +32,10 @@ export function MemoryProgressionDiagram() {
     }, 180);
 
     return () => clearInterval(interval);
-  }, [motionOK]);
+  }, [motionOK, inView, isVisible]);
 
   return (
-    <div className="p-5 bg-paper-sunken border border-line flex flex-col gap-4">
+    <div ref={containerRef} className="p-5 bg-paper-sunken border border-line flex flex-col gap-4">
       <div className="flex items-center justify-between text-xs font-label-timecode text-ink-muted">
         <span className="font-bold text-secondary uppercase">PROGRESSIVE CONTEXT WINDOW PIPELINE</span>
         <span>SLIDING BUFFER + 20-TURN CONDENSATION</span>

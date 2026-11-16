@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { m } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { m, useInView } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 
@@ -10,20 +10,23 @@ const ROTATING_WORDS = ['see', 'reason', 'scale'];
 export function HeroHeadline() {
   const motionOK = useMotionOK();
   const isVisible = useDocumentVisible();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const inView = useInView(headingRef, { margin: '0px' });
   const [slotIndex, setSlotIndex] = useState(0);
 
   useEffect(() => {
-    if (!motionOK || !isVisible) return;
+    if (!motionOK || !isVisible || !inView) return;
 
     const timer = setInterval(() => {
       setSlotIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
     }, 2500);
 
     return () => clearInterval(timer);
-  }, [motionOK, isVisible]);
+  }, [motionOK, isVisible, inView]);
 
   return (
     <h1
+      ref={headingRef}
       aria-label="I build production AI systems that see, reason and scale."
       className="font-headline-lg font-semibold tracking-[-0.04em] leading-[0.95] text-[#1c1c18]"
       style={{ fontSize: 'clamp(1.85rem, 5.5vw, 4.75rem)' }}
