@@ -151,3 +151,44 @@ noscript [data-motion] {
 .animate-drill-scan {
   animation: drillScanLine 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+
+@keyframes ledScanLine {
+  0% {
+    transform: translateX(0px);
+    opacity: 0;
+  }
+  2% {
+    opacity: 0.85;
+  }
+  24% {
+    transform: translateX(752px);
+    opacity: 0.85;
+  }
+  26% {
+    transform: translateX(752px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(752px);
+    opacity: 0;
+  }
+}
+
+.animate-led-scan {
+  animation: ledScanLine 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes edgePtFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+}

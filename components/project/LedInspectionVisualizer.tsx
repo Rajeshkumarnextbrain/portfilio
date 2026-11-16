@@ -1,18 +1,169 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
+import { RotateCcw } from 'lucide-react';
 import { CountUp } from '@/components/motion/CountUp';
-import { useMotionOK } from '@/lib/useMotionOK';
+import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 import { LED_TOLERANCE_SPECS } from '@/content/caseStudiesData';
+import { LedBendSVG } from './LedBendSVG';
 
 type StationView = 'station1' | 'station2' | 'specs';
+
+interface LedToleranceBarProps {
+  label: string;
+  measured: number;
+  nominal: number;
+  tolerance: number;
+  unit: string;
+  minScale: number;
+  maxScale: number;
+  decimals?: number;
+  step: number;
+  loopKey: number;
+  motionOK: boolean;
+}
+
+function LedToleranceBar({
+  label,
+  measured,
+  nominal,
+  tolerance,
+  unit,
+  minScale,
+  maxScale,
+  decimals = 3,
+  step,
+  loopKey,
+  motionOK,
+}: LedToleranceBarProps) {
+  const minSpec = nominal - tolerance;
+  const maxSpec = nominal + tolerance;
+  const inSpec = measured >= minSpec && measured <= maxSpec;
+
+  const specLeftPct = Math.max(0, Math.min(100, ((minSpec - minScale) / (maxScale - minScale)) * 100));
+  const specWidthPct = Math.max(0, Math.min(100 - specLeftPct, ((maxSpec - minSpec) / (maxScale - minScale)) * 100));
+  const markerPct = Math.max(0, Math.min(100, ((measured - minScale) / (maxScale - minScale)) * 100));
+
+  const isCounted = step >= 2 || !motionOK;
+
+  return (
+    <div className="flex flex-col gap-1 py-1.5">
+      <div className="flex justify-between items-baseline text-xs font-mono">
+        <span className="text-on-surface font-semibold">{label}</span>
+        <div className="flex items-center gap-2">
+          <span className={inSpec ? 'text-status-success font-bold' : 'text-status-error font-bold'}>
+            {isCounted ? (
+              <CountUp
+                key={`${loopKey}-${label}`}
+                value={`${measured.toFixed(decimals)}${unit}`}
+                duration={0.6}
+              />
+            ) : (
+              `0.${'0'.repeat(decimals)}${unit}`
+            )}
+          </span>
+          <span
+            className={`text-xs sm:text-[11px] font-bold px-1.5 py-0.5 rounded uppercase ${
+              inSpec ? 'bg-status-success/15 text-status-success' : 'bg-status-error/15 text-status-error'
+            }`}
+          >
+            {inSpec ? 'IN SPEC' : 'FAULT'}
+          </span>
+        </div>
+      </div>
+
+      {/* Visual tolerance bar track */}
+      <div className="relative w-full h-2.5 bg-paper-sunken border border-line rounded-sm overflow-hidden flex items-center">
+        {/* Nominal center guide line */}
+        <div
+          className="absolute top-0 bottom-0 w-px bg-on-surface/25 z-0"
+          style={{ left: `${((nominal - minScale) / (maxScale - minScale)) * 100}%` }}
+        />
+
+        {/* Spec band highlight */}
+        <div
+          className="absolute top-0 bottom-0 bg-primary/15 border-x border-primary/30 z-0"
+          style={{ left: `${specLeftPct}%`, width: `${specWidthPct}%` }}
+        />
+
+        {/* Measured marker dot */}
+        <div
+          className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full z-10 border border-paper-raised transition-all ${
+            inSpec
+              ? 'bg-status-success shadow-[0_0_4px_rgba(31,138,76,0.8)]'
+              : 'bg-status-error shadow-[0_0_4px_rgba(211,47,47,0.8)]'
+          }`}
+          style={{ left: `${isCounted ? markerPct : 0}%` }}
+        />
+      </div>
+
+      <div className="flex justify-between text-xs sm:text-[11px] font-mono text-ink-muted">
+        <span>{minScale.toFixed(decimals <= 2 ? 1 : 2)}{unit}</span>
+        <span>SPEC: {nominal}{unit} ±{tolerance}{unit}</span>
+        <span>{maxScale.toFixed(decimals <= 2 ? 1 : 2)}{unit}</span>
+      </div>
+    </div>
+  );
+}
 
 export function LedInspectionVisualizer() {
   const [activeStation, setActiveStation] = useState<StationView>('station2');
   const [polarityFlipped, setPolarityFlipped] = useState(false);
   const [simulateReject, setSimulateReject] = useState(false);
+  const [inView, setInView] = useState(true);
+  const [loopKey, setLoopKey] = useState(0);
+  const [step, setStep] = useState(4); // 0 = scan, 1 = edge pts, 2 = chips countup, 3 = stamp, 4 = plc
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const motionOK = useMotionOK();
+  const isVisible = useDocumentVisible();
+
+  // In-view observer for pausing continuous loop when scrolled off-screen
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        setInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Station 2 inspection loop orchestration (~5s cycle)
+  useEffect(() => {
+    if (!motionOK) {
+      setStep(4);
+      return;
+    }
+    if (activeStation !== 'station2' || !inView || !isVisible) {
+      return;
+    }
+
+    setStep(0);
+    const t1 = setTimeout(() => setStep(1), 400);   // Edge points staggered fade in
+    const t2 = setTimeout(() => setStep(2), 1200);  // Four dimension chips count up
+    const t3 = setTimeout(() => setStep(3), 1500);  // PASS / REJECT stamp fades in
+    const t4 = setTimeout(() => setStep(4), 1800);  // PLC row pulses once
+    const tLoop = setTimeout(() => {
+      setLoopKey((k) => k + 1);
+    }, 5000);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(tLoop);
+    };
+  }, [loopKey, inView, isVisible, motionOK, activeStation]);
+
+  const handleReplay = useCallback(() => {
+    setLoopKey((k) => k + 1);
+  }, []);
 
   // Station 2 live telemetry based on pass vs reject simulation
   const telemetry = simulateReject
@@ -22,8 +173,8 @@ export function LedInspectionVisualizer() {
         topDistance: 2.625,
         bottomDistance: 15.28,
         status: 'FAIL // REJECTED',
-        statusColor: 'text-secondary',
-        statusBg: 'bg-secondary/10 border-secondary',
+        statusColor: 'text-status-error',
+        statusBg: 'bg-status-error/10 border-status-error',
         action: 'PNEUMATIC SOLENOID FIRED · BLOWN TO REJECT BIN',
         plcSignal: 'PIN_05 (REJECT_SOLENOID): HIGH (24V)',
         failedParams: ['Bend Angle (> 91.0°)', 'Corner Radius (> 1.27 mm)', 'Top Distance (> 2.5146 mm)', 'Bottom Distance (< 15.494 mm)'],
@@ -42,7 +193,7 @@ export function LedInspectionVisualizer() {
       };
 
   return (
-    <div className="relative w-full bg-paper-sunken border border-line flex flex-col">
+    <div ref={containerRef} className="relative w-full bg-paper-sunken border border-line flex flex-col">
       {/* Corner brackets */}
       <span aria-hidden="true" className="absolute -top-1.5 -left-1.5 text-primary text-[18px] leading-none select-none pointer-events-none">⌜</span>
       <span aria-hidden="true" className="absolute -top-1.5 -right-1.5 text-primary text-[18px] leading-none select-none pointer-events-none">⌝</span>
@@ -255,201 +406,173 @@ export function LedInspectionVisualizer() {
               {/* Station 2 Header & Simulation Controls */}
               <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-paper-raised border border-line text-xs font-mono">
                 <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${simulateReject ? 'bg-secondary animate-ping' : 'bg-status-success'}`} />
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      simulateReject ? 'bg-status-error animate-ping' : 'bg-status-success'
+                    }`}
+                  />
                   <span className="font-bold text-primary">BASLER CAMERA #02 // TELECENTRIC 90° BEND METROLOGY HUD</span>
                 </div>
-                {/* Pass / Reject Simulation Toggle */}
+                {/* Segmented Control NORMAL | OUT OF SPEC + Replay button */}
                 <div className="flex items-center gap-2">
-                  <span className="text-ink-muted text-[11px] font-sans">Simulate Scenario:</span>
+                  <div
+                    role="group"
+                    aria-label="Simulation Scenario"
+                    className="inline-flex p-1 bg-paper-sunken border border-line"
+                  >
+                    <button
+                      type="button"
+                      aria-pressed={!simulateReject}
+                      onClick={() => {
+                        setSimulateReject(false);
+                        handleReplay();
+                      }}
+                      className={`px-3 py-1.5 text-xs font-mono font-bold uppercase transition-colors ${
+                        !simulateReject
+                          ? 'bg-primary text-on-primary'
+                          : 'text-ink-muted hover:text-on-surface'
+                      }`}
+                    >
+                      NORMAL
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={simulateReject}
+                      onClick={() => {
+                        setSimulateReject(true);
+                        handleReplay();
+                      }}
+                      className={`px-3 py-1.5 text-xs font-mono font-bold uppercase transition-colors ${
+                        simulateReject
+                          ? 'bg-status-error text-white'
+                          : 'text-ink-muted hover:text-on-surface'
+                      }`}
+                    >
+                      OUT OF SPEC
+                    </button>
+                  </div>
                   <button
                     type="button"
-                    onClick={() => setSimulateReject(false)}
-                    className={`px-2.5 py-1 text-xs font-mono font-bold uppercase transition-colors ${
-                      !simulateReject
-                        ? 'bg-status-success text-surface'
-                        : 'bg-paper-sunken text-ink-muted hover:text-primary border border-line'
-                    }`}
+                    onClick={handleReplay}
+                    title="Replay Inspection Loop"
+                    aria-label="Replay Inspection Loop"
+                    className="p-2 border border-line bg-paper-sunken text-on-surface hover:border-secondary hover:text-secondary transition-colors"
                   >
-                    ✓ Normal Spec (PASS)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSimulateReject(true)}
-                    className={`px-2.5 py-1 text-xs font-mono font-bold uppercase transition-colors ${
-                      simulateReject
-                        ? 'bg-secondary text-on-secondary'
-                        : 'bg-paper-sunken text-ink-muted hover:text-primary border border-line'
-                    }`}
-                  >
-                    ✕ Out of Spec (REJECT)
+                    <RotateCcw className="w-4 h-4 text-secondary" />
                   </button>
                 </div>
               </div>
 
               {/* Station 2 Main Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                {/* Left Telecentric Silhouette View */}
-                <div className="lg:col-span-7 bg-[#0f0e0c] border border-line p-6 flex flex-col items-center justify-center relative min-h-[360px] overflow-hidden">
-                  {/* Subtle Grid Backlight Background */}
-                  <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]" />
-
-                  {/* Backlit Silhouette of 90-degree bent LED */}
-                  <div className="relative w-full max-w-md flex flex-col items-center">
-                    {/* SVG Graphic with Telemetry Markers */}
-                    <svg viewBox="0 0 320 260" className="w-full max-w-[340px] drop-shadow-md overflow-visible">
-                      {/* LED Epoxy Body */}
-                      <rect x="20" y="40" width="55" height="40" rx="6" fill="#26241e" stroke="#5a564c" strokeWidth="2" />
-                      <text x="47" y="64" fill="#a8a396" fontSize="9" fontFamily="monospace" textAnchor="middle">LED BODY</text>
-
-                      {/* Top Horizontal Lead (Top Distance) */}
-                      <path
-                        d="M 75 52 L 175 52 Q 190 52 190 67 L 190 230"
-                        fill="none"
-                        stroke={simulateReject ? '#ff6422' : '#22c55e'}
-                        strokeWidth="7"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M 75 68 L 160 68 Q 174 68 174 82 L 174 230"
-                        fill="none"
-                        stroke={simulateReject ? '#ff6422' : '#22c55e'}
-                        strokeWidth="7"
-                        strokeLinecap="round"
-                      />
-
-                      {/* Dimension 1: Top Distance Bracket */}
-                      <line x1="75" y1="28" x2="190" y2="28" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="3 3" />
-                      <line x1="75" y1="22" x2="75" y2="34" stroke="#38bdf8" strokeWidth="1.5" />
-                      <line x1="190" y1="22" x2="190" y2="34" stroke="#38bdf8" strokeWidth="1.5" />
-                      <text x="132" y="22" fill="#38bdf8" fontSize="10" fontFamily="monospace" textAnchor="middle" fontWeight="bold">
-                        Top Dist: {telemetry.topDistance.toFixed(3)}mm
-                      </text>
-
-                      {/* Dimension 2: 90° Angle Measurement Arc */}
-                      <path
-                        d="M 160 52 A 20 20 0 0 1 190 82"
-                        fill="none"
-                        stroke={simulateReject ? '#ff6422' : '#eab308'}
-                        strokeWidth="2"
-                      />
-                      <text x="215" y="65" fill={simulateReject ? '#ff6422' : '#eab308'} fontSize="11" fontFamily="monospace" fontWeight="bold">
-                        ∠ {telemetry.angle.toFixed(1)}°
-                      </text>
-
-                      {/* Dimension 3: Bend Radius Callout */}
-                      <circle cx="178" cy="64" r="10" fill="none" stroke="#c084fc" strokeWidth="1.5" strokeDasharray="2 2" />
-                      <text x="215" y="85" fill="#c084fc" fontSize="10" fontFamily="monospace">
-                        R: {telemetry.radius.toFixed(3)}mm
-                      </text>
-
-                      {/* Dimension 4: Bottom Distance (Vertical Lead Length) */}
-                      <line x1="210" y1="67" x2="210" y2="230" stroke="#4ade80" strokeWidth="1.5" strokeDasharray="3 3" />
-                      <line x1="204" y1="67" x2="216" y2="67" stroke="#4ade80" strokeWidth="1.5" />
-                      <line x1="204" y1="230" x2="216" y2="230" stroke="#4ade80" strokeWidth="1.5" />
-                      <text x="220" y="155" fill="#4ade80" fontSize="10" fontFamily="monospace" fontWeight="bold" dominantBaseline="middle">
-                        Bottom Dist: {telemetry.bottomDistance.toFixed(2)}mm
-                      </text>
-                    </svg>
-                  </div>
-
-                  {/* Status Banner at the bottom of Silhouette */}
-                  <div className={`w-full mt-4 p-3 border flex flex-wrap items-center justify-between gap-2 font-mono text-xs ${telemetry.statusBg}`}>
-                    <div className="flex items-center gap-2">
-                      <span className={`w-2.5 h-2.5 rounded-full ${simulateReject ? 'bg-secondary animate-pulse' : 'bg-status-success'}`} />
-                      <span className={`font-bold ${telemetry.statusColor}`}>{telemetry.status}</span>
-                    </div>
-                    <span className="text-primary font-sans text-xs">{telemetry.action}</span>
-                  </div>
+                {/* Left Telecentric Silhouette View (fills viewport, w-full aspect-[2/1]) */}
+                <div className="lg:col-span-7 bg-[#14130F] border border-line p-2 sm:p-4 flex items-center justify-center relative min-h-[360px] overflow-hidden">
+                  <LedBendSVG
+                    angle={telemetry.angle}
+                    radius={telemetry.radius}
+                    top={telemetry.topDistance}
+                    bottom={telemetry.bottomDistance}
+                    ok={!simulateReject}
+                    step={step}
+                    loopKey={loopKey}
+                    motionOK={motionOK}
+                  />
                 </div>
 
-                {/* Right Side: 4 Telemetry Spec Cards */}
-                <div className="lg:col-span-5 flex flex-col justify-between gap-4 p-5 bg-paper-raised border border-line">
+                {/* Right Side: 4 Telemetry Spec Cards with Tolerance Bars */}
+                <div className="lg:col-span-5 flex flex-col justify-between gap-4 p-4 sm:p-5 bg-paper-raised border border-line">
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between border-b border-line pb-2">
                       <span className="font-label-timecode text-xs font-bold uppercase text-secondary">
                         STATION 2 LIVE METROLOGY (1–3s)
                       </span>
-                      <span className="font-mono text-[11px] text-ink-muted">SUB-PIXEL CANNY</span>
+                      <span className="font-mono text-xs sm:text-[11px] text-ink-muted">SUB-PIXEL CANNY</span>
                     </div>
 
-                    {/* 4 Measurement Cards */}
-                    <div className="flex flex-col gap-2.5">
-                      {/* 1. Bend Angle */}
-                      <div className={`p-2.5 border flex items-center justify-between ${
-                        telemetry.angle < 89 || telemetry.angle > 91
-                          ? 'bg-secondary/10 border-secondary'
-                          : 'bg-paper-sunken border-line'
-                      }`}>
-                        <div className="flex flex-col">
-                          <span className="font-label-sm text-[11px] uppercase font-bold text-primary">01 · BEND ANGLE</span>
-                          <span className="text-[10px] text-ink-muted font-mono">SPEC: 90° (Range: 89° – 91°)</span>
-                        </div>
-                        <span className={`font-mono text-base font-bold ${
-                          telemetry.angle < 89 || telemetry.angle > 91 ? 'text-secondary' : 'text-primary'
-                        }`}>
-                          {telemetry.angle.toFixed(1)}°
-                        </span>
-                      </div>
+                    {/* 4 Tolerance Bars */}
+                    <div className="flex flex-col divide-y divide-line">
+                      <LedToleranceBar
+                        label="01 · Bend Angle"
+                        measured={telemetry.angle}
+                        nominal={90.0}
+                        tolerance={1.0}
+                        unit="°"
+                        minScale={88.0}
+                        maxScale={93.0}
+                        decimals={1}
+                        step={step}
+                        loopKey={loopKey}
+                        motionOK={motionOK}
+                      />
 
-                      {/* 2. Corner Radius */}
-                      <div className={`p-2.5 border flex items-center justify-between ${
-                        telemetry.radius < 0.762 || telemetry.radius > 1.27
-                          ? 'bg-secondary/10 border-secondary'
-                          : 'bg-paper-sunken border-line'
-                      }`}>
-                        <div className="flex flex-col">
-                          <span className="font-label-sm text-[11px] uppercase font-bold text-primary">02 · CORNER RADIUS</span>
-                          <span className="text-[10px] text-ink-muted font-mono">SPEC: 1.016 mm (0.762 – 1.27 mm)</span>
-                        </div>
-                        <span className={`font-mono text-base font-bold ${
-                          telemetry.radius < 0.762 || telemetry.radius > 1.27 ? 'text-secondary' : 'text-primary'
-                        }`}>
-                          {telemetry.radius.toFixed(3)} mm
-                        </span>
-                      </div>
+                      <LedToleranceBar
+                        label="02 · Corner Radius"
+                        measured={telemetry.radius}
+                        nominal={1.016}
+                        tolerance={0.254}
+                        unit=" mm"
+                        minScale={0.65}
+                        maxScale={1.45}
+                        decimals={3}
+                        step={step}
+                        loopKey={loopKey}
+                        motionOK={motionOK}
+                      />
 
-                      {/* 3. Top Distance */}
-                      <div className={`p-2.5 border flex items-center justify-between ${
-                        telemetry.topDistance < 2.2606 || telemetry.topDistance > 2.5146
-                          ? 'bg-secondary/10 border-secondary'
-                          : 'bg-paper-sunken border-line'
-                      }`}>
-                        <div className="flex flex-col">
-                          <span className="font-label-sm text-[11px] uppercase font-bold text-primary">03 · TOP DISTANCE</span>
-                          <span className="text-[10px] text-ink-muted font-mono">SPEC: 2.3876 mm (2.2606 – 2.5146 mm)</span>
-                        </div>
-                        <span className={`font-mono text-base font-bold ${
-                          telemetry.topDistance < 2.2606 || telemetry.topDistance > 2.5146 ? 'text-secondary' : 'text-primary'
-                        }`}>
-                          {telemetry.topDistance.toFixed(3)} mm
-                        </span>
-                      </div>
+                      <LedToleranceBar
+                        label="03 · Top Distance"
+                        measured={telemetry.topDistance}
+                        nominal={2.3876}
+                        tolerance={0.127}
+                        unit=" mm"
+                        minScale={2.1}
+                        maxScale={2.7}
+                        decimals={3}
+                        step={step}
+                        loopKey={loopKey}
+                        motionOK={motionOK}
+                      />
 
-                      {/* 4. Bottom Distance */}
-                      <div className={`p-2.5 border flex items-center justify-between ${
-                        telemetry.bottomDistance < 15.494 || telemetry.bottomDistance > 16.002
-                          ? 'bg-secondary/10 border-secondary'
-                          : 'bg-paper-sunken border-line'
-                      }`}>
-                        <div className="flex flex-col">
-                          <span className="font-label-sm text-[11px] uppercase font-bold text-primary">04 · BOTTOM DISTANCE</span>
-                          <span className="text-[10px] text-ink-muted font-mono">SPEC: 15.748 mm (15.494 – 16.002 mm)</span>
-                        </div>
-                        <span className={`font-mono text-base font-bold ${
-                          telemetry.bottomDistance < 15.494 || telemetry.bottomDistance > 16.002 ? 'text-secondary' : 'text-primary'
-                        }`}>
-                          {telemetry.bottomDistance.toFixed(2)} mm
-                        </span>
-                      </div>
+                      <LedToleranceBar
+                        label="04 · Bottom Distance"
+                        measured={telemetry.bottomDistance}
+                        nominal={15.748}
+                        tolerance={0.254}
+                        unit=" mm"
+                        minScale={15.0}
+                        maxScale={16.5}
+                        decimals={2}
+                        step={step}
+                        loopKey={loopKey}
+                        motionOK={motionOK}
+                      />
                     </div>
                   </div>
 
-                  {/* PLC Digital I/O State Box */}
-                  <div className="p-3 bg-paper-sunken border border-line flex flex-col gap-1 text-xs font-mono">
-                    <span className="text-ink-muted font-bold">PLC DIGITAL I/O ACTUATION:</span>
-                    <span className={simulateReject ? 'text-secondary font-bold' : 'text-status-success font-bold'}>
-                      {telemetry.plcSignal}
-                    </span>
+                  {/* PLC Digital I/O State Box (Action & Signal in readable text) */}
+                  <div className="p-3 bg-paper-sunken border border-line flex flex-col gap-1.5 text-xs font-mono">
+                    <div className="flex items-center justify-between">
+                      <span className="text-primary font-bold uppercase text-xs sm:text-[11px]">
+                        PLC DIGITAL I/O ACTUATION
+                      </span>
+                      <span
+                        className={`w-2.5 h-2.5 rounded-full ${
+                          simulateReject ? 'bg-status-error animate-pulse' : 'bg-status-success'
+                        }`}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <div
+                        className={`font-bold transition-all ${
+                          simulateReject ? 'text-status-error' : 'text-status-success'
+                        } ${step === 4 && motionOK ? 'animate-pulse ring-1 ring-current px-1 rounded' : ''}`}
+                      >
+                        {telemetry.plcSignal}
+                      </div>
+                      <div className="text-ink-muted text-xs sm:text-[11px] leading-snug">
+                        ACTION: <span className="text-on-surface font-semibold">{telemetry.action}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

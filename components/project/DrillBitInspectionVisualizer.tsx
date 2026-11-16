@@ -6,6 +6,7 @@ import { RotateCcw } from 'lucide-react';
 import { CountUp } from '@/components/motion/CountUp';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 import { DRILL_BIT_DEFECT_CLASSES, DRILL_BIT_MACHINE_TIERS } from '@/content/caseStudiesData';
+import { DrillTipSVG } from './DrillTipSVG';
 
 type ViewMode = 'front' | 'top' | 'categories';
 
@@ -261,59 +262,8 @@ export function DrillBitInspectionVisualizer() {
                   <div className="absolute w-[340px] h-[340px] rounded-full border border-dashed border-[#F5F2EC]/15 pointer-events-none" />
                   <div className="absolute w-[220px] h-[220px] rounded-full border border-[#F5F2EC]/20 pointer-events-none" />
 
-                  {/* SVG Twist Drill End-on CAD Geometry */}
-                  <svg
-                    viewBox="0 0 400 400"
-                    className="w-full h-full select-none"
-                    aria-label="Front optical inspection of drill tip geometry"
-                  >
-                    <defs>
-                      <linearGradient id="scanGlow" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.85" />
-                        <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Drill body outer cylinder (fills ~65-72% of 400x400) */}
-                    <circle
-                      cx="200"
-                      cy="200"
-                      r="145"
-                      fill="#2A2822"
-                      stroke="#F5F2EC"
-                      strokeOpacity="0.5"
-                      strokeWidth="1.5"
-                    />
-
-                    {/* Two helical flutes (voids); second rotated 180° */}
-                    {[0, 180].map((r) => (
-                      <g key={r} transform={`rotate(${r} 200 200)`}>
-                        <path
-                          d="M196 196 L60 164 A145 145 0 0 0 60 236 Q130 215 196 204 Z"
-                          fill="#0B0A08"
-                        />
-                        {/* Cutting lip */}
-                        <line
-                          x1="196"
-                          y1="196"
-                          x2="60"
-                          y2="164"
-                          stroke={simulateDefect && r === 0 ? '#EF4444' : '#FF8A5C'}
-                          strokeWidth="3"
-                        />
-                      </g>
-                    ))}
-
-                    {/* Central Chisel Edge */}
-                    <line
-                      x1="188"
-                      y1="193"
-                      x2="212"
-                      y2="207"
-                      stroke="#FF8A5C"
-                      strokeWidth="4"
-                    />
-
+                  {/* DrillTipSVG component with CAD twist drill geometry & metrology overlays */}
+                  <DrillTipSVG defect={simulateDefect}>
                     {/* (a) Sweeping Blue Scan Line */}
                     {motionOK && (
                       <g key={loopKey} className="animate-drill-scan pointer-events-none">
@@ -322,29 +272,43 @@ export function DrillBitInspectionVisualizer() {
                       </g>
                     )}
 
-                    {/* (b) Staggered Edge Detection Points (T >= 0.4s) */}
+                    {/* (b) Staggered Edge Detection Points along lips and margin arcs (T >= 0.4s) */}
                     {(step >= 1 || !motionOK) && (
                       <g className="transition-opacity duration-200">
-                        {/* Cutting Lip 1 pts */}
+                        {/* Lip 1 points */}
                         {[
-                          { x: 60, y: 164 },
-                          { x: 94, y: 172 },
-                          { x: 128, y: 180 },
-                          { x: 162, y: 188 },
-                          { x: 196, y: 196 },
+                          { x: 216, y: 179 },
+                          { x: 231, y: 152 },
+                          { x: 246, y: 125 },
+                          { x: 260, y: 98 },
+                          { x: 275, y: 70 },
                         ].map((pt, i) => (
                           <g key={`l1-${i}`}>
-                            <circle cx={pt.x} cy={pt.y} r="2" fill={simulateDefect && i === 0 ? '#EF4444' : '#3B82F6'} />
-                            <circle cx={pt.x} cy={pt.y} r="4" fill="none" stroke={simulateDefect && i === 0 ? '#EF4444' : '#3B82F6'} strokeWidth="0.8" opacity="0.6" />
+                            <circle
+                              cx={pt.x}
+                              cy={pt.y}
+                              r="2"
+                              fill={simulateDefect && i >= 2 && i <= 3 ? '#EF4444' : '#3B82F6'}
+                            />
+                            <circle
+                              cx={pt.x}
+                              cy={pt.y}
+                              r="4"
+                              fill="none"
+                              stroke={simulateDefect && i >= 2 && i <= 3 ? '#EF4444' : '#3B82F6'}
+                              strokeWidth="0.8"
+                              opacity="0.6"
+                            />
                           </g>
                         ))}
 
-                        {/* Cutting Lip 2 pts (rotated) */}
+                        {/* Lip 2 points */}
                         {[
-                          { x: 340, y: 236 },
-                          { x: 306, y: 228 },
-                          { x: 272, y: 220 },
-                          { x: 238, y: 212 },
+                          { x: 184, y: 221 },
+                          { x: 169, y: 248 },
+                          { x: 154, y: 275 },
+                          { x: 140, y: 302 },
+                          { x: 125, y: 330 },
                         ].map((pt, i) => (
                           <g key={`l2-${i}`}>
                             <circle cx={pt.x} cy={pt.y} r="2" fill="#3B82F6" />
@@ -352,18 +316,39 @@ export function DrillBitInspectionVisualizer() {
                           </g>
                         ))}
 
-                        {/* Outer Rim Sub-pixel Edge Lock Pts */}
+                        {/* Chisel edge points */}
                         {[
-                          { x: 325, y: 272 },
-                          { x: 237, y: 340 },
-                          { x: 127, y: 325 },
-                          { x: 60, y: 237 },
-                          { x: 74, y: 127 },
-                          { x: 162, y: 60 },
-                          { x: 272, y: 74 },
-                          { x: 340, y: 162 },
+                          { x: 192, y: 210 },
+                          { x: 200, y: 200 },
+                          { x: 208, y: 190 },
                         ].map((pt, i) => (
-                          <circle key={`rim-${i}`} cx={pt.x} cy={pt.y} r="1.8" fill="#3B82F6" opacity="0.8" />
+                          <circle key={`chisel-${i}`} cx={pt.x} cy={pt.y} r="1.8" fill="#3B82F6" opacity="0.9" />
+                        ))}
+
+                        {/* Margin Arc 1 points */}
+                        {[
+                          { x: 275, y: 70 },
+                          { x: 240, y: 55 },
+                          { x: 190, y: 50 },
+                          { x: 140, y: 60 },
+                          { x: 95, y: 90 },
+                          { x: 65, y: 140 },
+                          { x: 50, y: 200 },
+                        ].map((pt, i) => (
+                          <circle key={`arc1-${i}`} cx={pt.x} cy={pt.y} r="1.8" fill="#3B82F6" opacity="0.8" />
+                        ))}
+
+                        {/* Margin Arc 2 points */}
+                        {[
+                          { x: 125, y: 330 },
+                          { x: 160, y: 345 },
+                          { x: 210, y: 350 },
+                          { x: 260, y: 340 },
+                          { x: 305, y: 310 },
+                          { x: 335, y: 260 },
+                          { x: 350, y: 200 },
+                        ].map((pt, i) => (
+                          <circle key={`arc2-${i}`} cx={pt.x} cy={pt.y} r="1.8" fill="#3B82F6" opacity="0.8" />
                         ))}
                       </g>
                     )}
@@ -371,72 +356,88 @@ export function DrillBitInspectionVisualizer() {
                     {/* (c) In-situ Metrology Dimension Marks & Leader Lines (T >= 1.1s) */}
                     {(step >= 2 || !motionOK) && (
                       <g className="transition-opacity duration-200">
-                        {/* 1. Body Diameter Dimension Line across 45° */}
-                        <line x1="97" y1="303" x2="303" y2="97" stroke="#3B82F6" strokeWidth="1.2" strokeDasharray="4 2" />
-                        <line x1="92" y1="298" x2="102" y2="308" stroke="#3B82F6" strokeWidth="1.5" />
-                        <line x1="298" y1="92" x2="308" y2="102" stroke="#3B82F6" strokeWidth="1.5" />
-                        {/* Leader line to diameter label */}
-                        <path d="M 303 97 L 328 72 L 348 72" fill="none" stroke="#3B82F6" strokeWidth="1" />
-                        <text x="290" y="52" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
+                        {/* 1. Diameter Dimension Line across full 300-unit circle (45° angle) */}
+                        <line x1="94" y1="94" x2="306" y2="306" stroke="#3B82F6" strokeWidth="1.2" strokeDasharray="4 2" />
+                        <line x1="88" y1="100" x2="100" y2="88" stroke="#3B82F6" strokeWidth="1.5" />
+                        <line x1="300" y1="312" x2="312" y2="300" stroke="#3B82F6" strokeWidth="1.5" />
+                        {/* Leader line to diameter label outside the backdrop disc (top-left) */}
+                        <path d="M 94 94 L 66 66 L 66 50" fill="none" stroke="#3B82F6" strokeWidth="1" />
+                        <rect
+                          x="14"
+                          y="18"
+                          width="106"
+                          height="32"
+                          rx="2"
+                          fill="#14130F"
+                          fillOpacity="0.95"
+                          stroke="#3B82F6"
+                          strokeWidth="1"
+                        />
+                        <text x="20" y="32" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
                           ⌀ 8.082 mm
                         </text>
-                        <text x="290" y="66" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
+                        <text x="20" y="45" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
                           SPEC ±150µm PASS
                         </text>
 
-                        {/* 2. Web Thickness Calipers at center */}
-                        <line x1="194" y1="184" x2="194" y2="216" stroke="#3B82F6" strokeWidth="1.5" />
-                        <line x1="206" y1="184" x2="206" y2="216" stroke="#3B82F6" strokeWidth="1.5" />
-                        <line x1="194" y1="200" x2="206" y2="200" stroke="#3B82F6" strokeWidth="1" />
-                        {/* Leader line to web label */}
-                        <path d="M 206 200 L 230 180 L 252 180" fill="none" stroke="#3B82F6" strokeWidth="1" />
-                        <text x="242" y="172" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
+                        {/* 2. Web Thickness Calipers across the central strip (shortened to measured core) */}
+                        <line x1="194" y1="192" x2="194" y2="208" stroke="#3B82F6" strokeWidth="1.5" />
+                        <line x1="206" y1="192" x2="206" y2="208" stroke="#3B82F6" strokeWidth="1.5" />
+                        <line x1="194" y1="200" x2="206" y2="200" stroke="#3B82F6" strokeWidth="1.2" strokeDasharray="2 1" />
+                        {/* Leader line to web label outside the backdrop disc (bottom-left) */}
+                        <path d="M 194 200 L 130 265 L 63 348" fill="none" stroke="#3B82F6" strokeWidth="1" />
+                        <rect
+                          x="14"
+                          y="348"
+                          width="98"
+                          height="32"
+                          rx="2"
+                          fill="#14130F"
+                          fillOpacity="0.95"
+                          stroke="#3B82F6"
+                          strokeWidth="1"
+                        />
+                        <text x="20" y="362" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
                           WEB 1.48 mm
                         </text>
-                        <text x="242" y="185" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
+                        <text x="20" y="375" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
                           SPEC 1.45
                         </text>
 
-                        {/* 3. Chisel Angle Arc & Leader */}
-                        <path d="M 188 193 A 18 18 0 0 1 198 182" fill="none" stroke="#3B82F6" strokeWidth="1.5" />
-                        <path d="M 188 193 L 155 220 L 130 220" fill="none" stroke="#3B82F6" strokeWidth="1" />
-                        <text x="45" y="215" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
+                        {/* 3. Chisel Angle Arc & Leader outside the backdrop disc (bottom-right) */}
+                        <path d="M 207 191 A 16 16 0 0 1 214 204" fill="none" stroke="#3B82F6" strokeWidth="1.5" strokeDasharray="2 1" />
+                        {/* Leader line to chisel label outside the backdrop disc */}
+                        <path d="M 214 204 L 270 270 L 337 348" fill="none" stroke="#3B82F6" strokeWidth="1" />
+                        <rect
+                          x="288"
+                          y="348"
+                          width="98"
+                          height="32"
+                          rx="2"
+                          fill="#14130F"
+                          fillOpacity="0.95"
+                          stroke="#3B82F6"
+                          strokeWidth="1"
+                        />
+                        <text x="294" y="362" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
                           CHISEL 125.4°
                         </text>
-                        <text x="45" y="228" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
+                        <text x="294" y="375" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
                           SPEC 125° ± 1°
                         </text>
                       </g>
                     )}
 
-                    {/* (4) Defect Mode: Localized Viewfinder Box + Leader to Outside Label */}
+                    {/* (4) Defect Mode: Outside Label (Bounding box is inside DrillTipSVG) */}
                     {simulateDefect && (
                       <g className="defect-annotation">
-                        {/* Dashed defect bounding box */}
+                        {/* Leader line connecting defect box to label outside the backdrop disc */}
+                        <path d="M 276 92 L 305 55 L 317 40" fill="none" stroke="#EF4444" strokeWidth="1.5" />
                         <rect
-                          x="46"
-                          y="140"
-                          width="56"
-                          height="50"
-                          fill="none"
-                          stroke="#EF4444"
-                          strokeWidth="2"
-                          strokeDasharray="10 6"
-                        />
-                        {/* Viewfinder corner brackets */}
-                        <path
-                          d="M 40 148 L 40 134 L 54 134 M 94 134 L 108 134 L 108 148 M 40 182 L 40 196 L 54 196 M 94 196 L 108 196 L 108 182"
-                          fill="none"
-                          stroke="#EF4444"
-                          strokeWidth="2"
-                        />
-                        {/* Leader line connecting to single-line outside label */}
-                        <path d="M 46 140 L 30 115 L 14 115" fill="none" stroke="#EF4444" strokeWidth="1.5" />
-                        <rect
-                          x="12"
-                          y="98"
-                          width="142"
-                          height="20"
+                          x="248"
+                          y="18"
+                          width="138"
+                          height="22"
                           fill="#14130F"
                           fillOpacity="0.95"
                           stroke="#EF4444"
@@ -444,8 +445,8 @@ export function DrillBitInspectionVisualizer() {
                           rx="2"
                         />
                         <text
-                          x="18"
-                          y="112"
+                          x="254"
+                          y="33"
                           fill="#EF4444"
                           fontSize="11"
                           fontFamily="var(--font-mono)"
@@ -462,10 +463,10 @@ export function DrillBitInspectionVisualizer() {
                         {!simulateDefect ? (
                           <g>
                             <rect
-                              x="135"
-                              y="328"
-                              width="130"
-                              height="28"
+                              x="145"
+                              y="352"
+                              width="110"
+                              height="26"
                               rx="2"
                               fill="#14130F"
                               fillOpacity="0.95"
@@ -474,7 +475,7 @@ export function DrillBitInspectionVisualizer() {
                             />
                             <text
                               x="200"
-                              y="347"
+                              y="369"
                               fill="#1F8A4C"
                               fontSize="13"
                               fontFamily="var(--font-mono)"
@@ -488,10 +489,10 @@ export function DrillBitInspectionVisualizer() {
                         ) : (
                           <g>
                             <rect
-                              x="125"
-                              y="328"
-                              width="150"
-                              height="28"
+                              x="140"
+                              y="352"
+                              width="120"
+                              height="26"
                               rx="2"
                               fill="#14130F"
                               fillOpacity="0.95"
@@ -500,7 +501,7 @@ export function DrillBitInspectionVisualizer() {
                             />
                             <text
                               x="200"
-                              y="347"
+                              y="369"
                               fill="#EF4444"
                               fontSize="13"
                               fontFamily="var(--font-mono)"
@@ -514,7 +515,7 @@ export function DrillBitInspectionVisualizer() {
                         )}
                       </g>
                     )}
-                  </svg>
+                  </DrillTipSVG>
                 </div>
 
                 {/* Bottom Status bar */}
