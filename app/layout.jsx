@@ -34,15 +34,14 @@ const playfairDisplay = Playfair_Display({
   variable: '--font-playfair',
 });
 
-const pageTitle = `${IDENTITY.name} · ${IDENTITY.headlineRole}`;
-const pageDescription = `${IDENTITY.name} · ${IDENTITY.shortSummary}`;
+import { SITE_URL, ROOT_METADATA } from '../content/seo';
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://rajeshkumar.dev'),
-  title: pageTitle,
-  description: pageDescription,
+  metadataBase: new URL(SITE_URL),
+  title: ROOT_METADATA.title,
+  description: ROOT_METADATA.description,
   alternates: {
-    canonical: '/',
+    canonical: ROOT_METADATA.canonical,
   },
   icons: {
     icon: '/favicon.svg',
@@ -50,24 +49,24 @@ export const metadata = {
     apple: '/favicon.svg',
   },
   openGraph: {
-    title: pageTitle,
-    description: pageDescription,
+    title: ROOT_METADATA.title.default,
+    description: ROOT_METADATA.description,
     url: '/',
-    siteName: `${IDENTITY.name} Portfolio`,
+    siteName: ROOT_METADATA.siteName,
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: pageTitle,
+        alt: ROOT_METADATA.title.default,
       },
     ],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: pageTitle,
-    description: pageDescription,
+    title: ROOT_METADATA.title.default,
+    description: ROOT_METADATA.description,
     images: ['/og-image.png'],
   },
 };
