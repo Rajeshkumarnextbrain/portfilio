@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { m } from 'framer-motion';
-import { EASING, TIMING } from '@/lib/motion';
 import { useMotionOK } from '@/lib/useMotionOK';
 
 export interface JumpSection {
@@ -18,29 +17,46 @@ interface StickyJumpBarProps {
 export function StickyJumpBar({ sections, className = '' }: StickyJumpBarProps) {
   const [activeId, setActiveId] = useState<string>(sections[0]?.id || '');
   const motionOK = useMotionOK();
+  const intersectingMap = useRef<Map<string, boolean>>(new Map());
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + 180;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i].id);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveId(sections[i].id);
-          return;
-        }
-      }
-      if (sections[0]) {
-        setActiveId(sections[0].id);
-      }
-    };
+    if (typeof IntersectionObserver === 'undefined') return;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            intersectingMap.current.set(entry.target.id, true);
+          } else {
+            intersectingMap.current.delete(entry.target.id);
+          }
+        });
+
+        // Pick the topmost intersecting section from sections array order
+        const visibleSection = sections.find((sec) => intersectingMap.current.has(sec.id));
+        if (visibleSection) {
+          setActiveId(visibleSection.id);
+        }
+      },
+      {
+        rootMargin: '-80px 0px -40% 0px',
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((sec) => {
+      const el = document.getElementById(sec.id);
+      if (el) {
+        observer.observe(el);
+      }
+    });
+
+    return () => observer.disconnect();
   }, [sections]);
 
   const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    setActiveId(id);
     const el = document.getElementById(id);
     if (el) {
       const yOffset = -80;
@@ -64,9 +80,15 @@ export function StickyJumpBar({ sections, className = '' }: StickyJumpBarProps) 
           >
             <span>{sec.label}</span>
             {isActive && (
-              <span
-                className="absolute bottom-0 left-0 right-0 h-[2px] bg-secondary origin-left"
-              />
+              motionOK ? (
+                <m.span
+                  layoutId="stickyJumpBarUnderline"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-secondary"
+                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                />
+              ) : (
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-secondary origin-left" />
+              )
             )}
           </a>
         );
