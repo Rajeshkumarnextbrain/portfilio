@@ -1,21 +1,169 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
+import { RotateCcw } from 'lucide-react';
 import { CountUp } from '@/components/motion/CountUp';
-import { useMotionOK } from '@/lib/useMotionOK';
-import { DRILL_BIT_MEASUREMENTS, DRILL_BIT_DEFECT_CLASSES, DRILL_BIT_MACHINE_TIERS } from '@/content/caseStudiesData';
+import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
+import { DRILL_BIT_DEFECT_CLASSES, DRILL_BIT_MACHINE_TIERS } from '@/content/caseStudiesData';
 
 type ViewMode = 'front' | 'top' | 'categories';
+
+interface ToleranceBarProps {
+  label: string;
+  measured: number;
+  nominal: number;
+  tolerance: number;
+  unit: string;
+  minScale: number;
+  maxScale: number;
+  isDefect?: boolean;
+  step: number;
+  loopKey: number;
+  motionOK: boolean;
+}
+
+function ToleranceBar({
+  label,
+  measured,
+  nominal,
+  tolerance,
+  unit,
+  minScale,
+  maxScale,
+  isDefect = false,
+  step,
+  loopKey,
+  motionOK,
+}: ToleranceBarProps) {
+  const minSpec = nominal - tolerance;
+  const maxSpec = nominal + tolerance;
+  const inSpec = !isDefect && measured >= minSpec && measured <= maxSpec;
+
+  const specLeftPct = Math.max(0, Math.min(100, ((minSpec - minScale) / (maxScale - minScale)) * 100));
+  const specWidthPct = Math.max(0, Math.min(100 - specLeftPct, ((maxSpec - minSpec) / (maxScale - minScale)) * 100));
+  const markerPct = Math.max(0, Math.min(100, ((measured - minScale) / (maxScale - minScale)) * 100));
+
+  const isCounted = step >= 2 || !motionOK;
+
+  return (
+    <div className="flex flex-col gap-1 py-2">
+      <div className="flex justify-between items-baseline text-xs font-mono">
+        <span className="text-on-surface font-semibold">{label}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-secondary font-bold">
+            {isCounted ? (
+              <CountUp
+                key={`${loopKey}-${label}`}
+                value={`${measured.toFixed(3).replace(/\.?0+$/, '')} ${unit}`}
+                duration={0.6}
+              />
+            ) : (
+              `0.000 ${unit}`
+            )}
+          </span>
+          <span
+            className={`text-xs sm:text-[11px] font-bold px-1.5 py-0.5 rounded uppercase ${
+              inSpec ? 'bg-status-success/15 text-status-success' : 'bg-status-error/15 text-status-error'
+            }`}
+          >
+            {inSpec ? 'IN SPEC' : 'FAULT'}
+          </span>
+        </div>
+      </div>
+
+      {/* Visual tolerance bar track */}
+      <div className="relative w-full h-2.5 bg-paper-sunken border border-line rounded-sm overflow-hidden flex items-center">
+        {/* Nominal center guide line */}
+        <div
+          className="absolute top-0 bottom-0 w-px bg-on-surface/25 z-0"
+          style={{ left: `${((nominal - minScale) / (maxScale - minScale)) * 100}%` }}
+        />
+
+        {/* Spec band highlight */}
+        <div
+          className="absolute top-0 bottom-0 bg-secondary/20 border-x border-secondary/40 z-0"
+          style={{ left: `${specLeftPct}%`, width: `${specWidthPct}%` }}
+        />
+
+        {/* Measured marker dot */}
+        <div
+          className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full z-10 border border-paper-raised transition-all ${
+            inSpec ? 'bg-status-success shadow-[0_0_4px_rgba(31,138,76,0.8)]' : 'bg-status-error shadow-[0_0_4px_rgba(239,68,68,0.8)]'
+          }`}
+          style={{ left: `${isCounted ? markerPct : 0}%` }}
+        />
+      </div>
+
+      <div className="flex justify-between text-xs sm:text-[11px] font-mono text-ink-muted">
+        <span>{minScale.toFixed(2)}</span>
+        <span>SPEC: {nominal} ±{tolerance} {unit}</span>
+        <span>{maxScale.toFixed(2)}</span>
+      </div>
+    </div>
+  );
+}
 
 export function DrillBitInspectionVisualizer() {
   const [activeView, setActiveView] = useState<ViewMode>('front');
   const [rotationAngle, setRotationAngle] = useState(45);
   const [simulateDefect, setSimulateDefect] = useState(false);
+  const [inView, setInView] = useState(true);
+  const [loopKey, setLoopKey] = useState(0);
+  const [step, setStep] = useState(4); // 0 = scan, 1 = edge lock, 2 = dimensions/countup, 3 = stamp, 4 = plc
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const motionOK = useMotionOK();
+  const isVisible = useDocumentVisible();
+
+  // In-view observer for pausing continuous loop when scrolled off-screen
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        setInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Inspection loop orchestration: ~6s repeating cycle
+  useEffect(() => {
+    if (!motionOK) {
+      setStep(4);
+      return;
+    }
+    if (activeView !== 'front' || !inView || !isVisible) {
+      return;
+    }
+
+    setStep(0);
+    const t1 = setTimeout(() => setStep(1), 400);   // Edge detection lock (T+0.4s)
+    const t2 = setTimeout(() => setStep(2), 1100);  // Metrology calipers & CountUp (T+1.1s)
+    const t3 = setTimeout(() => setStep(3), 1300);  // Pass/Reject stamp (T+1.3s)
+    const t4 = setTimeout(() => setStep(4), 1500);  // PLC Action pulse (T+1.5s)
+    const tLoop = setTimeout(() => {
+      setLoopKey((k) => k + 1);
+    }, 6000);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(tLoop);
+    };
+  }, [loopKey, inView, isVisible, motionOK, activeView]);
+
+  const handleReplay = useCallback(() => {
+    setLoopKey((k) => k + 1);
+  }, []);
 
   return (
-    <div className="relative w-full bg-paper-sunken border border-line flex flex-col">
+    <div ref={containerRef} className="relative w-full bg-paper-sunken border border-line flex flex-col">
       {/* Corner brackets */}
       <span aria-hidden="true" className="absolute -top-1.5 -left-1.5 text-primary text-[18px] leading-none select-none pointer-events-none">⌜</span>
       <span aria-hidden="true" className="absolute -top-1.5 -right-1.5 text-primary text-[18px] leading-none select-none pointer-events-none">⌝</span>
@@ -89,132 +237,558 @@ export function DrillBitInspectionVisualizer() {
               transition={{ duration: 0.2 }}
               className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
             >
-              {/* Left: Camera Reticle & Tip Visualizer */}
-              <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-6 border border-line flex flex-col justify-between gap-6 relative overflow-hidden">
-                {/* Camera HUD Telemetry */}
-                <div className="flex flex-wrap justify-between items-center gap-2 font-mono text-[11px] text-[#B5B2A8] border-b border-surface/10 pb-3">
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-status-success animate-ping" />
+              {/* Left: Camera Reticle & End-on Twist Drill Visualizer */}
+              <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-4 sm:p-6 border border-line flex flex-col justify-between gap-4 relative overflow-hidden">
+                {/* Camera HUD Telemetry Header */}
+                <div className="flex flex-wrap justify-between items-center gap-2 font-mono text-xs sm:text-[11px] text-[#F5F2EC]/80 border-b border-white/10 pb-3">
+                  <span className="flex items-center gap-2 text-[#F5F2EC]/90">
+                    <span className={`w-2 h-2 rounded-full ${simulateDefect ? 'bg-status-error' : 'bg-status-success'} animate-ping`} />
                     HIKROBOT CAM #1 · FRONT OPTICS
                   </span>
-                  <span>COAXIAL POLARIZED LED: 100%</span>
+                  <span className="text-[#F5F2EC]/80">COAXIAL POLARIZED LED: 100%</span>
                   <span className="text-secondary font-bold">1920 x 1080 @ 30 FPS</span>
                 </div>
 
-                {/* Reticle Graphics */}
-                <div className="relative aspect-video max-h-[300px] flex items-center justify-center my-auto">
-                  {/* Grid Lines */}
+                {/* Reticle Graphics & Drill Bit Canvas (viewBox 0 0 400 400) */}
+                <div className="relative w-full max-w-[420px] aspect-square mx-auto flex items-center justify-center my-2">
+                  {/* Alignment crosshairs */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
                     <div className="w-full h-px bg-[#F5F2EC]" />
                     <div className="h-full w-px bg-[#F5F2EC] absolute" />
                   </div>
 
-                  {/* Concentric Calibration Rings */}
-                  <div className="absolute w-44 h-44 rounded-full border border-dashed border-[#F5F2EC]/20" />
-                  <div className="absolute w-28 h-28 rounded-full border border-[#F5F2EC]/30" />
+                  {/* Concentric Calibration Reticles */}
+                  <div className="absolute w-[340px] h-[340px] rounded-full border border-dashed border-[#F5F2EC]/15 pointer-events-none" />
+                  <div className="absolute w-[220px] h-[220px] rounded-full border border-[#F5F2EC]/20 pointer-events-none" />
 
-                  {/* Simulated Drill Bit Tip (Front End-On Profile) */}
-                  <div className="relative w-36 h-36 flex items-center justify-center">
-                    {/* Outer Contour */}
-                    <svg viewBox="0 0 100 100" className="w-full h-full text-[#F5F2EC]">
-                      {/* Drill cutting lips and chisel edge */}
-                      <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 2" />
-                      <path
-                        d="M 12 50 C 25 35, 45 48, 50 50 C 55 52, 75 65, 88 50 C 75 65, 55 52, 50 50 C 45 48, 25 35, 12 50 Z"
-                        fill="rgba(255, 138, 92, 0.15)"
-                        stroke={simulateDefect ? '#EF4444' : '#FF8A5C'}
-                        strokeWidth="2"
-                      />
-                      {/* Chisel Edge */}
-                      <line x1="44" y1="46" x2="56" y2="54" stroke="#FF8A5C" strokeWidth="2.5" />
-                      {/* Web thickness calipers */}
-                      <line x1="47" y1="42" x2="47" y2="58" stroke="#3B82F6" strokeWidth="1.5" />
-                      <line x1="53" y1="42" x2="53" y2="58" stroke="#3B82F6" strokeWidth="1.5" />
-                    </svg>
+                  {/* SVG Twist Drill End-on CAD Geometry */}
+                  <svg
+                    viewBox="0 0 400 400"
+                    className="w-full h-full select-none"
+                    aria-label="Front optical inspection of drill tip geometry"
+                  >
+                    <defs>
+                      <linearGradient id="scanGlow" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.85" />
+                        <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
 
-                    {/* Defect Callout Annotation if simulated */}
-                    {simulateDefect && (
-                      <div className="absolute -top-2 right-0 bg-status-error text-white font-mono text-[10px] px-2 py-0.5 rounded shadow">
-                        DEF-01: BROKEN BLEND CHIP
-                      </div>
+                    {/* Drill body outer cylinder (fills ~65-72% of 400x400) */}
+                    <circle
+                      cx="200"
+                      cy="200"
+                      r="145"
+                      fill="#2A2822"
+                      stroke="#F5F2EC"
+                      strokeOpacity="0.5"
+                      strokeWidth="1.5"
+                    />
+
+                    {/* Two helical flutes (voids); second rotated 180° */}
+                    {[0, 180].map((r) => (
+                      <g key={r} transform={`rotate(${r} 200 200)`}>
+                        <path
+                          d="M196 196 L60 164 A145 145 0 0 0 60 236 Q130 215 196 204 Z"
+                          fill="#0B0A08"
+                        />
+                        {/* Cutting lip */}
+                        <line
+                          x1="196"
+                          y1="196"
+                          x2="60"
+                          y2="164"
+                          stroke={simulateDefect && r === 0 ? '#EF4444' : '#FF8A5C'}
+                          strokeWidth="3"
+                        />
+                      </g>
+                    ))}
+
+                    {/* Central Chisel Edge */}
+                    <line
+                      x1="188"
+                      y1="193"
+                      x2="212"
+                      y2="207"
+                      stroke="#FF8A5C"
+                      strokeWidth="4"
+                    />
+
+                    {/* (a) Sweeping Blue Scan Line */}
+                    {motionOK && (
+                      <g key={loopKey} className="animate-drill-scan pointer-events-none">
+                        <rect x="35" y="0" width="330" height="2" fill="#3B82F6" opacity="0.85" />
+                        <rect x="35" y="0" width="330" height="8" fill="url(#scanGlow)" opacity="0.35" />
+                      </g>
                     )}
-                  </div>
 
-                  {/* On-screen Measurements Callouts */}
-                  <div className="absolute bottom-2 left-2 font-mono text-[10px] text-[#FF8A5C] bg-black/60 px-2 py-1 rounded">
-                    CHISEL ANGLE: 125.4° (SPEC: 125° ± 1°)
-                  </div>
-                  <div className="absolute top-2 left-2 font-mono text-[10px] text-blue-400 bg-black/60 px-2 py-1 rounded">
-                    WEB THICKNESS: 1.48 mm (SPEC: 1.45 mm ± 150 µm)
-                  </div>
+                    {/* (b) Staggered Edge Detection Points (T >= 0.4s) */}
+                    {(step >= 1 || !motionOK) && (
+                      <g className="transition-opacity duration-200">
+                        {/* Cutting Lip 1 pts */}
+                        {[
+                          { x: 60, y: 164 },
+                          { x: 94, y: 172 },
+                          { x: 128, y: 180 },
+                          { x: 162, y: 188 },
+                          { x: 196, y: 196 },
+                        ].map((pt, i) => (
+                          <g key={`l1-${i}`}>
+                            <circle cx={pt.x} cy={pt.y} r="2" fill={simulateDefect && i === 0 ? '#EF4444' : '#3B82F6'} />
+                            <circle cx={pt.x} cy={pt.y} r="4" fill="none" stroke={simulateDefect && i === 0 ? '#EF4444' : '#3B82F6'} strokeWidth="0.8" opacity="0.6" />
+                          </g>
+                        ))}
+
+                        {/* Cutting Lip 2 pts (rotated) */}
+                        {[
+                          { x: 340, y: 236 },
+                          { x: 306, y: 228 },
+                          { x: 272, y: 220 },
+                          { x: 238, y: 212 },
+                        ].map((pt, i) => (
+                          <g key={`l2-${i}`}>
+                            <circle cx={pt.x} cy={pt.y} r="2" fill="#3B82F6" />
+                            <circle cx={pt.x} cy={pt.y} r="4" fill="none" stroke="#3B82F6" strokeWidth="0.8" opacity="0.6" />
+                          </g>
+                        ))}
+
+                        {/* Outer Rim Sub-pixel Edge Lock Pts */}
+                        {[
+                          { x: 325, y: 272 },
+                          { x: 237, y: 340 },
+                          { x: 127, y: 325 },
+                          { x: 60, y: 237 },
+                          { x: 74, y: 127 },
+                          { x: 162, y: 60 },
+                          { x: 272, y: 74 },
+                          { x: 340, y: 162 },
+                        ].map((pt, i) => (
+                          <circle key={`rim-${i}`} cx={pt.x} cy={pt.y} r="1.8" fill="#3B82F6" opacity="0.8" />
+                        ))}
+                      </g>
+                    )}
+
+                    {/* (c) In-situ Metrology Dimension Marks & Leader Lines (T >= 1.1s) */}
+                    {(step >= 2 || !motionOK) && (
+                      <g className="transition-opacity duration-200">
+                        {/* 1. Body Diameter Dimension Line across 45° */}
+                        <line x1="97" y1="303" x2="303" y2="97" stroke="#3B82F6" strokeWidth="1.2" strokeDasharray="4 2" />
+                        <line x1="92" y1="298" x2="102" y2="308" stroke="#3B82F6" strokeWidth="1.5" />
+                        <line x1="298" y1="92" x2="308" y2="102" stroke="#3B82F6" strokeWidth="1.5" />
+                        {/* Leader line to diameter label */}
+                        <path d="M 303 97 L 328 72 L 348 72" fill="none" stroke="#3B82F6" strokeWidth="1" />
+                        <text x="290" y="52" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
+                          ⌀ 8.082 mm
+                        </text>
+                        <text x="290" y="66" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
+                          SPEC ±150µm PASS
+                        </text>
+
+                        {/* 2. Web Thickness Calipers at center */}
+                        <line x1="194" y1="184" x2="194" y2="216" stroke="#3B82F6" strokeWidth="1.5" />
+                        <line x1="206" y1="184" x2="206" y2="216" stroke="#3B82F6" strokeWidth="1.5" />
+                        <line x1="194" y1="200" x2="206" y2="200" stroke="#3B82F6" strokeWidth="1" />
+                        {/* Leader line to web label */}
+                        <path d="M 206 200 L 230 180 L 252 180" fill="none" stroke="#3B82F6" strokeWidth="1" />
+                        <text x="242" y="172" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
+                          WEB 1.48 mm
+                        </text>
+                        <text x="242" y="185" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
+                          SPEC 1.45
+                        </text>
+
+                        {/* 3. Chisel Angle Arc & Leader */}
+                        <path d="M 188 193 A 18 18 0 0 1 198 182" fill="none" stroke="#3B82F6" strokeWidth="1.5" />
+                        <path d="M 188 193 L 155 220 L 130 220" fill="none" stroke="#3B82F6" strokeWidth="1" />
+                        <text x="45" y="215" fill="#FF8A5C" fontSize="11" fontFamily="var(--font-mono)" fontWeight="700">
+                          CHISEL 125.4°
+                        </text>
+                        <text x="45" y="228" fill="#F5F2EC" fillOpacity="0.85" fontSize="11" fontFamily="var(--font-mono)">
+                          SPEC 125° ± 1°
+                        </text>
+                      </g>
+                    )}
+
+                    {/* (4) Defect Mode: Localized Viewfinder Box + Leader to Outside Label */}
+                    {simulateDefect && (
+                      <g className="defect-annotation">
+                        {/* Dashed defect bounding box */}
+                        <rect
+                          x="46"
+                          y="140"
+                          width="56"
+                          height="50"
+                          fill="none"
+                          stroke="#EF4444"
+                          strokeWidth="2"
+                          strokeDasharray="10 6"
+                        />
+                        {/* Viewfinder corner brackets */}
+                        <path
+                          d="M 40 148 L 40 134 L 54 134 M 94 134 L 108 134 L 108 148 M 40 182 L 40 196 L 54 196 M 94 196 L 108 196 L 108 182"
+                          fill="none"
+                          stroke="#EF4444"
+                          strokeWidth="2"
+                        />
+                        {/* Leader line connecting to single-line outside label */}
+                        <path d="M 46 140 L 30 115 L 14 115" fill="none" stroke="#EF4444" strokeWidth="1.5" />
+                        <rect
+                          x="12"
+                          y="98"
+                          width="142"
+                          height="20"
+                          fill="#14130F"
+                          fillOpacity="0.95"
+                          stroke="#EF4444"
+                          strokeWidth="1"
+                          rx="2"
+                        />
+                        <text
+                          x="18"
+                          y="112"
+                          fill="#EF4444"
+                          fontSize="11"
+                          fontFamily="var(--font-mono)"
+                          fontWeight="700"
+                        >
+                          chipped_blend 0.91
+                        </text>
+                      </g>
+                    )}
+
+                    {/* (e) PASS or REJECT Stamp (T >= 1.3s) */}
+                    {(step >= 3 || !motionOK) && (
+                      <g className="transition-opacity duration-300 select-none">
+                        {!simulateDefect ? (
+                          <g>
+                            <rect
+                              x="135"
+                              y="328"
+                              width="130"
+                              height="28"
+                              rx="2"
+                              fill="#14130F"
+                              fillOpacity="0.95"
+                              stroke="#1F8A4C"
+                              strokeWidth="2"
+                            />
+                            <text
+                              x="200"
+                              y="347"
+                              fill="#1F8A4C"
+                              fontSize="13"
+                              fontFamily="var(--font-mono)"
+                              fontWeight="700"
+                              textAnchor="middle"
+                              letterSpacing="2"
+                            >
+                              ✓ PASS
+                            </text>
+                          </g>
+                        ) : (
+                          <g>
+                            <rect
+                              x="125"
+                              y="328"
+                              width="150"
+                              height="28"
+                              rx="2"
+                              fill="#14130F"
+                              fillOpacity="0.95"
+                              stroke="#EF4444"
+                              strokeWidth="2"
+                            />
+                            <text
+                              x="200"
+                              y="347"
+                              fill="#EF4444"
+                              fontSize="13"
+                              fontFamily="var(--font-mono)"
+                              fontWeight="700"
+                              textAnchor="middle"
+                              letterSpacing="2"
+                            >
+                              ✗ REJECT
+                            </text>
+                          </g>
+                        )}
+                      </g>
+                    )}
+                  </svg>
                 </div>
 
                 {/* Bottom Status bar */}
-                <div className="flex flex-wrap items-center justify-between text-xs font-mono pt-3 border-t border-surface/10 gap-2">
+                <div className="flex flex-wrap items-center justify-between text-xs sm:text-[11px] font-mono pt-3 border-t border-white/10 gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-[#B5B2A8]">POINT DIAMETER:</span>
-                    <span className="text-[#F5F2EC] font-bold">8.082 mm (±150 µm PASS)</span>
+                    <span className="text-[#F5F2EC]/80">POINT DIAMETER:</span>
+                    <span className="text-[#F5F2EC] font-bold">
+                      {step >= 2 || !motionOK ? (
+                        <CountUp key={`${loopKey}-status-dia`} value="8.082 mm" duration={0.6} />
+                      ) : (
+                        '0.000 mm'
+                      )}{' '}
+                      (±150 µm PASS)
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[#B5B2A8]">PLC ACTION:</span>
-                    <span className={`px-2 py-0.5 font-bold uppercase rounded ${simulateDefect ? 'bg-red-500/20 text-red-400 border border-red-500' : 'bg-green-500/20 text-green-400 border border-green-500'}`}>
+                    <span className="text-[#F5F2EC]/80">PLC ACTION:</span>
+                    <span
+                      className={`px-2 py-0.5 font-bold uppercase rounded border transition-all ${
+                        simulateDefect
+                          ? 'bg-red-500/20 text-red-400 border-red-500'
+                          : 'bg-green-500/20 text-green-400 border-green-500'
+                      } ${step === 4 && motionOK ? 'animate-pulse ring-2 ring-current' : ''}`}
+                    >
                       {simulateDefect ? 'ACTUATE PNEUMATIC REJECT' : 'CONTINUE TO TOP VIEW'}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Right: Metrology Readout & Defect Simulator */}
-              <div className="lg:col-span-5 flex flex-col justify-between gap-4 bg-paper-raised p-6 border border-line">
+              {/* Right: Metrology Readout, Tolerance Bars, Cycle Log, PLC I/O Strip */}
+              <div className="lg:col-span-5 flex flex-col justify-between gap-4 bg-paper-raised p-4 sm:p-6 border border-line">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between border-b border-line pb-2">
                     <span className="font-label-sm text-xs font-bold uppercase text-secondary">
                       FRONT PARAMETERS INSPECTED
                     </span>
-                    <span className="font-label-timecode text-[11px] text-ink-muted">STATION 01</span>
+                    <span className="font-label-timecode text-xs sm:text-[11px] text-ink-muted">STATION 01</span>
                   </div>
 
-                  <div className="flex flex-col divide-y divide-line font-mono text-xs">
-                    <div className="py-2.5 flex justify-between items-center">
-                      <span className="text-on-surface font-semibold">Front Diameter</span>
-                      <span className="text-secondary font-bold">8.082 mm</span>
-                    </div>
-                    <div className="py-2.5 flex justify-between items-center">
-                      <span className="text-on-surface font-semibold">Web Thickness</span>
-                      <span className="text-primary font-bold">1.480 mm</span>
-                    </div>
-                    <div className="py-2.5 flex justify-between items-center">
-                      <span className="text-on-surface font-semibold">Chisel Angle</span>
-                      <span className="text-primary font-bold">125.4°</span>
-                    </div>
-                    <div className="py-2.5 flex justify-between items-center">
+                  {/* Tightened Parameter Rows with Spec Band Tolerance Bars */}
+                  <div className="flex flex-col divide-y divide-line">
+                    <ToleranceBar
+                      label="Front Diameter"
+                      measured={8.082}
+                      nominal={8.0}
+                      tolerance={0.15}
+                      unit="mm"
+                      minScale={7.7}
+                      maxScale={8.3}
+                      step={step}
+                      loopKey={loopKey}
+                      motionOK={motionOK}
+                    />
+
+                    <ToleranceBar
+                      label="Web Thickness"
+                      measured={1.48}
+                      nominal={1.45}
+                      tolerance={0.15}
+                      unit="mm"
+                      minScale={1.2}
+                      maxScale={1.7}
+                      step={step}
+                      loopKey={loopKey}
+                      motionOK={motionOK}
+                    />
+
+                    <ToleranceBar
+                      label="Chisel Angle"
+                      measured={125.4}
+                      nominal={125.0}
+                      tolerance={1.0}
+                      unit="°"
+                      minScale={122.0}
+                      maxScale={128.0}
+                      step={step}
+                      loopKey={loopKey}
+                      motionOK={motionOK}
+                    />
+
+                    <div className="flex justify-between items-center py-2 text-xs font-mono">
                       <span className="text-on-surface font-semibold">Face Damage Scan</span>
-                      <span className={simulateDefect ? 'text-red-500 font-bold' : 'text-status-success font-bold'}>
+                      <span
+                        className={`font-bold uppercase ${
+                          simulateDefect ? 'text-status-error' : 'text-status-success'
+                        }`}
+                      >
                         {simulateDefect ? 'DEFECT DETECTED' : 'CLEAR (ZERO CHIPS)'}
                       </span>
                     </div>
                   </div>
+
+                  {/* 4-Line Realtime Metrology Cycle Log */}
+                  <div className="p-3 bg-[#14130F] text-[#F5F2EC] border border-line flex flex-col gap-1.5 font-mono text-xs sm:text-[11px]">
+                    <div className="flex items-center justify-between text-[#F5F2EC]/80 pb-1 border-b border-white/10 text-xs sm:text-[11px]">
+                      <span className="text-secondary font-bold uppercase">OPCV REALTIME METROLOGY LOG</span>
+                      <span>CYCLE: 6.0s</span>
+                    </div>
+                    <div className="flex flex-col gap-1 min-h-[76px]">
+                      {step >= 1 || !motionOK ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[#F5F2EC]/80">T+0.4s</span>
+                          <span className="text-secondary font-bold">[OPT]</span>
+                          <span className="text-[#F5F2EC]/90">Sub-pixel edge lock: 182 pts</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 text-[#F5F2EC]/60">
+                          <span>T+0.0s</span>
+                          <span className="text-secondary font-bold">[ACQ]</span>
+                          <span>Hikrobot Cam #1 frame captured...</span>
+                        </div>
+                      )}
+                      {(step >= 2 || !motionOK) && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[#F5F2EC]/80">T+1.1s</span>
+                          <span className="text-secondary font-bold">[MET]</span>
+                          <span className="text-[#F5F2EC]/90">Metrology caliper extraction complete</span>
+                        </div>
+                      )}
+                      {(step >= 3 || !motionOK) && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[#F5F2EC]/80">T+1.3s</span>
+                          <span className="text-secondary font-bold">[DEC]</span>
+                          <span className={simulateDefect ? 'text-status-error font-bold' : 'text-status-success font-bold'}>
+                            {simulateDefect ? 'DEFECT DETECTED: chipped_blend 0.91' : 'PASS (ALL PARAMETERS IN SPEC)'}
+                          </span>
+                        </div>
+                      )}
+                      {(step >= 4 || !motionOK) && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[#F5F2EC]/80">T+1.5s</span>
+                          <span className="text-secondary font-bold">[PLC]</span>
+                          <span className={simulateDefect ? 'text-status-error font-bold' : 'text-status-success font-bold'}>
+                            {simulateDefect ? 'CMD: ACTUATE PNEUMATIC REJECT' : 'CMD: INDEX SPINDLE -> TOP CAM'}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* PLC I/O Strip (FEED, REJECT SOLENOID, TOP CAM TRIGGER) */}
+                  <div className="p-3 bg-paper-sunken border border-line flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-label-sm text-xs sm:text-[11px] font-bold uppercase text-secondary">
+                        PLC I/O BUS (OPC UA / PROFINET)
+                      </span>
+                      <span className="font-mono text-xs sm:text-[11px] text-ink-muted">STATION 01</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {/* FEED */}
+                      <div className="p-2 bg-paper-raised border border-line flex items-center justify-between">
+                        <div className="flex flex-col">
+                          <span className="font-mono text-xs sm:text-[10px] text-ink-muted uppercase">FEED</span>
+                          <span className="font-mono text-xs sm:text-[11px] font-bold text-on-surface">
+                            {simulateDefect ? 'HOLD' : 'RUNNING'}
+                          </span>
+                        </div>
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full ${
+                            simulateDefect ? 'bg-ink-muted' : 'bg-status-success shadow-[0_0_6px_rgba(31,138,76,0.6)]'
+                          }`}
+                        />
+                      </div>
+
+                      {/* REJECT SOLENOID */}
+                      <div
+                        className={`p-2 border transition-colors flex items-center justify-between ${
+                          simulateDefect
+                            ? 'bg-red-500/10 border-status-error'
+                            : 'bg-paper-raised border border-line'
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-mono text-xs sm:text-[10px] text-ink-muted uppercase">REJECT SOLENOID</span>
+                          <span
+                            className={`font-mono text-xs sm:text-[11px] font-bold ${
+                              simulateDefect ? 'text-status-error' : 'text-ink-muted'
+                            }`}
+                          >
+                            {simulateDefect ? (step >= 4 || !motionOK ? 'FIRED' : 'ARMED') : 'IDLE'}
+                          </span>
+                        </div>
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full ${
+                            simulateDefect
+                              ? 'bg-status-error shadow-[0_0_6px_rgba(239,68,68,0.8)] animate-pulse'
+                              : 'bg-ink-muted/40'
+                          }`}
+                        />
+                      </div>
+
+                      {/* TOP CAM TRIGGER */}
+                      <div className="p-2 bg-paper-raised border border-line flex items-center justify-between">
+                        <div className="flex flex-col">
+                          <span className="font-mono text-xs sm:text-[10px] text-ink-muted uppercase">TOP CAM TRIGGER</span>
+                          <span
+                            className={`font-mono text-xs sm:text-[11px] font-bold ${
+                              simulateDefect ? 'text-status-error' : 'text-on-surface'
+                            }`}
+                          >
+                            {simulateDefect ? 'ABORTED' : 'ARMED'}
+                          </span>
+                        </div>
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full ${
+                            simulateDefect
+                              ? 'bg-status-error'
+                              : 'bg-status-success shadow-[0_0_6px_rgba(31,138,76,0.6)]'
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Defect Simulator Interactive Toggle */}
-                <div className="p-4 bg-paper-sunken border border-line flex flex-col gap-2">
-                  <span className="font-label-sm text-[11px] font-bold uppercase text-primary">
-                    SIMULATE FRONT DEFECT:
-                  </span>
-                  <p className="text-xs text-ink-muted leading-relaxed">
-                    Toggle to see how the IPC triggers the PLC to reject chipped drill bits immediately, aborting the top rotation cycle.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setSimulateDefect(!simulateDefect)}
-                    className={`mt-1 py-2 px-4 rounded text-xs font-mono font-bold uppercase transition-colors ${
-                      simulateDefect
-                        ? 'bg-red-600 text-white hover:bg-red-700'
-                        : 'bg-paper-raised border border-line text-on-surface hover:border-secondary'
-                    }`}
-                  >
-                    {simulateDefect ? 'Simulating Fault: Broken Blend (Click to Reset)' : 'Click to Simulate Chipped Tip'}
-                  </button>
+                {/* Defect Mode Segmented Control & Replay Button */}
+                <div className="flex flex-col gap-2 pt-2 border-t border-line">
+                  <div className="flex items-center justify-between">
+                    <span className="font-label-sm text-xs sm:text-[11px] font-bold uppercase text-primary">
+                      SIMULATE FAULT CONDITION:
+                    </span>
+                    <span className="font-mono text-xs sm:text-[11px] text-ink-muted">KEYBOARD ACCESSIBLE</span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <div
+                      role="group"
+                      aria-label="Inspection State Simulation"
+                      className="inline-flex flex-1 p-1 bg-paper-sunken border border-line"
+                    >
+                      <button
+                        type="button"
+                        aria-pressed={!simulateDefect}
+                        onClick={() => {
+                          setSimulateDefect(false);
+                          handleReplay();
+                        }}
+                        className={`flex-1 py-2 sm:py-1.5 px-3 text-xs font-mono font-bold uppercase transition-colors ${
+                          !simulateDefect
+                            ? 'bg-primary text-on-primary'
+                            : 'text-ink-muted hover:text-on-surface'
+                        }`}
+                      >
+                        NOMINAL
+                      </button>
+                      <button
+                        type="button"
+                        aria-pressed={simulateDefect}
+                        onClick={() => {
+                          setSimulateDefect(true);
+                          handleReplay();
+                        }}
+                        className={`flex-1 py-2 sm:py-1.5 px-3 text-xs font-mono font-bold uppercase transition-colors ${
+                          simulateDefect
+                            ? 'bg-status-error text-white'
+                            : 'text-ink-muted hover:text-on-surface'
+                        }`}
+                      >
+                        CHIPPED BLEND
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleReplay}
+                      title="Replay Inspection Loop (T=0s)"
+                      aria-label="Replay Inspection Loop"
+                      className="p-2.5 sm:p-2 border border-line bg-paper-sunken text-on-surface hover:border-secondary hover:text-secondary transition-colors flex items-center justify-center gap-1.5"
+                    >
+                      <RotateCcw className="w-4 h-4 text-secondary" />
+                      <span className="sm:hidden font-mono text-xs uppercase font-bold text-secondary">Replay</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </m.div>
@@ -233,74 +807,94 @@ export function DrillBitInspectionVisualizer() {
               className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
             >
               {/* Left: 360° Profile Canvas */}
-              <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-6 border border-line flex flex-col justify-between gap-6 relative overflow-hidden">
-                <div className="flex flex-wrap justify-between items-center gap-2 font-mono text-[11px] text-[#B5B2A8] border-b border-surface/10 pb-3">
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-status-success animate-ping" />
+              <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-4 sm:p-6 border border-line flex flex-col justify-between gap-6 relative overflow-hidden">
+                <div className="flex flex-wrap justify-between items-center gap-2 font-mono text-xs sm:text-[11px] text-[#F5F2EC]/80 border-b border-white/10 pb-3">
+                  <span className="flex items-center gap-2 text-[#F5F2EC]/90">
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        simulateDefect ? 'bg-status-error' : 'bg-status-success'
+                      } animate-ping`}
+                    />
                     HIKROBOT CAM #2 · TOP PROFILE
                   </span>
-                  <span>ROTATION INDEX: {rotationAngle}° / 360°</span>
+                  <span>ROTATION INDEX: {simulateDefect ? 'N/A' : `${rotationAngle}° / 360°`}</span>
                   <span className="text-secondary font-bold">YOLOv7 DEFECT MODEL</span>
                 </div>
 
-                {/* Drill Bit Profile Diagram with Calipers */}
-                <div className="relative aspect-video max-h-[300px] flex items-center justify-center my-auto px-4">
-                  {/* Drill Bit Silhouette (Axial View) */}
-                  <div className="relative w-full max-w-[420px] h-20 bg-neutral-900 border border-neutral-700 flex items-center overflow-hidden">
-                    {/* Shank (Left 35%) */}
-                    <div className="w-[35%] h-full bg-neutral-800 border-r border-dashed border-neutral-600 flex items-center justify-center">
-                      <span className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest -rotate-90">SHANK</span>
-                    </div>
-
-                    {/* Flutes & Spiral Body (Right 65%) */}
-                    <div className="w-[65%] h-full relative overflow-hidden flex items-center">
-                      {/* Helical Spiral Patterns (Simulated rotation shift) */}
-                      <div
-                        className="absolute inset-0 flex"
-                        style={{
-                          backgroundImage: 'repeating-linear-gradient(45deg, rgba(255,138,92,0.15) 0px, rgba(255,138,92,0.15) 12px, transparent 12px, transparent 24px)',
-                          transform: `translateX(${(rotationAngle % 48) - 24}px)`,
-                        }}
-                      />
-                      {/* Tip Point (Right-most point angle) */}
-                      <div className="absolute right-0 top-0 bottom-0 w-6 border-l-2 border-secondary bg-secondary/20 flex items-center justify-center">
-                        <span className="font-mono text-[8px] text-secondary font-bold">118°</span>
-                      </div>
-
-                      {/* YOLOv7 Bounding Box Simulation */}
-                      <div className="absolute left-1/3 top-2 w-14 h-12 border-2 border-secondary bg-secondary/15 flex flex-col justify-between p-0.5">
-                        <span className="bg-secondary text-on-secondary font-mono text-[7px] font-bold px-1 py-0.2">
-                          LAND CRACK 84%
+                {/* If defect simulated at front camera, show aborted state */}
+                {simulateDefect ? (
+                  <div className="aspect-video max-h-[300px] flex flex-col items-center justify-center text-center p-6 bg-red-950/20 border border-status-error/40 my-auto gap-2">
+                    <span className="font-mono text-xs uppercase font-bold text-status-error tracking-wider">
+                      INSPECTION STAGE 02 ABORTED // FRONT REJECT TRIPPED
+                    </span>
+                    <p className="text-xs font-mono text-[#F5F2EC]/80 max-w-md">
+                      Pneumatic solenoid actuated at Station 01 for chipped blend fault. Drill bit expelled from conveyor before top camera rotation spindle index.
+                    </p>
+                  </div>
+                ) : (
+                  /* Drill Bit Profile Diagram with Calipers */
+                  <div className="relative aspect-video max-h-[300px] flex items-center justify-center my-auto px-4">
+                    {/* Drill Bit Silhouette (Axial View) */}
+                    <div className="relative w-full max-w-[420px] h-20 bg-neutral-900 border border-neutral-700 flex items-center overflow-hidden">
+                      {/* Shank (Left 35%) */}
+                      <div className="w-[35%] h-full bg-neutral-800 border-r border-dashed border-neutral-600 flex items-center justify-center">
+                        <span className="font-mono text-xs sm:text-[11px] text-[#F5F2EC]/80 uppercase tracking-widest -rotate-90">
+                          SHANK
                         </span>
-                        <span className="font-mono text-[6px] text-secondary text-right">0.8mm</span>
                       </div>
-                    </div>
 
-                    {/* Overlaid Caliper Lines */}
-                    <div className="absolute -top-1 left-0 right-0 h-2 border-t-2 border-blue-400 flex justify-between text-[9px] font-mono text-blue-400 px-1">
-                      <span>|</span>
-                      <span>OVERALL LENGTH: 117.25 mm</span>
-                      <span>|</span>
+                      {/* Flutes & Spiral Body (Right 65%) */}
+                      <div className="w-[65%] h-full relative overflow-hidden flex items-center">
+                        {/* Helical Spiral Patterns (Simulated rotation shift) */}
+                        <div
+                          className="absolute inset-0 flex"
+                          style={{
+                            backgroundImage:
+                              'repeating-linear-gradient(45deg, rgba(255,138,92,0.15) 0px, rgba(255,138,92,0.15) 12px, transparent 12px, transparent 24px)',
+                            transform: `translateX(${(rotationAngle % 48) - 24}px)`,
+                          }}
+                        />
+                        {/* Tip Point (Right-most point angle) */}
+                        <div className="absolute right-0 top-0 bottom-0 w-6 border-l-2 border-secondary bg-secondary/20 flex items-center justify-center">
+                          <span className="font-mono text-xs sm:text-[11px] text-secondary font-bold">118°</span>
+                        </div>
+
+                        {/* YOLOv7 Bounding Box Simulation */}
+                        <div className="absolute left-1/3 top-2 w-16 h-14 border-2 border-secondary bg-secondary/15 flex flex-col justify-between p-1">
+                          <span className="bg-secondary text-on-secondary font-mono text-[9px] font-bold px-1 py-0.5">
+                            LAND CRACK 84%
+                          </span>
+                          <span className="font-mono text-[9px] text-secondary text-right">0.8mm</span>
+                        </div>
+                      </div>
+
+                      {/* Overlaid Caliper Lines */}
+                      <div className="absolute -top-1 left-0 right-0 h-2 border-t-2 border-secondary flex justify-between text-xs font-mono text-[#F5F2EC]/90 px-1">
+                        <span>|</span>
+                        <span>OVERALL LENGTH: 117.25 mm</span>
+                        <span>|</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* 360° Rotation Interactive Scrubber */}
-                <div className="flex flex-col gap-2 pt-3 border-t border-surface/10">
+                <div className="flex flex-col gap-2 pt-3 border-t border-white/10">
                   <div className="flex justify-between items-center font-mono text-xs">
-                    <span className="text-[#B5B2A8]">STEPPER ROTATION AUDIT:</span>
-                    <span className="text-[#FF8A5C] font-bold">{rotationAngle}° / 360°</span>
+                    <span className="text-[#F5F2EC]/80">STEPPER ROTATION AUDIT:</span>
+                    <span className="text-secondary font-bold">{rotationAngle}° / 360°</span>
                   </div>
                   <input
                     type="range"
                     min="0"
                     max="360"
                     step="15"
+                    disabled={simulateDefect}
                     value={rotationAngle}
                     onChange={(e) => setRotationAngle(Number(e.target.value))}
-                    className="w-full accent-secondary cursor-pointer"
+                    className="w-full accent-secondary cursor-pointer disabled:opacity-40"
                   />
-                  <div className="flex justify-between text-[10px] font-mono text-[#B5B2A8]">
+                  <div className="flex justify-between text-xs sm:text-[11px] font-mono text-[#F5F2EC]/80">
                     <span>0° (Flute A)</span>
                     <span>90°</span>
                     <span>180° (Flute B)</span>
@@ -311,24 +905,24 @@ export function DrillBitInspectionVisualizer() {
               </div>
 
               {/* Right: YOLOv7 Defect Class Register */}
-              <div className="lg:col-span-5 flex flex-col justify-between gap-4 bg-paper-raised p-6 border border-line">
+              <div className="lg:col-span-5 flex flex-col justify-between gap-4 bg-paper-raised p-4 sm:p-6 border border-line">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between border-b border-line pb-2">
                     <span className="font-label-sm text-xs font-bold uppercase text-secondary">
                       YOLOv7 DEFECT CLASSES AUDITED
                     </span>
-                    <span className="font-label-timecode text-[11px] text-ink-muted">70% RECALL</span>
+                    <span className="font-label-timecode text-xs sm:text-[11px] text-ink-muted">70% RECALL</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
                     {DRILL_BIT_DEFECT_CLASSES.map((defect) => (
                       <div key={defect.code} className="p-2.5 bg-paper-sunken border border-line flex flex-col gap-1">
                         <div className="flex items-center justify-between">
-                          <span className="font-mono text-[9px] text-secondary font-bold">{defect.code}</span>
+                          <span className="font-mono text-xs sm:text-[11px] text-secondary font-bold">{defect.code}</span>
                           <span className="w-1.5 h-1.5 rounded-full bg-status-success" />
                         </div>
-                        <span className="font-mono text-[11px] font-bold text-on-surface truncate">{defect.name}</span>
-                        <span className="text-[10px] text-ink-muted leading-tight line-clamp-2">{defect.impact}</span>
+                        <span className="font-mono text-xs font-bold text-on-surface truncate">{defect.name}</span>
+                        <span className="text-xs sm:text-[11px] text-ink-muted leading-tight line-clamp-2">{defect.impact}</span>
                       </div>
                     ))}
                   </div>
@@ -355,7 +949,10 @@ export function DrillBitInspectionVisualizer() {
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {DRILL_BIT_MACHINE_TIERS.map((tier) => (
-                <div key={tier.tier} className="p-6 bg-paper-raised border border-line flex flex-col justify-between gap-4 h-full hover:border-secondary transition-colors">
+                <div
+                  key={tier.tier}
+                  className="p-6 bg-paper-raised border border-line flex flex-col justify-between gap-4 h-full hover:border-secondary transition-colors"
+                >
                   <div className="flex flex-col gap-2">
                     <span className="font-label-sm text-xs text-secondary uppercase font-bold">{tier.tier}</span>
                     <h3 className="font-headline-md text-xl font-bold text-on-surface">
@@ -366,7 +963,7 @@ export function DrillBitInspectionVisualizer() {
                       {tier.detail}
                     </p>
                   </div>
-                  <div className="pt-3 border-t border-line flex justify-between items-center text-[11px] font-mono text-ink-muted">
+                  <div className="pt-3 border-t border-line flex justify-between items-center text-xs sm:text-[11px] font-mono text-ink-muted">
                     <span>TOLERANCE:</span>
                     <span className="text-on-surface font-bold">±150–250 µm</span>
                   </div>

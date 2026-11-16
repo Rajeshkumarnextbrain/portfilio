@@ -125,3 +125,29 @@ noscript [data-motion] {
     transform: scaleX(1);
   }
 }
+
+@keyframes drillScanLine {
+  0% {
+    transform: translateY(0px);
+    opacity: 0;
+  }
+  3% {
+    opacity: 0.8;
+  }
+  20% {
+    transform: translateY(400px);
+    opacity: 0.8;
+  }
+  22% {
+    transform: translateY(400px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(400px);
+    opacity: 0;
+  }
+}
+
+.animate-drill-scan {
+  animation: drillScanLine 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
