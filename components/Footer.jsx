@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <a
               href={`mailto:${CONTACT_INFO.email}`}
-              className="hover:text-primary transition-colors underline underline-offset-4"
+              className="hover:text-secondary transition-colors underline underline-offset-4 font-medium"
             >
               Email
             </a>
@@ -32,7 +32,7 @@ export default function Footer() {
               href={CONTACT_INFO.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors underline underline-offset-4"
+              className="hover:text-secondary transition-colors underline underline-offset-4 font-medium"
             >
               LinkedIn
             </a>
@@ -40,7 +40,7 @@ export default function Footer() {
               href={CONTACT_INFO.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors underline underline-offset-4"
+              className="hover:text-secondary transition-colors underline underline-offset-4 font-medium"
             >
               GitHub
             </a>
@@ -48,7 +48,7 @@ export default function Footer() {
               href={CONTACT_INFO.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors underline underline-offset-4"
+              className="hover:text-secondary transition-colors underline underline-offset-4 font-medium"
             >
               Resume (PDF)
             </a>

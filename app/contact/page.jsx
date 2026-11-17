@@ -55,7 +55,7 @@ export default function ContactPage() {
               <div className="lg:col-span-7 flex flex-col gap-6 md:gap-8">
                 <Reveal>
                   <div className="flex flex-col gap-4">
-                    <h1 className="font-mega-display text-[44px] xs:text-[60px] sm:text-[84px] md:text-[96px] lg:text-[112px] xl:text-[120px] tracking-tighter text-on-surface uppercase leading-[0.92]">
+                    <h1 className="font-mega-display text-[32px] xs:text-[44px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight">
                       Let&apos;s talk.
                     </h1>
                     <p className="font-body-lg text-sm sm:text-base md:text-lg text-ink-muted max-w-2xl leading-relaxed">
@@ -358,16 +358,6 @@ export default function ContactPage() {
                   <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </div>
               </a>
-            </div>
-
-            {/* Bottom Copyright */}
-            <div className="pt-6 border-t border-line flex flex-wrap items-center justify-between gap-4 text-xs font-label-timecode text-ink-muted">
-              <div>
-                © 2026 {IDENTITY.name} · {IDENTITY.location} · {IDENTITY.timezone}
-              </div>
-              <div className="text-status-success font-medium">
-                Available for hire · {IDENTITY.noticePeriod}
-              </div>
             </div>
           </div>
         </section>

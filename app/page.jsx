@@ -8,6 +8,7 @@ import {
   BUSINESS_IMPACT_ITEMS,
   PROJECTS,
   EXPERIENCE_ROLES,
+  EDUCATION,
 } from "../content/facts";
 
 import { HeroHeadline } from "@/components/home/HeroHeadline";
@@ -33,12 +34,17 @@ export default function HomePage() {
             ========================================================================= */}
         <section className="relative w-full bg-surface px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-10 border-b border-line overflow-hidden min-h-[calc(100svh-100px)] flex flex-col justify-center">
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto relative z-10 w-full flex flex-col gap-6 sm:gap-8 my-auto">
-            {/* Top Availability Pill */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-paper-raised border border-line rounded-full shadow-sm text-xs font-label-timecode font-semibold tracking-wider text-primary uppercase">
-                {/* Ambient Loop 1: Green Available Dot Pulse */}
+            {/* Top Metadata Header */}
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-4">
+              <div className="flex items-center gap-3">
+                <span className="w-2.5 h-2.5 bg-secondary shrink-0"></span>
+                <span className="font-label-sm text-label-sm text-on-surface uppercase tracking-widest font-semibold">
+                  PORTFOLIO // {IDENTITY.headlineRole}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 font-label-timecode text-xs text-ink-muted">
                 <AmbientDot color="bg-status-success" size="w-2 h-2" />
-                <span>AVAILABLE FOR HIRE · {IDENTITY.noticePeriod}{!IDENTITY.noticePeriod.toLowerCase().includes('notice') ? ' NOTICE' : ''} · {IDENTITY.location}</span>
+                <span>STATUS: AVAILABLE FOR HIRE · {IDENTITY.location}</span>
               </div>
             </div>
 
@@ -46,11 +52,6 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Left Column: Typography & Intent */}
               <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-5">
-                {/* Eyebrow: Headline Role */}
-                <div className="font-body-md text-[13px] sm:text-[14px] text-ink-muted font-medium">
-                  {IDENTITY.headlineRole}
-                </div>
-
                 {/* Animated Line-by-Line Hero Headline */}
                 <HeroHeadline />
 
@@ -136,7 +137,7 @@ export default function HomePage() {
               </h2>
             </div>
 
-            <AtAGlanceSection metrics={AT_A_GLANCE_METRICS} identity={IDENTITY} />
+            <AtAGlanceSection metrics={AT_A_GLANCE_METRICS} identity={IDENTITY} education={EDUCATION[0]} />
           </div>
         </section>
 
@@ -252,7 +253,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <ExperiencePreview roles={EXPERIENCE_ROLES} />
+            <ExperiencePreview roles={EXPERIENCE_ROLES} education={EDUCATION[0]} />
           </div>
         </section>
 
@@ -324,15 +325,6 @@ export default function HomePage() {
                 <span>GitHub</span>
                 <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
               </a>
-            </div>
-
-            <div className="pt-6 border-t border-ink-muted/30 flex flex-wrap items-center justify-between gap-4 text-[13px] font-label-timecode text-ink-faint">
-              <div>
-                © 2026 {IDENTITY.name} · {IDENTITY.location}
-              </div>
-              <div className="text-status-success font-semibold">
-                Available for hire · {IDENTITY.noticePeriod} notice
-              </div>
             </div>
           </div>
         </section>

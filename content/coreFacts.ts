@@ -22,6 +22,7 @@ export const IDENTITY = {
   replyTime: "within 24 hours",
   availabilityStatus: "Available for hire · 90-day notice · Bangalore, India",
   targetRoles: "Lead AI Engineer, Staff Computer Vision Engineer, Staff GenAI Systems Architect",
+  education: "B.E. – Computer Science & Engineering · The Kavery Engineering College, Mecheri, Salem (2016–2020)",
   timezone: "IST (UTC+5:30), flexible for US and European working hours",
   shortSummary:
     "I build production AI systems that see, reason and scale. In simple terms, I build software that: watches security cameras and spots safety problems automatically; lets managers ask questions about company data and get reports in plain English; helps students learn from their textbooks.",

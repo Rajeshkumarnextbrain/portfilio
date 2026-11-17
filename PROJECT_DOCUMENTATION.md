@@ -57,13 +57,17 @@
 │   ├── layout.jsx                          # Root layout, metadata, MotionProvider, Navbar, Footer
 │   ├── page.jsx                            # Home page (Hero, At a Glance, Architecture, Projects, Skills, Preview, CTA)
 │   ├── experience/
-│   │   └── page.jsx                        # Career chronology, filmstrip scrubber, cluster readouts, radar panel
+│   │   └── page.jsx                        # Career chronology, filmstrip scrubber, cluster readouts, radar panel, education
 │   ├── project-visionfacts/
 │   │   └── page.jsx                        # Flagship case study: 130+ camera RTSP analytics platform
 │   ├── project-analytics-agent/
 │   │   └── page.jsx                        # Case study: LangGraph & FastMCP multi-agent CCTV reporting
 │   ├── project-edubotix/
 │   │   └── page.jsx                        # Case study: Curriculum-grounded STEM multimodal RAG tutor
+│   ├── project-drill-bit-inspection/
+│   │   └── page.jsx                        # Case study: Dual-camera high-precision CNC twist drill inspection
+│   ├── project-led-inspection/
+│   │   └── page.jsx                        # Case study: 90° bent lead metrology & high-speed polarity sorting
 │   └── contact/
 │       └── page.jsx                        # Hiring status, 4 core value quadrants, FAQ disclosure, contact channels
 │
@@ -75,25 +79,31 @@
 │   │   ├── HeroHeadline.tsx                # Animated line-by-line staggered hero headline
 │   │   ├── HeroLiveDemo.tsx                # Interactive 3-tab live simulation (Watch, Ask, Learn)
 │   │   ├── HeroIllustration.tsx            # Visual vector elements
-│   │   ├── AtAGlanceSection.tsx            # 6 ruled metric rows + candidate snapshot
+│   │   ├── AtAGlanceSection.tsx            # 6 ruled metric rows + candidate snapshot + education
 │   │   ├── HowItWorksSection.tsx           # 5-step video analytics architecture blueprint
 │   │   ├── ProjectsSection.tsx             # Interactive production case study preview rows
 │   │   ├── SkillsSection.tsx               # Categorized skills matrix with plain-English + engineering tools
-│   │   └── ExperiencePreview.tsx           # Chronology cards preview for the home page
+│   │   └── ExperiencePreview.tsx           # Chronology cards preview + academic foundation
 │   │
 │   ├── experience/                         # Experience-page specific components
 │   │   ├── SmpteTicker.tsx                 # Timecode counter display
-│   │   ├── ExperienceScrubber.tsx          # Filmstrip scrubber jump bar (Role 1 -> 2 -> 3)
+│   │   ├── ExperienceScrubber.tsx          # Date-proportional filmstrip scrubber bar (May 2022 – Present)
 │   │   ├── CameraGridDots.tsx              # Interactive camera feed cluster visualization
 │   │   ├── BlueprintFlow.tsx               # High-throughput frame execution flowchart
-│   │   └── DrdoRadarPanel.tsx              # Radar scope canvas visual & telemetry for DRDO project
+│   │   ├── DrdoRadarPanel.tsx              # Radar scope canvas visual & telemetry for DRDO project
+│   │   └── EducationSection.tsx            # Formal academic foundation & courses/training module
 │   │
 │   ├── project/                            # Shared case-study components
 │   │   ├── StickyJumpBar.tsx               # Sticky in-page section navigator with active underline glide
 │   │   ├── ProblemSolutionRow.tsx          # 2-column comparative problem vs solution layout
 │   │   ├── AnimatedChatTrace.tsx           # Step-by-step interactive agent chat simulation
 │   │   ├── ProxyPacketDiagram.tsx          # Network packet isolation diagram (LAN CCTV -> FastAPI proxy -> Browser)
-│   │   └── MemoryProgressionDiagram.tsx    # Sliding-window + rolling summary memory visualizer
+│   │   ├── MemoryProgressionDiagram.tsx    # Sliding-window + rolling summary memory visualizer
+│   │   ├── DrillBitInspectionVisualizer.tsx# Dual-stage inspection simulator (Tip optics & 360° profile)
+│   │   ├── DrillTipSVG.tsx                 # End-on front camera tip metrology SVG
+│   │   ├── DrillTopSVG.tsx                 # 360° top camera profile SVG with CAD dimensions & mm ruler
+│   │   ├── LedInspectionVisualizer.tsx     # LED polarity & 90° bend inspection interactive simulator
+│   │   └── LedBendSVG.tsx                  # LED dual-camera backlit inspection geometry SVG
 │   │
 │   └── motion/                             # Reusable accessible animation atoms
 │       ├── MotionProvider.tsx              # LazyMotion provider wrapping the app
@@ -110,9 +120,14 @@
 │       └── ScrollProgress.tsx              # 2px hairline scroll progress bar under navbar
 │
 ├── content/                                # SINGLE SOURCE OF TRUTH (Content Data)
-│   ├── facts.ts                            # Identity, metrics, verified numbers, roles, project metadata
+│   ├── coreFacts.ts                        # Candidate identity, contact info, and verified metrics
+│   ├── experienceData.ts                   # Role metrics, timeline clips, leadership, EDUCATION & COURSES
+│   ├── caseStudiesData.ts                  # Production case studies, metrics, machine specs & defect models
+│   ├── contactData.ts                      # Candidate facts, recruiter dossier text, and hiring FAQs
 │   ├── skills.ts                           # Skills categories, icons, proof points, tool lists
-│   └── heroScenes.ts                       # Simulation data for the interactive Hero demo
+│   ├── heroScenes.ts                       # Simulation data for the interactive Hero demo
+│   ├── seo.ts                              # Site-wide OpenGraph, JSON-LD schemas, and metadata
+│   └── facts.ts                            # Master barrel export aggregating all modular domain data
 │
 ├── lib/                                    # Animation & Utility libraries
 │   ├── motion.ts                           # Timing tokens, easing bezier curves, transition presets
@@ -123,7 +138,7 @@
 │   ├── resume.pdf                          # Downloadable candidate resume
 │   └── og-image.png                        # OpenGraph social share card
 │
-├── tailwind.config.js                      # Custom color palette, typography scales, spacing tokens
+├── tailwind.config.js                      # Custom color palette, typography scales, content paths (incl. ./content)
 ├── postcss.config.js                       # PostCSS configuration
 ├── next.config.js                          # Next.js configuration
 └── package.json                            # Scripts, dependencies, and metadata
@@ -261,9 +276,7 @@ Acts as the central export gateway. Contains authoritative core constants and re
 
 ```typescript
 // Contacts, Candidate Core Identity, and Telemetry Numbers
-export const CONTACT_INFO = { ... };
-export const IDENTITY = { ... };
-export const VERIFIED_NUMBERS = { ... };
+export * from "./coreFacts";
 
 // Re-exports from domain-specific data modules
 export * from "./contactData";
@@ -274,15 +287,30 @@ export * from "./experienceData";
 ### 5.2 Domain Data Modules (`content/`)
 To prevent hardcoded copy in JSX presentation files, all page narrative, FAQ disclosures, challenges, contributions, and benchmarks are split into focused domain files:
 
-1. **`content/contactData.ts`**:
-   - `RECRUITER_DOSSIER_TEXT`: Full text for candidate terminal export.
-   - `CANDIDATE_FACTS`: Quick metadata strip for recruiter assessment.
+1. **`content/coreFacts.ts`**:
+   - `CONTACT_INFO`: Email, LinkedIn, GitHub, Resume URL.
+   - `IDENTITY`: Name, headlineRole, location, yearsExperience, targetRoles, replyTime, etc. Note: `noticePeriod` is defined here but strictly presented only on the `/contact` page.
+   - `VERIFIED_NUMBERS`: Authoritative metrics for cameras, GPU reduction, latencies, model memory, defect recall, and cost savings.
+
+2. **`content/contactData.ts`**:
+   - `RECRUITER_DOSSIER_TEXT`: Full text for candidate terminal export (includes dynamic Education derived from `EDUCATION[0]`).
+   - `CANDIDATE_FACTS`: Quick metadata strip for recruiter assessment (includes `EDUCATION` derived from `EDUCATION[0]` alongside notice period and timezone).
    - `CORE_VALUE_CARDS`: The 4 hiring pillars (High-Throughput CV, Autonomous GenAI, Cost Efficiency, Production Leadership).
    - `CONTACT_FAQS`: Structured FAQ entries with answer lists, ideal roles, and compensation transparency.
 
-2. **`content/caseStudiesData.ts`**:
-   - `VISIONFACTS_OVERVIEW`, `ANALYTICS_AGENT_OVERVIEW`, `EDUBOTIX_OVERVIEW`: Hero typography, plain-English explainer, 3-metric strips, and problem/solution texts.
-   - `VISIONFACTS_STAGES`, `VISIONFACTS_SIMULATED_CAMERAS`, `VISIONFACTS_CHALLENGES`, `VISIONFACTS_CONTRIBUTIONS`, `VISIONFACTS_TECH_PILLARS`.
+3. **`content/caseStudiesData.ts`**:
+   - `VISIONFACTS_OVERVIEW`, `ANALYTICS_AGENT_OVERVIEW`, `EDUBOTIX_OVERVIEW`, `DRILL_BIT_OVERVIEW`, `LED_INSPECTION_OVERVIEW`: Hero typography, plain-English explainer, 3-metric strips, and problem/solution texts.
+   - CAD metrology tolerances, inspection stages, defect classification dictionaries (`DRILL_BIT_DEFECT_CLASSES`, `DRILL_BIT_TOP_SPECS`, `LED_BEND_SPECS`).
+
+4. **`content/experienceData.ts`**:
+   - `EXPERIENCE_HERO_METRICS`: 4 hero telemetry numerals.
+   - `NEXTBRAIN_ROLE_METRICS` & `SS_AUTO_ROLE_METRICS`: Ruled metrics for individual role chapters.
+   - `LEADERSHIP_STAGES`: 3-stage team leadership and profiling protocol.
+   - `BLUEPRINT_NODES`: The 4 pipeline nodes (Ingest, Transport, Inference, Dispatch).
+   - `DRDO_RADAR_ROWS`: Radar data processing and telemetry validation specs.
+   - `TIMELINE_START` (`2022-05`), `TIMELINE_NOW` (`2026-11`), `TIMELINE_SCRUBBER_CLIPS`: Date-boundary clips powering the timeline scrubber with exact percentage layout.
+   - `EDUCATION`: `EducationItem[]` defining formal engineering degree, institution, location, period, and coursework highlights.
+   - `COURSES`: `CourseItem[]` defining verified industry training and courses (e.g., Udemy GenAI Krish Naik, Udemy Python & Ethical Hacking Zaid Sabih, i18n Solutions Data Science) with certification tags.
    - `ANALYTICS_ASK_STEPS`, `ANALYTICS_WATCH_STEPS`, `ANALYTICS_AGENT_CHALLENGES`, `ANALYTICS_AGENT_CONTRIBUTIONS`, `ANALYTICS_AGENT_RESULTS`.
    - `EDUBOTIX_COMPONENTS`, `EDUBOTIX_CHALLENGES`, `EDUBOTIX_CONTRIBUTIONS`, `EDUBOTIX_RESULTS`, `EDUBOTIX_TECH_PILLARS`.
 
@@ -354,19 +382,19 @@ Designed as an editorial magazine spread that answers the hiring manager's quest
 
 #### Detailed Sections:
 1. **Chapter 00: Hero (Tactile Paper Canvas):**
-   - **Availability Pill:** Live green ambient pulsing dot (`AVAILABLE FOR HIRE · 90-DAY NOTICE · BANGALORE, INDIA`).
+   - **Availability Pill:** Live green ambient pulsing dot (`STATUS: AVAILABLE FOR HIRE · BANGALORE, INDIA`). Note: Notice period is kept strictly on the `/contact` page.
    - **Left Column:**
-     - Eyebrow: `AI Engineer & Team Lead · Computer Vision and Generative AI`.
+     - Eyebrow: `PORTFOLIO // AI Engineer & Team Lead · Computer Vision and Generative AI`.
      - `HeroHeadline.tsx`: Staggered line-by-line animated headline: *"I build production AI systems that see, reason and scale."*
      - Plain-English callout box detailing the 3 capabilities: (1) Watching cameras automatically while cutting GPU costs, (2) Autonomous AI agents delivering instant shift reports, (3) Textbook tutoring with verified calculation tools.
      - Action buttons: "Download resume (PDF)" [black pill], "View projects" [paper pill], and "Email me" [orange pill].
-     - Ruled 4-metric counter strip (`4+` years experience, `130+` cameras analysed, `3` agent & RAG systems, `$3,400/mo` saved per cluster).
+     - Ruled 4-metric counter strip (`4+` years experience, `130+` cameras analysed live, `3` AI agent & RAG systems, `$3,400/mo` saved per cluster).
    - **Right Column (`HeroLiveDemo.tsx`):**
      - Interactive multi-scene simulation panel with 3 tabs: **Watch** (VisionFacts.ai), **Ask** (Analytics Agent), and **Learn** (Edubotix).
      - Cycles every 7 seconds automatically, pauses permanently upon user click or focus. Supports URL query override (`?scene=watch|ask|learn`).
 2. **Section 01: At a Glance:**
    - 6 Ruled Metric Rows: `130+` cameras live, `2` LangGraph agent pipelines, `~6.5x less` GPU memory, `9` scientific FastMCP tools, `74%` fewer false alarms, `$3,400/mo` saved per cluster.
-   - Candidate verification sidebar: location flexibility, team size led (`3–5 engineers`), and notice period.
+   - Candidate verification sidebar / quick strip: `TARGET ROLES`, `EDUCATION` (derived from `EDUCATION[0]`), `AVAILABILITY` (`Available for hire`), `LOCATION`, and `REPLY TIME`.
 3. **Section 02: Business Impact & Costing (`BusinessImpactSection.tsx`):**
    - 3 Dedicated Enterprise Problem-Solution-ROI Cards:
      1. **Cloud GPU Cost & Multi-Model Architecture ($3,400/mo saved):** Analyzing 130+ cameras with a 6-model suite (YOLO26, Pose, PPE, Fall, Face) naively consumed ~3 GB VRAM per stream (~390 GB total). Centralized Triton serving with zero-copy CUDA IPC lets all 130+ streams fit on just 2x NVIDIA L4 GPUs (48 GB total VRAM), cutting monthly GPU spend by 62%.
@@ -378,7 +406,7 @@ Designed as an editorial magazine spread that answers the hiring manager's quest
 5. **Section 04: Skills (Plain English First):**
    - Four structured skill rows (Computer Vision, Generative AI & Agents, Efficient AI, Systems & Leadership) with icon, headline, sentence, proof counters, and small-text engineering tools.
 6. **Section 05: Career Chronology Preview:**
-   - Summarized view of Nextbrain Technologies, SS Automation, and Vedant / DRDO with a link to `/experience`.
+   - Summarized view of Nextbrain Technologies, SS Automation, and Vedant / DRDO, concluding with the `ACADEMIC FOUNDATION` card derived from `EDUCATION[0]` (B.E. in Computer Science & Engineering, The Kavery Engineering College, 2016–2020), with a direct link to `/experience`.
 7. **Section 06: Contact Call to Action:**
    - High-contrast dark charcoal background (`bg-primary text-on-primary`) with timezone, reply time guarantee (`within 24 hours`), target roles, and email/resume/social buttons.
 
@@ -394,7 +422,7 @@ Presents 4+ years of industrial engineering progression from defense radar track
    - SMPTE live running timecode ticker (`SmpteTicker.tsx`).
    - **Left Column (7 cols):** Massive editorial serif headline: *"FOUR YEARS. ONE PIPELINE AT A TIME."*, subtitle balancing high-throughput 130+ camera video microservices with autonomous LangGraph & FastMCP multi-agent systems, and 50/50 scope indicators.
    - **Right Column (5 cols) — 35mm SMPTE Archival Reel Deck (`ArchivalReelPlayer.tsx`):** Precision analog-digital playback animation featuring two rotating mechanical tape spools (Reel A: 130+ Concurrent RTSP Cameras / Triton / CUDA IPC; Reel B: Autonomous LangGraph & FastMCP Agents / < 3s turnaround), threaded tape ribbon with dynamic motion, a central dual playback sensor head with stereo bouncing VU meters (CV & AI channels), live frame-ticking SMPTE timecode, and interactive Play / Pause / 2X Boost transport controls.
-   - Filmstrip scrubber bar (`ExperienceScrubber.tsx`): Allows quick jump between Role 01, Role 02, and Role 03 with progress indicators.
+   - **Filmstrip Scrubber Bar (`ExperienceScrubber.tsx`):** Built with date-proportional inline percentages (`TIMELINE_START = '2022-05'`, `TIMELINE_NOW = '2026-11'`) and dynamic biannual ticks (Jan / Jul). Nextbrain clip occupies ~74% proportional width without text truncation, displaying live status and `${VERIFIED_NUMBERS.camerasCount} STREAMS`.
    - 4-column metric register balancing CV and GenAI: `4+` Years Prod AI, `130+` Concurrent RTSP, `< 3s` Agent Query Turnaround, `3–5` Engineers Led.
 2. **Chapter 1: Role 01 — Nextbrain Technologies (Team Lead – Computer Vision & Generative AI Systems):**
    - Current role banner with live green pulse.
@@ -426,7 +454,13 @@ Presents 4+ years of industrial engineering progression from defense radar track
      - Stage 03: Canary Rollouts & Zero-Downtime Serving (automated health check rollbacks).
 6. **Chapter 5: System Blueprint ("A Frame's Journey"):**
    - Interactive 4-node flow (`BlueprintFlow.tsx`) tracking an RTSP packet from network socket through NVDEC, CUDA shared memory, and Triton inference.
-7. **Chapter 6: Contact Call to Action:** Full-width dark hiring banner.
+7. **Chapter 6: Education & Credentials (`EducationSection.tsx`, `#education`):**
+   - **Academic Degree Row:** B.E. in Computer Science & Engineering, The Kavery Engineering College, Mecheri, Salem, Tamil Nadu (2016 – 2020). Features core coursework highlights (Algorithms, Data Structures, OS, DBMS, Networks, Software Engineering).
+   - **Courses & Training Block ("COURSES & TRAINING"):** Visually lighter card block listing industry credentials:
+     - *Complete Generative AI Course With Langchain and Huggingface* (Udemy / Krish Naik, 2025)
+     - *Learn Python & Ethical Hacking From Scratch* (Udemy / Zaid Sabih, 2020)
+     - *Data Science* (i18n Solutions, 2019) with `CERTIFIED` badge.
+8. **Chapter 7: Contact Call to Action (`#chapter-7`):** Full-width dark hiring banner.
 
 ---
 
@@ -532,7 +566,16 @@ Case study on an automated inline industrial metrology and defect sorting machin
    - Headline: *"Sub-millimeter metrology. Micron accuracy. Real-time PLC reject."*
    - Plain-English explainer: Automated inspection using dual Hikrobot machine cameras to measure 7 geometric dimensions and reject damaged drill bits via PLC pneumatic actuation.
    - 3 Key metrics: `±150–250 µm` scroll gauge tolerance, `70%` defect recall across 8 damage classes, `~20s` per-bit cycle time.
-   - **Interactive Station Visualizer (`DrillBitInspectionVisualizer.tsx`):** Tabbed interface with Front Camera tip reticle (point diameter, web thickness, chisel angle, live defect simulator), Top Camera 360° rotation profile with YOLOv7 defect bounding boxes, and 3 Machine Tier breakdown.
+   - **Interactive Station Visualizer (`DrillBitInspectionVisualizer.tsx`):** Tabbed interface with:
+     - **Tab 01 (Front Camera Tip Metrology):** Live optical reticle (`DrillTipSVG.tsx`) calculating front diameter, web thickness, point angle, and chisel angle with interactive live defect overlay toggles (chipped lip, crater wear, flank wear, built-up edge).
+     - **Tab 02 (Top Camera Profile & 360° Stepper Scan):** 
+       - Equal-height stretching matching the right diagnostics panel (`grid items-stretch`, left panel `flex flex-col`, drawing area `flex-1 items-center justify-center`, bottom slider pinned).
+       - Machine vision dark field background: CSS-only 40px faint grid at 5% opacity (`#F5F2EC`) and thin center crosshairs at 10% opacity.
+       - Built-in scalable millimeter ruler inside `DrillTopSVG.tsx` along the bottom edge of the SVG viewBox (0 to 120 mm with 5mm ticks and 20mm numerical labels, scaled at 5.6 viewBox units per mm starting at x = 70) for synchronized responsive CAD scaling.
+       - Stepper motor rotation control header styled with `"AUTO-SCAN"` in `#F5F2EC` (80% opacity) and dynamic orange angle readouts.
+       - Unique DOM IDs (`dt2-dim-*` vs `dim-*`) guaranteeing zero duplicate ID collisions in the DOM.
+       - Streamlined vertical hierarchy: eliminated legacy thumbnail strip, placing SVG directly beneath HUD header and slider directly beneath SVG with consistent 24px rhythm.
+     - **Tab 03 (3 Machine Categories):** Architectural breakdown across 2.5–3mm (Pneumatic Ingest), 5–8mm (Stepper Rotary Indexing), and 8–11mm (Vibratory Bowl) tiers.
 2. **Chapter 1: Overview:**
    - Replaces fatigue-prone manual micrometer checking with high-speed automated machine vision.
 3. **Chapter 2: How It Works:**
@@ -580,29 +623,35 @@ This section provides clear, step-by-step recipes for any developer or AI agent 
 
 ### How to Update Candidate Identity, Metrics & Contacts
 
-All personal facts and numbers live exclusively in `content/facts.ts`. **Do not edit JSX files to change candidate metrics.**
+All personal facts and telemetry live in modular TypeScript files under `content/` and are aggregated in `content/facts.ts`. **Do not hardcode candidate metrics in JSX files.**
 
 1. **Changing Notice Period, Location, or Role:**
-   - Open `content/facts.ts`.
+   - Open `content/coreFacts.ts`.
    - Update `IDENTITY.noticePeriod`, `IDENTITY.location`, `IDENTITY.headlineRole`, or `IDENTITY.targetRoles`.
-   - The changes propagate automatically to `Navbar.jsx`, `Footer.jsx`, `app/page.jsx`, `app/experience/page.jsx`, `app/contact/page.jsx`, and metadata tags.
+   - **Notice Period Isolation Rule:** By design, notice period is displayed *only* on the `/contact` page (in the candidate facts strip and recruiter dossier). It is intentionally omitted from the global Navbar, Footer, and Home page to preserve high-level executive focus.
 2. **Updating a Verified Telemetry Number (e.g. from 130+ to 200+ cameras):**
-   - Open `content/facts.ts`.
+   - Open `content/coreFacts.ts`.
    - Update `VERIFIED_NUMBERS.camerasCount = "200+"`.
    - Open `content/skills.ts` and sync the corresponding proof value in `SKILLS`.
    - Open `content/heroScenes.ts` and update `bigLabel` in the `watch` scene.
    - All CountUp animations, diagrams, and section headers update synchronously without discrepancy.
 3. **Updating Email, LinkedIn, or Resume Links:**
-   - Set environment variables (`NEXT_PUBLIC_EMAIL`, `NEXT_PUBLIC_LINKEDIN`, `NEXT_PUBLIC_GITHUB`, `NEXT_PUBLIC_RESUME_URL`) in deployment settings (e.g., Vercel), OR update the fallback strings in `CONTACT_INFO` inside `content/facts.ts`.
+   - Set environment variables (`NEXT_PUBLIC_EMAIL`, `NEXT_PUBLIC_LINKEDIN`, `NEXT_PUBLIC_GITHUB`, `NEXT_PUBLIC_RESUME_URL`) in deployment settings (e.g., Vercel), OR update the fallback strings in `CONTACT_INFO` inside `content/coreFacts.ts`.
    - To replace the resume PDF, overwrite `public/resume.pdf`.
+4. **Updating Education & Academic Credentials:**
+   - Open `content/experienceData.ts`.
+   - Update the `EDUCATION: EducationItem[]` array. The first entry (`EDUCATION[0]`) automatically populates the Academic Foundation card on the Home page, Chapter 06 of the Experience page, and dynamically feeds into `CANDIDATE_FACTS` and `RECRUITER_DOSSIER_TEXT` in `content/contactData.ts`.
+5. **Updating Courses & Training:**
+   - Open `content/experienceData.ts`.
+   - Add or edit items in `COURSES: CourseItem[]` with `title`, `provider`, `year`, `kind: 'certification' | 'course'`. Items with `kind: 'certification'` automatically receive a `CERTIFIED` badge in `EducationSection.tsx`.
 
 ---
 
 ### How to Add a New Project Case Study
 
-To add a 4th project (e.g., `project-industrial-defect`):
+To add a new project case study (e.g., `project-industrial-defect`):
 
-1. **Register the Project in `content/facts.ts`:**
+1. **Register the Project in `content/caseStudiesData.ts`:**
    - Append a new `ProjectItem` object to the `PROJECTS` array with `id`, `slug: "/project-industrial-defect"`, `title`, `subtitle`, `role`, `companyDates`, `technologies`, `plainEnglish`, `results`, and `tech` chips.
 2. **Create the New Route:**
    - Create directory `app/project-industrial-defect/`.
@@ -610,8 +659,8 @@ To add a 4th project (e.g., `project-industrial-defect`):
    - Use `app/project-visionfacts/page.jsx` or `app/project-analytics-agent/page.jsx` as your template.
    - Import `StickyJumpBar`, `ProblemSolutionRow`, `CountUp`, `FlowToken`, and shared motion atoms.
 3. **Update Cross-Project Navigation:**
-   - In `app/project-edubotix/page.jsx`, update the closing navigation box so the "NEXT PROJECT" points to `/project-industrial-defect`.
-   - In your new project page, set "PREVIOUS PROJECT" to `/project-edubotix` and "NEXT PROJECT" to `/project-visionfacts`.
+   - Update the closing navigation box in the preceding case study so "NEXT PROJECT" points to `/project-industrial-defect`.
+   - In your new project page, link "PREVIOUS PROJECT" and "NEXT PROJECT" appropriately.
 4. **Link from the Skills Section:**
    - Open `content/skills.ts` and add `{ label: "New Project Name", href: "/project-industrial-defect" }` to the `usedIn` array of the appropriate skill row.
 
@@ -619,7 +668,10 @@ To add a 4th project (e.g., `project-industrial-defect`):
 
 ### How to Update Work Experience
 
-1. **Edit or Add Roles in `content/facts.ts`:**
+1. **Edit or Add Roles in `content/experienceData.ts`:**
+   - Find `EXPERIENCE_ROLES`.
+   - Each role contains `title`, `company`, `location`, `period`, `domain`, `flagshipRole`, `plainSummary`, `outcomes`, `responsibilities` (array of `{ area, detail }`), and `techStack` chips.
+   - If adjusting the timeline bar, update `TIMELINE_SCRUBBER_CLIPS`, `TIMELINE_START`, and `TIMELINE_NOW` in `content/experienceData.ts`. Position calculations are calculated as inline percentages, ensuring zero layout truncation across devices.
    - Find `EXPERIENCE_ROLES`.
    - Each role contains `title`, `company`, `location`, `period`, `domain`, `flagshipRole`, `plainSummary`, `outcomes`, `responsibilities` (array of `{ area, detail }`), and `techStack` chips.
 2. **Modify Experience Page Visuals (`app/experience/page.jsx`):**

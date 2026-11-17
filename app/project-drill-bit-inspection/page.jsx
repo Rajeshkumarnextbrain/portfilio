@@ -381,24 +381,6 @@ export default function DrillBitInspectionPage() {
                 <span className="font-headline-md text-lg font-bold text-on-surface">LED LEAD BENDING &amp; POLARITY</span>
               </Link>
             </div>
-
-            {/* Bottom Contact Strip */}
-            <div className="flex flex-col sm:flex-row items-center justify-between p-6 bg-paper-sunken border border-line gap-4">
-              <div className="flex flex-col gap-1">
-                <span className="font-headline-md text-base font-bold text-on-surface">
-                  Interested in industrial metrology or real-time inspection?
-                </span>
-                <span className="text-xs text-ink-muted">
-                  Open to {IDENTITY.targetRoles}. {IDENTITY.location} ({IDENTITY.locationDetails}).
-                </span>
-              </div>
-              <a
-                href={`mailto:${CONTACT_INFO.email}`}
-                className="px-6 py-2.5 bg-primary text-on-primary hover:bg-neutral-800 rounded-full font-label-sm text-xs uppercase font-semibold tracking-wider transition-colors shrink-0"
-              >
-                Get In Touch
-              </a>
-            </div>
           </div>
         </section>
 

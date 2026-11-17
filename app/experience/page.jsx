@@ -16,6 +16,7 @@ import { ArchivalReelPlayer } from "@/components/experience/ArchivalReelPlayer";
 import { CameraGridDots } from "@/components/experience/CameraGridDots";
 import { BlueprintFlow } from "@/components/experience/BlueprintFlow";
 import DrdoRadarPanel from "@/components/experience/DrdoRadarPanel";
+import { EducationSection } from "@/components/experience/EducationSection";
 import { CountUp } from "@/components/motion/CountUp";
 import { DrawLine } from "@/components/motion/DrawLine";
 import { GrowBar } from "@/components/motion/GrowBar";
@@ -54,9 +55,9 @@ export default function ExperiencePage() {
               <div className="lg:col-span-7 flex flex-col gap-6">
                 <Reveal>
                   <div className="flex flex-col gap-4">
-                    <h1 className="font-serif text-[34px] xs:text-[46px] sm:text-[68px] md:text-[88px] lg:text-[96px] xl:text-[110px] leading-[0.92] text-on-surface tracking-tight uppercase select-none font-bold">
+                    <h1 className="font-mega-display text-[32px] xs:text-[44px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight select-none">
                       FOUR YEARS.<br />
-                      ONE <span className="relative inline-block bg-signal-orange-tint px-3 py-1 text-secondary -rotate-1">PIPELINE</span><br />
+                      ONE <span className="relative inline-block bg-signal-orange-tint px-3 py-0.5 text-secondary -rotate-1">PIPELINE</span><br />
                       AT A TIME.
                     </h1>
                     <p className="font-body-lg text-sm sm:text-base md:text-lg text-ink-muted max-w-2xl leading-relaxed">
@@ -593,9 +594,14 @@ export default function ExperiencePage() {
         </section>
 
         {/* ================================================================= */}
-        {/* CHAPTER 6: CALL TO ACTION */}
+        {/* CHAPTER 6: EDUCATION */}
         {/* ================================================================= */}
-        <section className="w-full bg-primary text-on-primary py-10 md:py-16 lg:py-20" id="chapter-6">
+        <EducationSection />
+
+        {/* ================================================================= */}
+        {/* CHAPTER 7: CALL TO ACTION */}
+        {/* ================================================================= */}
+        <section className="w-full bg-primary text-on-primary py-10 md:py-16 lg:py-20" id="chapter-7">
           <div className="max-w-screen-2xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col gap-space-xl">
             <div className="flex flex-col gap-space-md">
               <div className="flex items-center justify-between border-b border-surface-container-highest/20 pb-4">
@@ -604,7 +610,7 @@ export default function ExperiencePage() {
                   <span className="font-label-sm text-label-sm text-secondary uppercase font-semibold">GET IN TOUCH</span>
                 </div>
                 <span className="font-label-timecode text-label-timecode text-ink-faint">
-                  NOTICE: {IDENTITY.noticePeriod} · {IDENTITY.replyTime}
+                  REPLY TIME: {IDENTITY.replyTime}
                 </span>
               </div>
 
@@ -653,20 +659,6 @@ export default function ExperiencePage() {
                 <span>GitHub</span>
                 <Icon name="north_east" className="text-[16px] transition-transform duration-150 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
               </a>
-            </div>
-
-            {/* Bottom Strip */}
-            <div className="pt-space-lg border-t border-surface-container-highest/20 flex flex-wrap justify-between items-center font-label-timecode text-label-timecode text-ink-faint gap-4">
-              <div className="flex items-center gap-3">
-                <span>{IDENTITY.name}</span>
-                <span>·</span>
-                <span>{IDENTITY.location}</span>
-                <span>·</span>
-                <span>{IDENTITY.timezone}</span>
-              </div>
-              <div>
-                © 2026 {IDENTITY.name}
-              </div>
             </div>
           </div>
         </section>

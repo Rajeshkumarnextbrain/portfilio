@@ -1,4 +1,10 @@
 import { IDENTITY, CONTACT_INFO, VERIFIED_NUMBERS } from './coreFacts';
+import { EDUCATION } from './experienceData';
+
+const primaryEdu = EDUCATION[0];
+const educationDossierLine = primaryEdu
+  ? `\n• Education: ${primaryEdu.degree}, ${primaryEdu.institution}${primaryEdu.location ? ` · ${primaryEdu.location}` : ''} (${primaryEdu.period})`
+  : '';
 
 export interface CandidateFact {
   label: string;
@@ -38,7 +44,7 @@ LOCATION & LOGISTICS:
 • Notice Period: ${IDENTITY.noticePeriod}
 • Email: ${CONTACT_INFO.email}
 • LinkedIn: ${CONTACT_INFO.linkedin}
-• GitHub: ${CONTACT_INFO.github}`;
+• GitHub: ${CONTACT_INFO.github}${educationDossierLine}`;
 
 export const CANDIDATE_FACTS: CandidateFact[] = [
   {
@@ -46,6 +52,15 @@ export const CANDIDATE_FACTS: CandidateFact[] = [
     value: 'Lead / Staff AI',
     detail: 'Computer Vision & GenAI',
   },
+  ...(primaryEdu
+    ? [
+        {
+          label: 'EDUCATION',
+          value: primaryEdu.degree,
+          detail: `${primaryEdu.institution} (${primaryEdu.period})`,
+        },
+      ]
+    : []),
   {
     label: 'LOCATION',
     value: IDENTITY.location,

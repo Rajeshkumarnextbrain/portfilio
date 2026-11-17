@@ -381,25 +381,6 @@ export default function EdubotixPage() {
                 <span className="text-xs text-ink-muted">Dual Hikrobot cameras, ±150–250 µm metrology &amp; PLC reject</span>
               </Link>
             </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-line text-xs font-label-timecode text-ink-muted">
-              <div>
-                © 2026 {IDENTITY.name} · {IDENTITY.location}
-              </div>
-              <div className="flex items-center gap-3">
-                <a href={`mailto:${CONTACT_INFO.email}`} className="text-secondary font-semibold hover:underline">
-                  Email Rajesh
-                </a>
-                <span>·</span>
-                <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-on-surface">
-                  LinkedIn
-                </a>
-                <span>·</span>
-                <a href={CONTACT_INFO.github} target="_blank" rel="noopener noreferrer" className="hover:text-on-surface">
-                  GitHub
-                </a>
-              </div>
-            </div>
           </div>
         </section>
 

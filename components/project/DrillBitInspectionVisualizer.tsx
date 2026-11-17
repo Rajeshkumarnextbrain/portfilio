@@ -5,10 +5,12 @@ import { m, AnimatePresence } from 'framer-motion';
 import { RotateCcw } from 'lucide-react';
 import { CountUp } from '@/components/motion/CountUp';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
-import { DRILL_BIT_DEFECT_CLASSES, DRILL_BIT_MACHINE_TIERS } from '@/content/caseStudiesData';
+import { DRILL_BIT_DEFECT_CLASSES, DRILL_BIT_MACHINE_TIERS, DRILL_BIT_TOP_SPECS } from '@/content/caseStudiesData';
 import { DrillTipSVG } from './DrillTipSVG';
+import { DrillTopSVG } from './DrillTopSVG';
 
 type ViewMode = 'front' | 'top' | 'categories';
+type FaultMode = 'nominal' | 'front_blend' | 'top_crack';
 
 interface ToleranceBarProps {
   label: string;
@@ -108,10 +110,15 @@ function ToleranceBar({
 export function DrillBitInspectionVisualizer() {
   const [activeView, setActiveView] = useState<ViewMode>('front');
   const [rotationAngle, setRotationAngle] = useState(45);
-  const [simulateDefect, setSimulateDefect] = useState(false);
+  const [faultMode, setFaultMode] = useState<FaultMode>('nominal');
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
   const [inView, setInView] = useState(true);
   const [loopKey, setLoopKey] = useState(0);
   const [step, setStep] = useState(4); // 0 = scan, 1 = edge lock, 2 = dimensions/countup, 3 = stamp, 4 = plc
+
+  const simulateDefect = faultMode === 'front_blend';
+  const isTopDefect = faultMode === 'top_crack';
+  const crackVisible = isTopDefect && rotationAngle >= 30 && rotationAngle <= 90;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const motionOK = useMotionOK();
@@ -162,6 +169,23 @@ export function DrillBitInspectionVisualizer() {
   const handleReplay = useCallback(() => {
     setLoopKey((k) => k + 1);
   }, []);
+
+  // Auto-play for Tab 02 (Top Camera 360° spin): 0 to 360 in 15° steps over ~6s (250ms/step)
+  useEffect(() => {
+    if (!motionOK) {
+      setRotationAngle(45);
+      return;
+    }
+    if (activeView !== 'top' || !inView || !isVisible || !isAutoPlay || faultMode === 'front_blend') {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setRotationAngle((prev) => (prev >= 360 ? 0 : prev + 15));
+    }, 250);
+
+    return () => clearInterval(interval);
+  }, [activeView, inView, isVisible, isAutoPlay, motionOK, faultMode]);
 
   return (
     <div ref={containerRef} className="relative w-full bg-paper-sunken border border-line flex flex-col">
@@ -247,7 +271,12 @@ export function DrillBitInspectionVisualizer() {
                     HIKROBOT CAM #1 · FRONT OPTICS
                   </span>
                   <span className="text-[#F5F2EC]/80">COAXIAL POLARIZED LED: 100%</span>
-                  <span className="text-secondary font-bold">1920 x 1080 @ 30 FPS</span>
+                  <div className="flex items-center gap-2">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-secondary/15 text-secondary border border-secondary/30">
+                      SIMULATED DEMO
+                    </span>
+                    <span className="text-secondary font-bold">1920 x 1080 @ 30 FPS</span>
+                  </div>
                 </div>
 
                 {/* Reticle Graphics & Drill Bit Canvas (viewBox 0 0 400 400) */}
@@ -738,7 +767,6 @@ export function DrillBitInspectionVisualizer() {
                     <span className="font-label-sm text-xs sm:text-[11px] font-bold uppercase text-primary">
                       SIMULATE FAULT CONDITION:
                     </span>
-                    <span className="font-mono text-xs sm:text-[11px] text-ink-muted">KEYBOARD ACCESSIBLE</span>
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
@@ -749,13 +777,13 @@ export function DrillBitInspectionVisualizer() {
                     >
                       <button
                         type="button"
-                        aria-pressed={!simulateDefect}
+                        aria-pressed={faultMode === 'nominal'}
                         onClick={() => {
-                          setSimulateDefect(false);
+                          setFaultMode('nominal');
                           handleReplay();
                         }}
-                        className={`flex-1 py-2 sm:py-1.5 px-3 text-xs font-mono font-bold uppercase transition-colors ${
-                          !simulateDefect
+                        className={`flex-1 py-2 sm:py-1.5 px-2 text-xs font-mono font-bold uppercase transition-colors text-center ${
+                          faultMode === 'nominal'
                             ? 'bg-primary text-on-primary'
                             : 'text-ink-muted hover:text-on-surface'
                         }`}
@@ -764,18 +792,33 @@ export function DrillBitInspectionVisualizer() {
                       </button>
                       <button
                         type="button"
-                        aria-pressed={simulateDefect}
+                        aria-pressed={faultMode === 'front_blend'}
                         onClick={() => {
-                          setSimulateDefect(true);
+                          setFaultMode('front_blend');
                           handleReplay();
                         }}
-                        className={`flex-1 py-2 sm:py-1.5 px-3 text-xs font-mono font-bold uppercase transition-colors ${
-                          simulateDefect
+                        className={`flex-1 py-2 sm:py-1.5 px-2 text-xs font-mono font-bold uppercase transition-colors text-center ${
+                          faultMode === 'front_blend'
                             ? 'bg-status-error text-white'
                             : 'text-ink-muted hover:text-on-surface'
                         }`}
                       >
-                        CHIPPED BLEND
+                        FRONT: CHIPPED BLEND
+                      </button>
+                      <button
+                        type="button"
+                        aria-pressed={faultMode === 'top_crack'}
+                        onClick={() => {
+                          setFaultMode('top_crack');
+                          handleReplay();
+                        }}
+                        className={`flex-1 py-2 sm:py-1.5 px-2 text-xs font-mono font-bold uppercase transition-colors text-center ${
+                          faultMode === 'top_crack'
+                            ? 'bg-status-error text-white'
+                            : 'text-ink-muted hover:text-on-surface'
+                        }`}
+                      >
+                        TOP: LAND CRACK
                       </button>
                     </div>
 
@@ -807,128 +850,310 @@ export function DrillBitInspectionVisualizer() {
               transition={{ duration: 0.2 }}
               className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
             >
-              {/* Left: 360° Profile Canvas */}
-              <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-4 sm:p-6 border border-line flex flex-col justify-between gap-6 relative overflow-hidden">
+              {/* Left (7 cols): 360° Profile Canvas */}
+              <div className="lg:col-span-7 bg-[#14130F] text-[#F5F2EC] p-4 sm:p-6 border border-line flex flex-col justify-between relative overflow-hidden">
+                {/* Top Camera HUD Telemetry Header */}
                 <div className="flex flex-wrap justify-between items-center gap-2 font-mono text-xs sm:text-[11px] text-[#F5F2EC]/80 border-b border-white/10 pb-3">
                   <span className="flex items-center gap-2 text-[#F5F2EC]/90">
                     <span
                       className={`w-2 h-2 rounded-full ${
-                        simulateDefect ? 'bg-status-error' : 'bg-status-success'
-                      } animate-ping`}
+                        faultMode === 'front_blend'
+                          ? 'bg-status-error'
+                          : isTopDefect
+                          ? 'bg-status-error animate-ping'
+                          : 'bg-status-success'
+                      }`}
                     />
                     HIKROBOT CAM #2 · TOP PROFILE
                   </span>
-                  <span>ROTATION INDEX: {simulateDefect ? 'N/A' : `${rotationAngle}° / 360°`}</span>
-                  <span className="text-secondary font-bold">YOLOv7 DEFECT MODEL</span>
+                  <span>ROTATION INDEX: {faultMode === 'front_blend' ? 'N/A' : `${rotationAngle}° / 360°`}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-secondary/15 text-secondary border border-secondary/30">
+                      SIMULATED DEMO
+                    </span>
+                    <span className="text-secondary font-bold">YOLOv7 DEFECT MODEL</span>
+                  </div>
                 </div>
 
                 {/* If defect simulated at front camera, show aborted state */}
-                {simulateDefect ? (
-                  <div className="aspect-video max-h-[300px] flex flex-col items-center justify-center text-center p-6 bg-red-950/20 border border-status-error/40 my-auto gap-2">
-                    <span className="font-mono text-xs uppercase font-bold text-status-error tracking-wider">
-                      INSPECTION STAGE 02 ABORTED // FRONT REJECT TRIPPED
-                    </span>
-                    <p className="text-xs font-mono text-[#F5F2EC]/80 max-w-md">
-                      Pneumatic solenoid actuated at Station 01 for chipped blend fault. Drill bit expelled from conveyor before top camera rotation spindle index.
-                    </p>
+                {faultMode === 'front_blend' ? (
+                  <div className="flex-1 w-full flex items-center justify-center my-4 min-h-[220px]">
+                    <div className="w-full aspect-[2.5/1] flex flex-col items-center justify-center text-center p-6 bg-red-950/20 border border-status-error/40 gap-3">
+                      <span className="font-mono text-xs uppercase font-bold text-status-error tracking-wider">
+                        INSPECTION STAGE 02 ABORTED // FRONT REJECT TRIPPED
+                      </span>
+                      <p className="text-xs font-mono text-[#F5F2EC]/80 max-w-md leading-relaxed">
+                        Pneumatic solenoid actuated at Station 01 for chipped blend fault. Drill bit expelled from conveyor before top camera rotation spindle index.
+                      </p>
+                    </div>
                   </div>
                 ) : (
-                  /* Drill Bit Profile Diagram with Calipers */
-                  <div className="relative aspect-video max-h-[300px] flex items-center justify-center my-auto px-4">
-                    {/* Drill Bit Silhouette (Axial View) */}
-                    <div className="relative w-full max-w-[420px] h-20 bg-neutral-900 border border-neutral-700 flex items-center overflow-hidden">
-                      {/* Shank (Left 35%) */}
-                      <div className="w-[35%] h-full bg-neutral-800 border-r border-dashed border-neutral-600 flex items-center justify-center">
-                        <span className="font-mono text-xs sm:text-[11px] text-[#F5F2EC]/80 uppercase tracking-widest -rotate-90">
-                          SHANK
-                        </span>
-                      </div>
+                  /* Drawing Area with Machine-Vision Field Background */
+                  <div
+                    className="flex-1 w-full flex items-center justify-center relative overflow-hidden my-4 min-h-[220px]"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(to right, rgba(245, 242, 236, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(245, 242, 236, 0.05) 1px, transparent 1px)',
+                      backgroundSize: '40px 40px',
+                      backgroundPosition: 'center center',
+                    }}
+                  >
+                    {/* Thin center crosshair (10% opacity) */}
+                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-[#F5F2EC]/10 pointer-events-none" />
+                    <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-[#F5F2EC]/10 pointer-events-none" />
 
-                      {/* Flutes & Spiral Body (Right 65%) */}
-                      <div className="w-[65%] h-full relative overflow-hidden flex items-center">
-                        {/* Helical Spiral Patterns (Simulated rotation shift) */}
-                        <div
-                          className="absolute inset-0 flex"
-                          style={{
-                            backgroundImage:
-                              'repeating-linear-gradient(45deg, rgba(255,138,92,0.15) 0px, rgba(255,138,92,0.15) 12px, transparent 12px, transparent 24px)',
-                            transform: `translateX(${(rotationAngle % 48) - 24}px)`,
-                          }}
-                        />
-                        {/* Tip Point (Right-most point angle) */}
-                        <div className="absolute right-0 top-0 bottom-0 w-6 border-l-2 border-secondary bg-secondary/20 flex items-center justify-center">
-                          <span className="font-mono text-xs sm:text-[11px] text-secondary font-bold">118°</span>
-                        </div>
-
-                        {/* YOLOv7 Bounding Box Simulation */}
-                        <div className="absolute left-1/3 top-2 w-16 h-14 border-2 border-secondary bg-secondary/15 flex flex-col justify-between p-1">
-                          <span className="bg-secondary text-on-secondary font-mono text-[9px] font-bold px-1 py-0.5">
-                            LAND CRACK 84%
-                          </span>
-                          <span className="font-mono text-[9px] text-secondary text-right">0.8mm</span>
-                        </div>
-                      </div>
-
-                      {/* Overlaid Caliper Lines */}
-                      <div className="absolute -top-1 left-0 right-0 h-2 border-t-2 border-secondary flex justify-between text-xs font-mono text-[#F5F2EC]/90 px-1">
-                        <span>|</span>
-                        <span>OVERALL LENGTH: 117.25 mm</span>
-                        <span>|</span>
-                      </div>
+                    {/* Drill Bit Profile SVG with Metrology Callouts & YOLOv7 Detection */}
+                    <div className="w-full aspect-[2.5/1] max-h-full flex items-center justify-center relative z-10">
+                      <DrillTopSVG
+                        rotation={rotationAngle}
+                        crackVisible={crackVisible}
+                        lengthMm={DRILL_BIT_TOP_SPECS.lengthMm}
+                        diameterMm={DRILL_BIT_TOP_SPECS.diameterMm}
+                        fluteMm={DRILL_BIT_TOP_SPECS.fluteMm}
+                        helixDeg={DRILL_BIT_TOP_SPECS.helixDeg}
+                        pointDeg={DRILL_BIT_TOP_SPECS.pointDeg}
+                      />
                     </div>
                   </div>
                 )}
 
-                {/* 360° Rotation Interactive Scrubber */}
-                <div className="flex flex-col gap-2 pt-3 border-t border-white/10">
+                {/* 360° Stepper Rotation Interactive Scrubber with Absolute Ticks */}
+                <div className="flex flex-col gap-2 pt-4 border-t border-white/10 mt-auto">
                   <div className="flex justify-between items-center font-mono text-xs">
                     <span className="text-[#F5F2EC]/80">STEPPER ROTATION AUDIT:</span>
-                    <span className="text-secondary font-bold">{rotationAngle}° / 360°</span>
+                    <div className="flex items-center gap-2">
+                      {isAutoPlay && motionOK && faultMode !== 'front_blend' && (
+                        <span className="text-[11px] text-[#F5F2EC]/80 uppercase animate-pulse">AUTO-SCAN</span>
+                      )}
+                      <span className="text-secondary font-bold">{rotationAngle}° / 360°</span>
+                    </div>
                   </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="360"
-                    step="15"
-                    disabled={simulateDefect}
-                    value={rotationAngle}
-                    onChange={(e) => setRotationAngle(Number(e.target.value))}
-                    className="w-full accent-secondary cursor-pointer disabled:opacity-40"
-                  />
-                  <div className="flex justify-between text-xs sm:text-[11px] font-mono text-[#F5F2EC]/80">
-                    <span>0° (Flute A)</span>
-                    <span>90°</span>
-                    <span>180° (Flute B)</span>
-                    <span>270°</span>
-                    <span>360° (Full Revolution)</span>
+                  <div className="relative w-full">
+                    <input
+                      type="range"
+                      min="0"
+                      max="360"
+                      step="15"
+                      disabled={faultMode === 'front_blend'}
+                      value={rotationAngle}
+                      onMouseDown={() => setIsAutoPlay(false)}
+                      onTouchStart={() => setIsAutoPlay(false)}
+                      onChange={(e) => {
+                        setIsAutoPlay(false);
+                        setRotationAngle(Number(e.target.value));
+                      }}
+                      className="w-full accent-secondary cursor-pointer disabled:opacity-40"
+                    />
+                    {/* Aligned percentage tick labels */}
+                    <div className="relative w-full h-8 mt-1 font-mono text-[11px] text-[#F5F2EC]/80 select-none">
+                      <div className="absolute left-0 top-0 flex flex-col items-start">
+                        <span className="font-bold text-[#F5F2EC]/90">0°</span>
+                        <span className="text-[11px] text-[#F5F2EC]/60">Flute A</span>
+                      </div>
+                      <div className="absolute left-[25%] -translate-x-1/2 top-0 flex flex-col items-center">
+                        <span className="font-bold text-[#F5F2EC]/90">90°</span>
+                      </div>
+                      <div className="absolute left-[50%] -translate-x-1/2 top-0 flex flex-col items-center">
+                        <span className="font-bold text-[#F5F2EC]/90">180°</span>
+                        <span className="text-[11px] text-[#F5F2EC]/60">Flute B</span>
+                      </div>
+                      <div className="absolute left-[75%] -translate-x-1/2 top-0 flex flex-col items-center">
+                        <span className="font-bold text-[#F5F2EC]/90">270°</span>
+                      </div>
+                      <div className="absolute right-0 top-0 flex flex-col items-end">
+                        <span className="font-bold text-[#F5F2EC]/90">360°</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Right: YOLOv7 Defect Class Register */}
+              {/* Right (5 cols): YOLOv7 Defect Class Register & Station 02 Controls */}
               <div className="lg:col-span-5 flex flex-col justify-between gap-4 bg-paper-raised p-4 sm:p-6 border border-line">
                 <div className="flex flex-col gap-3">
+                  {/* Scenario Segmented Toggle (Shared with Tab 01) */}
+                  <div className="flex flex-col gap-2 p-3 bg-paper-sunken border border-line">
+                    <div className="flex items-center justify-between">
+                      <span className="font-label-sm text-[11px] font-bold uppercase text-secondary">
+                        SIMULATE SCENARIO
+                      </span>
+                    </div>
+                    <div
+                      role="group"
+                      aria-label="Inspection State Simulation"
+                      className="inline-flex p-1 bg-paper-raised border border-line w-full"
+                    >
+                      <button
+                        type="button"
+                        aria-pressed={faultMode === 'nominal'}
+                        onClick={() => {
+                          setFaultMode('nominal');
+                          handleReplay();
+                        }}
+                        className={`flex-1 py-1.5 px-2 text-[11px] font-mono font-bold uppercase transition-colors text-center ${
+                          faultMode === 'nominal'
+                            ? 'bg-primary text-on-primary'
+                            : 'text-ink-muted hover:text-on-surface'
+                        }`}
+                      >
+                        NOMINAL
+                      </button>
+                      <button
+                        type="button"
+                        aria-pressed={faultMode === 'front_blend'}
+                        onClick={() => {
+                          setFaultMode('front_blend');
+                          handleReplay();
+                        }}
+                        className={`flex-1 py-1.5 px-2 text-[11px] font-mono font-bold uppercase transition-colors text-center ${
+                          faultMode === 'front_blend'
+                            ? 'bg-status-error text-white'
+                            : 'text-ink-muted hover:text-on-surface'
+                        }`}
+                      >
+                        FRONT: CHIPPED BLEND
+                      </button>
+                      <button
+                        type="button"
+                        aria-pressed={faultMode === 'top_crack'}
+                        onClick={() => {
+                          setFaultMode('top_crack');
+                          handleReplay();
+                        }}
+                        className={`flex-1 py-1.5 px-2 text-[11px] font-mono font-bold uppercase transition-colors text-center ${
+                          faultMode === 'top_crack'
+                            ? 'bg-status-error text-white'
+                            : 'text-ink-muted hover:text-on-surface'
+                        }`}
+                      >
+                        TOP: LAND CRACK
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Header: Defect Classes Audited with Updated Recall Label */}
                   <div className="flex items-center justify-between border-b border-line pb-2">
                     <span className="font-label-sm text-xs font-bold uppercase text-secondary">
                       YOLOv7 DEFECT CLASSES AUDITED
                     </span>
-                    <span className="font-label-timecode text-xs sm:text-[11px] text-ink-muted">70% RECALL</span>
+                    <span className="font-label-timecode text-[11px] text-ink-muted">
+                      70% RECALL · 8 CLASSES
+                    </span>
                   </div>
 
+                  {/* 8 Defect Cards with per-class confidence */}
                   <div className="grid grid-cols-2 gap-2">
-                    {DRILL_BIT_DEFECT_CLASSES.map((defect) => (
-                      <div key={defect.code} className="p-2.5 bg-paper-sunken border border-line flex flex-col gap-1">
-                        <div className="flex items-center justify-between">
-                          <span className="font-mono text-xs sm:text-[11px] text-secondary font-bold">{defect.code}</span>
-                          <span className="w-1.5 h-1.5 rounded-full bg-status-success" />
+                    {DRILL_BIT_DEFECT_CLASSES.map((defect) => {
+                      const isDefect = isTopDefect && defect.code === 'DEF-02';
+                      return (
+                        <div
+                          key={defect.code}
+                          className={`p-2.5 border transition-colors flex flex-col gap-1 ${
+                            isDefect
+                              ? 'bg-status-error/15 border-status-error text-status-error shadow-[0_0_8px_rgba(239,68,68,0.2)]'
+                              : 'bg-paper-sunken border-line text-on-surface'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className={`font-mono text-[11px] font-bold ${isDefect ? 'text-status-error' : 'text-secondary'}`}>
+                              {defect.code}
+                            </span>
+                            {isDefect ? (
+                              <span className="px-1.5 py-0.5 rounded text-[11px] font-mono font-bold bg-status-error text-white">
+                                REJECT · 0.84
+                              </span>
+                            ) : (
+                              <span className="font-mono text-[11px] text-ink-muted">0.00</span>
+                            )}
+                          </div>
+                          <span className="font-mono text-[11px] font-bold truncate">
+                            {defect.name}
+                          </span>
+                          <span className="text-[11px] text-ink-muted leading-tight line-clamp-2">
+                            {defect.impact}
+                          </span>
                         </div>
-                        <span className="font-mono text-xs font-bold text-on-surface truncate">{defect.name}</span>
-                        <span className="text-xs sm:text-[11px] text-ink-muted leading-tight line-clamp-2">{defect.impact}</span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
+                {/* Station 02 Verdict & PLC Action Row (Matching Station 01 Treatment) */}
+                <div className="p-3 bg-paper-sunken border border-line flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-label-sm text-[11px] font-bold uppercase text-secondary">
+                      PLC DIGITAL I/O ACTUATION
+                    </span>
+                    <span className="font-mono text-[11px] text-ink-muted">STATION 02</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {/* VERDICT */}
+                    <div
+                      className={`p-2 border transition-colors flex items-center justify-between ${
+                        isTopDefect
+                          ? 'bg-red-500/10 border-status-error'
+                          : faultMode === 'front_blend'
+                          ? 'bg-paper-raised border-line opacity-60'
+                          : 'bg-paper-raised border border-line'
+                      }`}
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-mono text-[11px] text-ink-muted uppercase">STATION 02 VERDICT</span>
+                        <span
+                          className={`font-mono text-xs font-bold ${
+                            faultMode === 'front_blend'
+                              ? 'text-ink-muted'
+                              : isTopDefect
+                              ? 'text-status-error'
+                              : 'text-status-success'
+                          }`}
+                        >
+                          {faultMode === 'front_blend' ? 'ABORTED' : isTopDefect ? 'REJECT' : 'PASS'}
+                        </span>
+                      </div>
+                      <span
+                        className={`w-2.5 h-2.5 rounded-full ${
+                          faultMode === 'front_blend'
+                            ? 'bg-ink-muted/40'
+                            : isTopDefect
+                            ? 'bg-status-error animate-pulse'
+                            : 'bg-status-success shadow-[0_0_6px_rgba(31,138,76,0.6)]'
+                        }`}
+                      />
+                    </div>
+
+                    {/* PLC REJECT SOLENOID */}
+                    <div
+                      className={`p-2 border transition-colors flex items-center justify-between ${
+                        isTopDefect
+                          ? 'bg-red-500/10 border-status-error'
+                          : faultMode === 'front_blend'
+                          ? 'bg-paper-raised border-line opacity-60'
+                          : 'bg-paper-raised border border-line'
+                      }`}
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-mono text-[11px] text-ink-muted uppercase">REJECT SOLENOID</span>
+                        <span
+                          className={`font-mono text-xs font-bold ${
+                            isTopDefect ? 'text-status-error' : 'text-ink-muted'
+                          }`}
+                        >
+                          {faultMode === 'front_blend' ? 'EXPELLED (ST. 01)' : isTopDefect ? 'FIRED (PNEUMATIC 24V)' : 'IDLE'}
+                        </span>
+                      </div>
+                      <span
+                        className={`w-2.5 h-2.5 rounded-full ${
+                          isTopDefect
+                            ? 'bg-status-error shadow-[0_0_6px_rgba(239,68,68,0.8)] animate-pulse'
+                            : 'bg-ink-muted/40'
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cycle Time */}
                 <div className="p-3 bg-surface border border-line flex items-center justify-between font-mono text-xs">
                   <span className="text-ink-muted">CYCLE TIME PER BIT:</span>
                   <span className="font-bold text-on-surface">~20 SECONDS (AVERAGE)</span>

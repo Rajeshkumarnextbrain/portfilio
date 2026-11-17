@@ -5,7 +5,7 @@ import { m, useInView } from 'framer-motion';
 import { EASING, TIMING } from '@/lib/motion';
 import { useMotionOK, useDocumentVisible } from '@/lib/useMotionOK';
 
-const ROTATING_WORDS = ['see', 'reason', 'scale'];
+const ROTATING_WORDS = ['SEE.', 'REASON.', 'SCALE.'];
 
 export function HeroHeadline() {
   const motionOK = useMotionOK();
@@ -28,8 +28,7 @@ export function HeroHeadline() {
     <h1
       ref={headingRef}
       aria-label="I build production AI systems that see, reason and scale."
-      className="font-headline-lg font-semibold tracking-[-0.04em] leading-[0.95] text-[#1c1c18]"
-      style={{ fontSize: 'clamp(1.85rem, 5.5vw, 4.75rem)' }}
+      className="font-mega-display text-[32px] xs:text-[44px] sm:text-[68px] md:text-[92px] lg:text-[110px] leading-[0.92] font-bold text-on-surface uppercase tracking-tight select-none"
     >
       {/* Transform-only reveal on initial mount, text stays 100% visible */}
       <m.span
@@ -43,7 +42,7 @@ export function HeroHeadline() {
         I build production AI systems that
       </m.span>
 
-      {/* Rotating Verb Slot: see -> reason -> scale (strictly left-aligned, no jumping) */}
+      {/* Rotating Verb Slot: SEE. -> REASON. -> SCALE. */}
       <span aria-hidden="true" className="block relative h-[1.18em] overflow-hidden text-secondary mt-1.5 sm:mt-2">
         <span
           className={`flex flex-col items-start ${
@@ -55,7 +54,7 @@ export function HeroHeadline() {
         >
           {ROTATING_WORDS.map((word) => (
             <span key={word} className="h-[1.18em] flex items-center justify-start text-left">
-              <span className="bg-signal-orange-tint px-2 sm:px-2.5 py-0.5 text-secondary leading-none rounded-sm inline-flex items-center">
+              <span className="bg-signal-orange-tint text-secondary px-3 py-0.5 inline-block -rotate-1">
                 {word}
               </span>
             </span>

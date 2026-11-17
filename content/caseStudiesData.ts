@@ -639,6 +639,22 @@ export const DRILL_BIT_MEASUREMENTS: DrillBitMeasurement[] = [
   },
 ];
 
+export interface DrillBitTopSpecs {
+  lengthMm: number;
+  diameterMm: number;
+  fluteMm: number;
+  helixDeg: number;
+  pointDeg: number;
+}
+
+export const DRILL_BIT_TOP_SPECS: DrillBitTopSpecs = {
+  lengthMm: 117.25,
+  diameterMm: 8.0,
+  fluteMm: 72.8,
+  helixDeg: 30.0,
+  pointDeg: 118,
+};
+
 export interface DefectClass {
   code: string;
   name: string;

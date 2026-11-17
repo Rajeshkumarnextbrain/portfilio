@@ -166,36 +166,68 @@ export const SS_AUTO_ROLE_METRICS: RoleMetric[] = [
   },
 ];
 
-export interface ScrubberClip {
-  id: string;
-  clipNumber: string;
-  title: string;
-  period: string;
-  colSpan: string;
-  isCurrent?: boolean;
-}
+export const TIMELINE_START = '2022-05';   // YYYY-MM
+export const TIMELINE_NOW   = '2026-11';   // update on each redeploy
+
+export type ScrubberClip = {
+  id: string; clipNumber: string; title: string; period: string;
+  start: string; end: string | null; isCurrent?: boolean;
+};
 
 export const TIMELINE_SCRUBBER_CLIPS: ScrubberClip[] = [
+  { id: 'chapter-3', clipNumber: 'CLIP 03', title: 'VEDANT',        period: 'May – Jul 2022',      start: '2022-05', end: '2022-07' },
+  { id: 'chapter-2', clipNumber: 'CLIP 02', title: 'SS AUTOMATION', period: 'Jul 2022 – Jul 2023', start: '2022-07', end: '2023-07' },
+  { id: 'chapter-1', clipNumber: 'CLIP 01', title: 'NEXTBRAIN // TEAM LEAD', period: 'Jul 2023 – Present', start: '2023-07', end: null, isCurrent: true },
+];
+
+export type EducationItem = {
+  degree: string;        // e.g. "B.E. in Electronics and Communication"
+  institution: string;
+  location?: string;
+  period: string;        // e.g. "2018 – 2022"
+  grade?: string;        // CGPA / percentage, only if you want to show it
+  highlights?: string[]; // final-year project, relevant coursework
+};
+
+export const EDUCATION: EducationItem[] = [
   {
-    id: 'chapter-3',
-    clipNumber: 'CLIP 03',
-    title: 'VEDANT',
-    period: 'May – Jul 2022',
-    colSpan: 'col-span-2 sm:col-span-1',
+    degree: "B.E. in Computer Science & Engineering",
+    institution: "The Kavery Engineering College",
+    location: "Mecheri, Salem, Tamil Nadu",
+    period: "2016 – 2020",
+    highlights: [
+      "Core coursework: Algorithms, Data Structures, Operating Systems, Database Management Systems, Computer Networks, and Software Engineering.",
+    ],
+  },
+];
+
+export const CERTIFICATIONS: { name: string; issuer: string; year?: string }[] = [];
+
+export type CourseItem = {
+  title: string;
+  provider: string;             // "Udemy", "XYZ Institute", "NVIDIA DLI"...
+  year?: string;
+  kind: 'certification' | 'course';   // certification = exam/credential, course = completion
+  url?: string;                 // certificate / verification link, if any
+};
+
+export const COURSES: CourseItem[] = [
+  {
+    title: "Complete Generative AI Course With Langchain and Huggingface",
+    provider: "Udemy (Krish Naik)",
+    year: "2025",
+    kind: "course",
   },
   {
-    id: 'chapter-2',
-    clipNumber: 'CLIP 02',
-    title: 'SS AUTOMATION',
-    period: 'Jul 2022 – Jul 2023',
-    colSpan: 'col-span-3',
+    title: "Learn Python & Ethical Hacking From Scratch",
+    provider: "Udemy (Zaid Sabih)",
+    year: "2020",
+    kind: "course",
   },
   {
-    id: 'chapter-1',
-    clipNumber: 'CLIP 01',
-    title: 'NEXTBRAIN // TEAM LEAD',
-    period: 'Jul 2023 – Present',
-    colSpan: 'col-span-7 sm:col-span-8',
-    isCurrent: true,
+    title: "Data Science",
+    provider: "i18n Solutions",
+    year: "2019",
+    kind: "certification",
   },
 ];
