@@ -49,7 +49,7 @@ LOCATION & LOGISTICS:
 export const CANDIDATE_FACTS: CandidateFact[] = [
   {
     label: 'LOOKING FOR',
-    value: 'Lead / Staff AI',
+    value: 'Lead / Senior AI',
     detail: 'Computer Vision & GenAI',
   },
   ...(primaryEdu

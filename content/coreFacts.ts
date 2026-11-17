@@ -21,7 +21,7 @@ export const IDENTITY = {
   noticePeriod: "90 days",
   replyTime: "within 24 hours",
   availabilityStatus: "Available for hire · 90-day notice · Bangalore, India",
-  targetRoles: "Lead AI Engineer, Staff Computer Vision Engineer, Staff GenAI Systems Architect",
+  targetRoles: "Lead AI Engineer, Senior Computer Vision Engineer, Senior GenAI / Agentic AI Engineer",
   education: "B.E. – Computer Science & Engineering · The Kavery Engineering College, Mecheri, Salem (2016–2020)",
   timezone: "IST (UTC+5:30), flexible for US and European working hours",
   shortSummary:

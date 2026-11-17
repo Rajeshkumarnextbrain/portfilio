@@ -22,7 +22,7 @@ export const PAGE_METADATA = {
   contact: {
     title: 'Contact & Hiring',
     description:
-      `Get in touch with ${IDENTITY.name} for Lead AI Engineer, Staff Computer Vision Engineer, and Staff GenAI Systems Architect roles.`,
+      `Get in touch with ${IDENTITY.name} for Lead AI Engineer, Senior Computer Vision Engineer, and Senior GenAI / Agentic AI Engineer roles.`,
     canonical: '/contact',
   },
   visionfacts: {

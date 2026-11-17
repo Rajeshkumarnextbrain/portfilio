@@ -38,7 +38,7 @@
 ## 1. Project Overview & Technology Stack
 
 - **Target Persona:** Rajesh Kumar S — AI Engineer & Team Lead specializing in Computer Vision (high-throughput RTSP video pipelines, NVIDIA Triton, TensorRT) and Generative AI (LangGraph multi-agent systems, FastMCP, Multimodal RAG).
-- **Goal:** A high-conversion, enterprise-grade engineering portfolio targeting Staff AI Engineer, Lead Vision Engineer, and GenAI Systems Architect roles.
+- **Goal:** A high-conversion, enterprise-grade engineering portfolio targeting Lead AI Engineer, Senior Computer Vision Engineer, and Senior GenAI / Agentic AI Engineer roles.
 - **Core Architecture:**
   - **Framework:** Next.js 14 (App Router, React 18, React DOM 18)
   - **Styling:** Tailwind CSS 3.4 + PostCSS + Autoprefixer
@@ -598,9 +598,9 @@ High-efficiency, friction-free portal for recruiters, hiring managers, and found
 #### Detailed Sections:
 1. **Chapter 0: Hero & Quick Actions (2-Column Desktop Grid):**
    - Header with status pill (`AVAILABLE FOR HIRE · 90-DAY NOTICE · WITHIN 24 HOURS`).
-   - **Left Column (7 cols):** Giant headline *"Let's talk."*, target roles highlighted (*Lead AI Engineer, Staff Computer Vision Engineer, Staff GenAI Systems Architect*), and action buttons with `<CopyButton>` for one-click email copying, resume download, LinkedIn, and GitHub links.
+   - **Left Column (7 cols):** Giant headline *"Let's talk."*, target roles highlighted (*Lead AI Engineer, Senior Computer Vision Engineer, Senior GenAI / Agentic AI Engineer*), and action buttons with `<CopyButton>` for one-click email copying, resume download, LinkedIn, and GitHub links.
    - **Right Column (5 cols) — Executive Fast-Track Dossier Card:** High-contrast Swiss-style recruiter dossier highlighting the 50/50 CV & GenAI split, 130+ camera production scale, ~390 GB → 48 GB VRAM compaction, LangGraph/FastMCP agentic architecture, team leadership over 3–5 engineers, worldwide mobility, and a 1-click *"Copy Recruiter Dossier (Slack / ATS ready)"* action button.
-   - **Candidate Facts Strip (5 Cards):** Looking For (Lead / Staff AI), Location (Bangalore; onsite/hybrid/remote/relocation open), Notice Period (90 days), Timezone (IST UTC+5:30, flexible), Reply Time (< 24 hours).
+   - **Candidate Facts Strip (5 Cards):** Looking For (Lead / Senior AI), Location (Bangalore; onsite/hybrid/remote/relocation open), Notice Period (90 days), Timezone (IST UTC+5:30, flexible), Reply Time (< 24 hours).
 2. **Chapter 1: Four Things I'm Hired For (Core Value Quadrants):**
    - 2x2 grid of cards featuring an animated signal-orange hairline hover top border:
      - 01 // Real-Time Video & Vision: 4+ years vision, 130+ cameras live on 2x L4 GPUs, full multi-model execution (YOLOv11, YOLO26, DINOv3, RetinaFace, ArcFace, ByteTrack, PyTorch, OpenCV).

@@ -128,7 +128,7 @@ export default function ContactPage() {
                   {/* Role & Split */}
                   <div className="flex flex-col gap-1">
                     <h3 className="font-headline-md text-base sm:text-lg font-bold text-on-surface uppercase tracking-tight">
-                      Lead &amp; Staff AI Systems Architect
+                      Lead &amp; Senior AI Systems Architect
                     </h3>
                     <p className="font-label-timecode text-xs text-secondary font-medium">
                       50% Computer Vision &bull; 50% Generative AI &amp; Autonomous Agents

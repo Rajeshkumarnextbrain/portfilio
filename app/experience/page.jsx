@@ -69,7 +69,7 @@ export default function ExperiencePage() {
                 {/* Sub-strip: Quick Focus Indicators */}
                 <div className="flex flex-wrap items-center gap-3 pt-1">
                   <span className="font-label-timecode text-xs px-3 py-1 bg-paper-sunken border border-line text-ink-muted uppercase">
-                    STAFF / LEAD AI SCOPE
+                    LEAD / SENIOR AI SCOPE
                   </span>
                   <span className="font-label-timecode text-xs px-3 py-1 bg-paper-sunken border border-line text-secondary uppercase font-semibold">
                     50% COMPUTER VISION · 50% GENAI &amp; AGENTS
