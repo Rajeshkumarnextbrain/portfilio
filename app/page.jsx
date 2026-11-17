@@ -253,7 +253,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <ExperiencePreview roles={EXPERIENCE_ROLES} education={EDUCATION[0]} />
+            <ExperiencePreview roles={EXPERIENCE_ROLES} />
           </div>
         </section>
 

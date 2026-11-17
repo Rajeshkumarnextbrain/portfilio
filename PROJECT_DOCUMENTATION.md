@@ -83,7 +83,7 @@
 │   │   ├── HowItWorksSection.tsx           # 5-step video analytics architecture blueprint
 │   │   ├── ProjectsSection.tsx             # Interactive production case study preview rows
 │   │   ├── SkillsSection.tsx               # Categorized skills matrix with plain-English + engineering tools
-│   │   └── ExperiencePreview.tsx           # Chronology cards preview + academic foundation
+│   │   └── ExperiencePreview.tsx           # Chronology cards preview for production roles (Nextbrain, SS, Vedant)
 │   │
 │   ├── experience/                         # Experience-page specific components
 │   │   ├── SmpteTicker.tsx                 # Timecode counter display
@@ -406,7 +406,7 @@ Designed as an editorial magazine spread that answers the hiring manager's quest
 5. **Section 04: Skills (Plain English First):**
    - Four structured skill rows (Computer Vision, Generative AI & Agents, Efficient AI, Systems & Leadership) with icon, headline, sentence, proof counters, and small-text engineering tools.
 6. **Section 05: Career Chronology Preview:**
-   - Summarized view of Nextbrain Technologies, SS Automation, and Vedant / DRDO, concluding with the `ACADEMIC FOUNDATION` card derived from `EDUCATION[0]` (B.E. in Computer Science & Engineering, The Kavery Engineering College, 2016–2020), with a direct link to `/experience`.
+   - Summarized view of production work roles: Nextbrain Technologies, SS Automation, and Vedant Tech / DRDO, with a direct link to `/experience`. (Academic education is kept separate: displayed in the At a Glance sidebar and as a dedicated Chapter 06 on the Experience page).
 7. **Section 06: Contact Call to Action:**
    - High-contrast dark charcoal background (`bg-primary text-on-primary`) with timezone, reply time guarantee (`within 24 hours`), target roles, and email/resume/social buttons.
 
@@ -640,7 +640,7 @@ All personal facts and telemetry live in modular TypeScript files under `content
    - To replace the resume PDF, overwrite `public/resume.pdf`.
 4. **Updating Education & Academic Credentials:**
    - Open `content/experienceData.ts`.
-   - Update the `EDUCATION: EducationItem[]` array. The first entry (`EDUCATION[0]`) automatically populates the Academic Foundation card on the Home page, Chapter 06 of the Experience page, and dynamically feeds into `CANDIDATE_FACTS` and `RECRUITER_DOSSIER_TEXT` in `content/contactData.ts`.
+   - Update the `EDUCATION: EducationItem[]` array. The first entry (`EDUCATION[0]`) automatically populates the candidate facts strip on the Home page, Chapter 06 of the Experience page, and dynamically feeds into `CANDIDATE_FACTS` and `RECRUITER_DOSSIER_TEXT` in `content/contactData.ts`.
 5. **Updating Courses & Training:**
    - Open `content/experienceData.ts`.
    - Add or edit items in `COURSES: CourseItem[]` with `title`, `provider`, `year`, `kind: 'certification' | 'course'`. Items with `kind: 'certification'` automatically receive a `CERTIFIED` badge in `EducationSection.tsx`.
